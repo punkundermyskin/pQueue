@@ -13,7 +13,7 @@ exports.getRequests = async (req, res, next) => {
             data: requests
         });
     } catch (err) {
-        return res.status(500).jsong({
+        return res.status(500).json({
             success: false,
             error: 'Server Error'
         })
@@ -42,7 +42,7 @@ exports.addRequest = async (req, res, next) => {
                 error: messages
             });
         } else {
-            return res.status(500).jsong({
+            return res.status(500).json({
                 success: false,
                 error: 'Server Error'
             })

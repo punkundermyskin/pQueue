@@ -13,7 +13,7 @@ exports.getSessions = async (req, res, next) => {
             data: sessions
         });
     } catch (err) {
-        return res.status(500).jsong({
+        return res.status(500).json({
             success: false,
             error: 'Server Error'
         })
@@ -42,7 +42,7 @@ exports.addSession = async (req, res, next) => {
                 error: messages
             });
         } else {
-            return res.status(500).jsong({
+            return res.status(500).json({
                 success: false,
                 error: 'Server Error'
             })
