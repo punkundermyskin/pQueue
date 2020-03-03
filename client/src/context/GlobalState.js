@@ -1,14 +1,14 @@
 import React, { createContext, useReducer } from 'react'
-import AppReducer from './AppReducer';
+import AuthReducer from './AuthReducer';
 import axios from 'axios';
 
 // Initial State
 const initialState = {
-    requests: [],
     isAuth: false,
-    profile: null,
-    error: null,
-    loading: true
+    token: localStorage.getItem('token'),
+    user: null,
+    loading: false,
+    error: null
 }
 
 // Create context
@@ -16,69 +16,131 @@ export const GlobalContext = createContext(initialState);
 
 // Provider component
 export const GlobalProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
+    const [state, dispatch] = useReducer(AuthReducer, initialState);
 
     // Actions
-    async function getTransactions() {
-        try {
-            const res = await axios.get('/api/v1/transactions');
+    async function loadUser() {
 
-            dispatch({
-                type: 'GET_TRANSACTIONS',
-                payload: res.data.data
-            });
-        } catch (error) {
-            dispatch({
-                type: 'TRANSACTIONS_ERROR',
-                payload: error.response.data.error
-            });
-        }
-    }
-
-    async function deleteTransaction(id) {
-        try {
-            await axios.delete(`/api/v1/transactions/${id}`);
-            dispatch({
-                type: 'DELETE_TRANSACTION',
-                payload: id
-            })
-        } catch (error) {
-            dispatch({
-                type: 'TRANSACTIONS_ERROR',
-                payload: error.response.data.error
-            });
-        }
-    }
-
-    async function addTransaction(transaction) {
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
 
+        if (state.token) {
+            config.headers['Authorization'] = state.token;
+        }
+
         try {
-            const res = await axios.post('/api/v1/transactions/', transaction, config);
+            const res = await axios.get('/api/auth/me', config);
 
             dispatch({
-                type: 'ADD_TRANSACTION',
-                payload: res.data.data
+                type: 'USER_LOADED',
+                payload: res.data
             });
         } catch (error) {
             dispatch({
-                type: 'TRANSACTIONS_ERROR',
+                type: 'AUTH_ERROR',
                 payload: error.response.data.error
             });
         }
     }
 
+    // Actions
+    async function registerUser(username, firstName, lastName, group, machineID, password) {
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const body = JSON.stringify({ username, firstName, lastName, group, machineID, password });
+
+        try {
+            const res = await axios.post('/api/auth', body, config);
+
+            dispatch({
+                type: 'REGISTER_SUCCESS',
+                payload: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: 'REGISTER_FAIL',
+                payload: error.response.data.error
+            });
+        }
+    }
+
+    // Actions
+    async function loginUser(username, password) {
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const body = JSON.stringify({ username, password });
+
+        try {
+            const res = await axios.post('/api/auth/login', body, config);
+
+            dispatch({
+                type: 'LOGIN_SUCCESS',
+                payload: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: 'LOGIN_FAIL',
+                payload: error.response.data.error
+            });
+        }
+    }
+
+    // Actions
+    async function logoutUser() {
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        const token = state.token
+
+        if (token) {
+            config.headers['Authorization'] = token;
+        }
+
+        const body = JSON.stringify({ token });
+
+        try {
+            const res = await axios.post('/api/auth/me/logout', body, config);
+
+            dispatch({
+                type: 'LOGOUT_SUCCESS',
+                payload: res.data
+            });
+        } catch (error) {
+            // TODO: Check this stuff
+            dispatch({
+                type: 'LOGOUT_SUCCESS',
+                payload: error.response.data.error
+            });
+        }
+    }
+
+
     return (<GlobalContext.Provider value={{
-        transactions: state.transactions,
+        isAuth: state.isAuth,
+        user: state.user,
         error: state.error,
         loading: state.loading,
-        getTransactions,
-        deleteTransaction,
-        addTransaction
+        loadUser,
+        registerUser,
+        loginUser,
+        logoutUser
     }}>
         {children}
     </GlobalContext.Provider>);

@@ -16,6 +16,10 @@ import Container from '@material-ui/core/Container';
 
 import { NavLink } from 'react-router-dom'
 
+import { useState, useContext } from 'react';
+
+import { GlobalProvider, GlobalContext } from '../context/GlobalState'
+
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -52,6 +56,17 @@ const useStyles = makeStyles(theme => ({
 function SignIn() {
     const classes = useStyles();
 
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const { loginUser } = useContext(GlobalContext);
+
+    const onSubmit = e => {
+        e.preventDefault();
+
+        loginUser(username, password);
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -62,7 +77,7 @@ function SignIn() {
                 <Typography component="h1" variant="h5">
                     Sign in
         </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -73,6 +88,8 @@ function SignIn() {
                         name="username"
                         autoComplete="username"
                         autoFocus
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                     />
                     <TextField
                         variant="outlined"
@@ -84,18 +101,21 @@ function SignIn() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
-                    <NavLink exact to="/dashboard">
+                    <NavLink onClick={onSubmit} exact to="/dashboard">
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             className={classes.submit}
+
                         >
                             Sign In
                         </Button>

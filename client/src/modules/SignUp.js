@@ -12,7 +12,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
+import { useState, useContext } from 'react';
+
+import { withRouter } from 'react-router'
+
+import { GlobalContext } from '../context/GlobalState'
 
 function Copyright() {
     return (
@@ -50,6 +55,25 @@ const useStyles = makeStyles(theme => ({
 export function SignUp() {
     const classes = useStyles();
 
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [group, setGroup] = useState('');
+    const [machineID, setMachineID] = useState('');
+
+    const { registerUser } = useContext(GlobalContext);
+
+    const history = useHistory();
+
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        registerUser(username, firstName, lastName, group, machineID, password)
+            .then(() => history.push('/login')
+            );
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -71,29 +95,68 @@ export function SignUp() {
                                 label="Username"
                                 name="username"
                                 autoComplete="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={6}>
                             <TextField
-                                autoComplete="fname"
-                                name="firstName"
                                 variant="outlined"
+                                margin="normal"
                                 required
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
+                                name="firstName"
+                                autoComplete="firstName"
                                 autoFocus
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={6}>
                             <TextField
                                 variant="outlined"
+                                margin="normal"
                                 required
                                 fullWidth
-                                id="lastName"
-                                label="Last Name"
                                 name="lastName"
-                                autoComplete="lname"
+                                label="Last Name"
+                                type="lastName"
+                                id="lastName"
+                                autoComplete="current-password"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="group"
+                                label="Group Number"
+                                name="group"
+                                autoComplete="group"
+                                autoFocus
+                                value={group}
+                                onChange={(e) => setGroup(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="machineID"
+                                label="Machine ID"
+                                type="machineID"
+                                id="machineID"
+                                autoComplete="current-password"
+                                value={machineID}
+                                onChange={(e) => setMachineID(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -106,21 +169,21 @@ export function SignUp() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </Grid>
                     </Grid>
-                    <NavLink exact to="/login">
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign Up
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={handleSubmit}
+                    >
+                        Sign Up
                         </Button>
-                    </NavLink>
-
                     <Grid container justify="flex-end">
                         <Grid item>
                             <NavLink exact to="/login" variant="body2">
@@ -137,4 +200,4 @@ export function SignUp() {
     );
 }
 
-export default SignUp;
+export default withRouter(SignUp)
