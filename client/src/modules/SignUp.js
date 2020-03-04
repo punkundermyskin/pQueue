@@ -62,7 +62,7 @@ export function SignUp() {
     const [group, setGroup] = useState('');
     const [machineID, setMachineID] = useState('');
 
-    const { registerUser } = useContext(GlobalContext);
+    const { registerUser, isAuth } = useContext(GlobalContext);
 
     const history = useHistory();
 
@@ -70,7 +70,11 @@ export function SignUp() {
         e.preventDefault();
 
         registerUser(username, firstName, lastName, group, machineID, password)
-            .then(() => history.push('/login')
+            .then(() => {
+                if (isAuth) {
+                    history.push('/dashboard')
+                }
+            }
             );
     }
 

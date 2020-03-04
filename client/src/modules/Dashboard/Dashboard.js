@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,6 +22,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, logout } from './listItems';
 import NextRequest from './NextRequest';
 import VirtualizedList from './VirtualizedList';
+
+import { useHistory } from 'react-router-dom'
+
+import { useContext } from 'react';
+
+import { GlobalContext } from '../../context/GlobalState'
 
 function Copyright() {
   return (
@@ -127,6 +133,19 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const { isAuth } = useContext(GlobalContext);
+
+  const history = useHistory();
+  const { loadUser } = useContext(GlobalContext);
+
+  useEffect(() => {
+    loadUser().then(() => {
+      if (!isAuth) {
+        history.push('/login')
+      }
+    });
+  }, []);
 
   return (
     <div className={classes.root}>

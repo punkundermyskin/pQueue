@@ -20,16 +20,19 @@ export const GlobalProvider = ({ children }) => {
 
     // Actions
     async function loadUser() {
+        const token = state.token
+        if (!token) {
+            return
+        }
 
         const config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': token
             }
         }
+        // config.headers['Authorization'] = state.token;
 
-        if (state.token) {
-            config.headers['Authorization'] = state.token;
-        }
 
         try {
             const res = await axios.get('/api/auth/me', config);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 
 import { useState, useContext } from 'react';
 
@@ -56,15 +56,29 @@ const useStyles = makeStyles(theme => ({
 function SignIn() {
     const classes = useStyles();
 
+    const { isAuth } = useContext(GlobalContext);
+
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const history = useHistory();
+    const { loginUser, loadUser } = useContext(GlobalContext);
 
-    const { loginUser } = useContext(GlobalContext);
+    useEffect(() => {
+        loadUser().then(() => {
+            if (isAuth) {
+                history.push('/dashboard')
+            }
+        });
+    }, []);
 
     const onSubmit = e => {
         e.preventDefault();
 
-        loginUser(username, password);
+        loginUser(username, password).then(() => {
+            if (isAuth) {
+                history.push('/dashboard')
+            }
+        });
     }
 
     return (
@@ -108,18 +122,16 @@ function SignIn() {
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     />
-                    <NavLink onClick={onSubmit} exact to="/dashboard">
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-
-                        >
-                            Sign In
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={onSubmit}
+                    >
+                        Sign In
                         </Button>
-                    </NavLink>
                     <Grid container justify="flex-end">
                         <Grid item>
                             <NavLink exact to="/register" variant="body2">
