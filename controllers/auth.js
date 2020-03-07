@@ -80,7 +80,7 @@ exports.userProfile = async (req, res, next) => {
 }
 
 // @desc    Log out a  user
-// @route   POST /api/users/me/logout
+// @route   POST /api/auth/me/logout
 // @access  Public
 exports.logoutUser = async (req, res, next) => {
     // Log user out of the application

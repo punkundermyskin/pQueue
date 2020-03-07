@@ -23,18 +23,23 @@ const UserSchema = new Schema({
         trim: true,
         required: [true, 'Please add last name']
     },
-    operator: {
-        type: Schema.ObjectId
-    },
-    group: {
-        type: Number,
-        required: [true, 'Please add group number']
-    },
     session: {
         type: Schema.ObjectId
     },
-    machineID: {
+    role: {
         type: String
+    },
+    group: {
+        type: Number,
+        required: function () { return this.role === 'student'; }
+    },
+    machineID: {
+        type: String,
+        required: function () { return this.role === 'student'; }
+    },
+    host: {
+        type: String,
+        required: function () { return this.role === 'student'; }
     },
     password: {
         type: String,

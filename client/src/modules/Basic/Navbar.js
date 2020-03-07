@@ -13,13 +13,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import { MainListItems } from './SideBar';
+import { SideBar } from './SideBar';
 import { useStyles } from './mainStyles'
 
-export const Navbar = () => {
+export const NavBar = () => {
 
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -42,7 +42,7 @@ export const Navbar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                        Dashboard
+                        Queue Management System
           </Typography>
                     <IconButton color="inherit">
                         <Badge badgeContent={4} color="secondary">
@@ -64,7 +64,7 @@ export const Navbar = () => {
                     </IconButton>
                 </div>
                 <Divider />
-                <MainListItems />
+                <SideBar />
                 <Divider />
             </Drawer>
         </div>

@@ -44,7 +44,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: 'AUTH_ERROR',
-                payload: error.response.data.error
+                payload: error.response.error
             });
         }
     }
@@ -70,7 +70,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: 'REGISTER_FAIL',
-                payload: error.response.data.error
+                payload: error.response.error
             });
         }
     }
@@ -96,7 +96,7 @@ export const GlobalProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: 'LOGIN_FAIL',
-                payload: error.response.data.error
+                payload: error.response.error
             });
         }
     }
@@ -129,7 +129,7 @@ export const GlobalProvider = ({ children }) => {
             // TODO: Check this stuff
             dispatch({
                 type: 'LOGOUT_SUCCESS',
-                payload: error.response.data.error
+                payload: error.response.error
             });
         }
     }

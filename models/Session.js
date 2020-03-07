@@ -5,8 +5,8 @@ const SessionSchema = new mongoose.Schema({
         type: String
         // required: [true, 'Please add a positive or negative number']
     },
-    group: {
-        type: Number
+    groups: {
+        type: [Number]
     },
     operators: {
         type: [String]

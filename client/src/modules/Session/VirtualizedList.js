@@ -8,20 +8,10 @@ import { FixedSizeList } from 'react-window';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    height: 400,
-    maxWidth: 300,
+    height: 500,
+    maxWidth: 200,
     backgroundColor: theme.palette.background.paper,
   },
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3),
-    },
-  }
 }));
 
 function renderRow(props) {
@@ -39,14 +29,14 @@ renderRow.propTypes = {
   style: PropTypes.object.isRequired,
 };
 
-export default function VirtualizedList() {
+export const VirtualizedList = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <FixedSizeList height={400} width={300} itemSize={46} itemCount={200}>
+      <FixedSizeList height={500} width={200} itemSize={46} itemCount={200}>
         {renderRow}
       </FixedSizeList>
     </div>
-  );
+  )
 }

@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 
 const auth = async (req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer ', '')
-    const data = jwt.verify(token, process.env.JWT_KEY)
     try {
+        const token = req.header('Authorization').replace('Bearer ', '')
+        const data = jwt.verify(token, process.env.JWT_KEY)
         const user = await User.findOne({ _id: data._id, 'tokens.token': token })
         if (!user) {
             throw new Error()
@@ -20,7 +20,11 @@ const auth = async (req, res, next) => {
                 success: false,
                 error: messages
             });
-        } else {
+        }
+        // if (err.name === 'TokenExpiredError') {
+
+        // }
+        else {
             return res.status(401).json({
                 success: false,
                 error: 'Not authorized to access this resource'

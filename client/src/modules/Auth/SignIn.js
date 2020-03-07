@@ -6,9 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,24 +16,12 @@ import { NavLink, useHistory } from 'react-router-dom'
 
 import { useState, useContext } from 'react';
 
-import { GlobalContext } from '../../context/GlobalState'
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                pQueue
-      </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import { GlobalContext } from '../../context/GlobalState'
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        marginTop: theme.spacing(8),
+        marginTop: theme.spacing(2),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -53,7 +39,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function SignIn() {
+export function SignIn() {
     const classes = useStyles();
 
     const { isAuth } = useContext(GlobalContext);
@@ -135,9 +121,9 @@ function SignIn() {
                     </Grid>
                 </form>
             </div>
-            <Box mt={8}>
+            {/* <Box mt={8}>
                 <Copyright />
-            </Box>
+            </Box> */}
         </Container>
     );
 }
