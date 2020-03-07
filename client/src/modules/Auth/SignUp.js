@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -13,11 +13,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import { NavLink, useHistory } from 'react-router-dom'
-import { useState, useContext } from 'react';
 
 import { withRouter } from 'react-router'
 
-import { GlobalContext } from '../context/GlobalState'
+import { GlobalContext } from '../../context/GlobalState'
 
 function Copyright() {
     return (
@@ -62,20 +61,22 @@ export function SignUp() {
     const [group, setGroup] = useState('');
     const [machineID, setMachineID] = useState('');
 
-    const { registerUser, isAuth } = useContext(GlobalContext);
-
+    const { registerUser, isAuth, loadUser } = useContext(GlobalContext);
     const history = useHistory();
 
-    const handleSubmit = e => {
-        e.preventDefault();
-
-        registerUser(username, firstName, lastName, group, machineID, password)
+    useEffect(() => {
+        loadUser()
             .then(() => {
                 if (isAuth) {
                     history.push('/dashboard')
                 }
             }
             );
+    }, [isAuth]);
+
+    const onSubmit = e => {
+        e.preventDefault();
+        registerUser(username, firstName, lastName, group, machineID, password);
     }
 
     return (
@@ -88,7 +89,7 @@ export function SignUp() {
                 <Typography component="h1" variant="h5">
                     Sign up
         </Typography>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={onSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -184,7 +185,6 @@ export function SignUp() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={handleSubmit}
                     >
                         Sign Up
                         </Button>

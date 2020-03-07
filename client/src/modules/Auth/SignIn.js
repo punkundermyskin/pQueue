@@ -18,7 +18,7 @@ import { NavLink, useHistory } from 'react-router-dom'
 
 import { useState, useContext } from 'react';
 
-import { GlobalProvider, GlobalContext } from '../context/GlobalState'
+import { GlobalContext } from '../../context/GlobalState'
 
 function Copyright() {
     return (
@@ -69,16 +69,11 @@ function SignIn() {
                 history.push('/dashboard')
             }
         });
-    }, []);
+    }, [isAuth]);
 
     const onSubmit = e => {
         e.preventDefault();
-
-        loginUser(username, password).then(() => {
-            if (isAuth) {
-                history.push('/dashboard')
-            }
-        });
+        loginUser(username, password);
     }
 
     return (
@@ -128,7 +123,6 @@ function SignIn() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={onSubmit}
                     >
                         Sign In
                         </Button>
