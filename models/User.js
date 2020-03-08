@@ -27,7 +27,9 @@ const UserSchema = new Schema({
         type: Schema.ObjectId
     },
     role: {
-        type: String
+        type: String,
+        enum: ['student', 'operator'],
+        default: 'student'
     },
     group: {
         type: Number,
@@ -38,8 +40,7 @@ const UserSchema = new Schema({
         required: function () { return this.role === 'student'; }
     },
     host: {
-        type: String,
-        required: function () { return this.role === 'student'; }
+        type: String
     },
     password: {
         type: String,

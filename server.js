@@ -10,9 +10,7 @@ dotenv.config({ path: './config/config.env' })
 connectDB();
 
 const auth = require('./routes/auth');
-const requests = require('./routes/requests');
 const users = require('./routes/users');
-const operators = require('./routes/operators');
 const sessions = require('./routes/sessions');
 
 const app = express();
@@ -23,10 +21,8 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
-app.use('/api/requests', requests);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
-app.use('/api/operators', operators);
 app.use('/api/sessions', sessions);
 
 if (process.env.NODE_ENV === 'production') {

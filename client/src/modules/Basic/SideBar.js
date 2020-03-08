@@ -7,9 +7,12 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import PeopleIcon from '@material-ui/icons/People';
 import EventIcon from '@material-ui/icons/Event';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+// import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import Divider from '@material-ui/core/Divider';
+import { useAlert } from 'react-alert'
 
 import { useHistory } from 'react-router-dom'
 import { useContext } from 'react';
@@ -17,13 +20,15 @@ import { GlobalContext } from '../.././context/GlobalState'
 
 export function SideBar() {
   const history = useHistory();
-  const { logoutUser, isAuth } = useContext(GlobalContext);
+  const { logoutUser, isAuth, loadUser, user } = useContext(GlobalContext);
+  const alert = useAlert()
 
   const logoutHandler = e => {
     e.preventDefault();
     if (isAuth) {
       logoutUser().then(() => {
-        history.push('/login')
+        history.push('/dashboard')
+        alert.show('You have successfully logged out.')
       });
     } else {
       history.push('/login')
@@ -31,8 +36,16 @@ export function SideBar() {
   }
 
   const sessionHandler = e => {
-
-    history.push('/session');
+    loadUser().then(() => {
+      if (!isAuth) {
+        history.push('/login')
+      } else if (user.role !== 'operator') {
+        alert.show('Not authorized to access this resource!')
+        history.push('/dashboard')
+      } else {
+        history.push('/session');
+      }
+    });
   }
 
   const dashboardHandler = e => {
@@ -50,23 +63,17 @@ export function SideBar() {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
-      {/* <ListItem button>
-        <ListItemIcon>
-          <AssignmentTurnedInIcon />
-        </ListItemIcon>
-        <ListItemText primary="Requests" />
-      </ListItem>
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Students" />
-      </ListItem> */}
+      </ListItem>
       <ListItem button onClick={sessionHandler}>
         <ListItemIcon>
           <EventIcon />
         </ListItemIcon>
-        <ListItemText primary="Sessions" />
+        <ListItemText primary="Management" />
       </ListItem>
       <ListItem button >
         <ListItemIcon>
@@ -75,10 +82,10 @@ export function SideBar() {
         <ListItemText primary="Profile" />
       </ListItem>
       <Divider />
-      {() => isAuth ? {} : {}}
       <ListItem button onClick={logoutHandler}>
         <ListItemIcon>
-          <ExitToAppIcon />
+          {isAuth ? <ArrowBackIcon /> : <ArrowForwardIcon />}
+          {/* <ExitToAppIcon /> */}
         </ListItemIcon>
         <ListItemText primary={exitItemTitle} />
       </ListItem>

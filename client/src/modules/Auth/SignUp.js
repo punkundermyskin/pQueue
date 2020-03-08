@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import { NavLink, useHistory } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { GlobalContext } from '../../context/GlobalState'
+import { useAlert } from 'react-alert'
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -46,12 +47,16 @@ export function SignUp() {
 
     const { registerUser, isAuth, loadUser } = useContext(GlobalContext);
     const history = useHistory();
+    const alert = useAlert()
+    var isStudent = false
+    var isOperator = true
 
     useEffect(() => {
         loadUser()
             .then(() => {
                 if (isAuth) {
                     history.push('/dashboard')
+                    alert.show('You are successfully registered!')
                 }
             }
             );
@@ -60,6 +65,16 @@ export function SignUp() {
     const onSubmit = e => {
         e.preventDefault();
         registerUser(username, firstName, lastName, group, machineID, password);
+    }
+
+    const studentHandler = () => {
+        isStudent = true
+        isOperator = false
+    }
+
+    const operatorHandler = () => {
+        isStudent = false
+        isOperator = true
     }
 
     return (
@@ -118,34 +133,58 @@ export function SignUp() {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
+                            <Button
+                                variant="contained"
+                                color={isStudent ? "primary" : "default"}
                                 fullWidth
-                                id="group"
-                                label="Group Number"
-                                name="group"
-                                autoComplete="group"
-                                autoFocus
-                                value={group}
-                                onChange={(e) => setGroup(e.target.value)}
-                            />
+                                onClick={studentHandler}
+                            >
+                                Student
+                            </Button>
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
+                            <Button
+                                variant="contained"
+                                color={isOperator ? "secondary" : "default"}
                                 fullWidth
-                                name="machineID"
-                                label="Machine ID"
-                                type="machineID"
-                                id="machineID"
-                                autoComplete="current-password"
-                                value={machineID}
-                                onChange={(e) => setMachineID(e.target.value)}
-                            />
+                                onClick={operatorHandler}
+                            >
+                                Operator
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6}>
+                            {isStudent ?
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="group"
+                                    label="Group Number"
+                                    name="group"
+                                    autoComplete="group"
+                                    autoFocus
+                                    value={group}
+                                    onChange={(e) => setGroup(e.target.value)}
+                                /> : null
+                            }
+                        </Grid>
+                        <Grid item xs={6}>
+                            {isStudent ?
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    name="machineID"
+                                    label="Machine ID"
+                                    type="machineID"
+                                    id="machineID"
+                                    autoComplete="current-password"
+                                    value={machineID}
+                                    onChange={(e) => setMachineID(e.target.value)}
+                                /> : null
+                            }
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -168,6 +207,7 @@ export function SignUp() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
+                        disabled
                     >
                         Sign Up
                         </Button>

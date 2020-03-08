@@ -50,15 +50,19 @@ export const GlobalProvider = ({ children }) => {
     }
 
     // Actions
-    async function registerUser(username, firstName, lastName, group, machineID, password) {
+    async function registerUser(username, firstName, lastName, role, group, machineID, password) {
 
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
-
-        const body = JSON.stringify({ username, firstName, lastName, group, machineID, password });
+        const body = JSON.stringify();
+        if (role === 'operator') {
+            body = JSON.stringify({ username, firstName, lastName, password });
+        } else {
+            body = JSON.stringify({ username, firstName, lastName, group, machineID, password });
+        }
 
         try {
             const res = await axios.post('/api/auth', body, config);

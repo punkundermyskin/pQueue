@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 
+import { useHistory } from 'react-router-dom'
+import { useAlert } from 'react-alert'
+
+import { GlobalContext } from '../../context/GlobalState'
 import { NavBar } from '../Basic/NavBar';
 import { Copyright } from './../Basic/Copyright'
 import { Checkout } from './Checkout'
@@ -47,7 +51,20 @@ const useStyles = makeStyles(theme => ({
 
 export default function Session() {
     const classes = useStyles();
+    const history = useHistory();
+    const { loadUser, user, isAuth } = useContext(GlobalContext);
+    const alert = useAlert()
 
+    useEffect(() => {
+        loadUser().then(() => {
+            if (!isAuth) {
+                history.push('/login')
+            } else if (user.role !== 'operator') {
+                alert.show('Not authorized to access this resource!')
+                history.push('/dashboard')
+            }
+        });
+    }, [isAuth]);
     return (
         <div className={classes.root}>
             <NavBar />

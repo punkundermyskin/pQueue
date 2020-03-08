@@ -13,7 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 import { NavLink, useHistory } from 'react-router-dom'
-
+import { useAlert } from 'react-alert'
 import { useState, useContext } from 'react';
 
 
@@ -48,11 +48,13 @@ export function SignIn() {
     const [password, setPassword] = useState('');
     const history = useHistory();
     const { loginUser, loadUser } = useContext(GlobalContext);
+    const alert = useAlert()
 
     useEffect(() => {
         loadUser().then(() => {
             if (isAuth) {
                 history.push('/dashboard')
+                alert.show('You have successfully logged in.')
             }
         });
     }, [isAuth]);

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+var Schema = mongoose.Schema
+
 const SessionSchema = new mongoose.Schema({
     status: {
         type: String
@@ -9,7 +11,7 @@ const SessionSchema = new mongoose.Schema({
         type: [Number]
     },
     operators: {
-        type: [String]
+        type: [Schema.ObjectId]
     },
     timeLimit: {
         type: Date
