@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { FixedSizeList } from 'react-window';
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { FixedSizeList } from "react-window";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     height: 500,
     maxWidth: 200,
-    backgroundColor: theme.palette.background.paper,
-  },
+    backgroundColor: theme.palette.background.paper
+  }
 }));
 
 function renderRow(props) {
@@ -26,7 +26,7 @@ function renderRow(props) {
 
 renderRow.propTypes = {
   index: PropTypes.number.isRequired,
-  style: PropTypes.object.isRequired,
+  style: PropTypes.object.isRequired
 };
 
 export const VirtualizedList = () => {
@@ -38,5 +38,5 @@ export const VirtualizedList = () => {
         {renderRow}
       </FixedSizeList>
     </div>
-  )
-}
+  );
+};
