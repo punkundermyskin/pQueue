@@ -48,8 +48,7 @@ export function SignUp() {
     const { registerUser, isAuth, loadUser } = useContext(GlobalContext);
     const history = useHistory();
     const alert = useAlert()
-    var isStudent = false
-    var isOperator = true
+    var [isStudent, setStudent] = useState(true);
 
     useEffect(() => {
         loadUser()
@@ -65,16 +64,6 @@ export function SignUp() {
     const onSubmit = e => {
         e.preventDefault();
         registerUser(username, firstName, lastName, group, machineID, password);
-    }
-
-    const studentHandler = () => {
-        isStudent = true
-        isOperator = false
-    }
-
-    const operatorHandler = () => {
-        isStudent = false
-        isOperator = true
     }
 
     return (
@@ -137,7 +126,7 @@ export function SignUp() {
                                 variant="contained"
                                 color={isStudent ? "primary" : "default"}
                                 fullWidth
-                                onClick={studentHandler}
+                                onClick={() => setStudent(!isStudent)}
                             >
                                 Student
                             </Button>
@@ -145,9 +134,9 @@ export function SignUp() {
                         <Grid item xs={6}>
                             <Button
                                 variant="contained"
-                                color={isOperator ? "secondary" : "default"}
+                                color={isStudent ? "default" : "secondary"}
                                 fullWidth
-                                onClick={operatorHandler}
+                                onClick={() => setStudent(!isStudent)}
                             >
                                 Operator
                             </Button>
