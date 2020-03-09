@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -12,6 +12,8 @@ import { TimePicker } from '@material-ui/pickers';
 import ChipInput from 'material-ui-chip-input'
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import { SessionsContext } from "../../context/SessionsState"
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,22 +41,36 @@ const useStyles = makeStyles(theme => ({
 
 export const CreateSession = () => {
   const classes = useStyles();
+
+  const { createSessions } = useContext(SessionsContext)
+
+  const [subject, setSubject] = useState("");
+  const [office, setOffice] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [groups, setGroups] = useState("");
+  const [machineID, setMachineID] = useState("");
   const [selectedBeginDate, handleBeginDateChange] = useState(new Date());
   const [selectedFinishDate, handleFinishDateChange] = useState(new Date());
 
   const onSubmit = e => {
     e.preventDefault();
+
+    const newSession = {
+      status: "active",
+      subject,
+      office,
+      groups
+    }
+
+    createSessions(newSession);
+
     // loginUser(username, password);
   };
 
   return (
     <div>
       <Container component="main" maxWidth="xs">
-        {/* <Typography component="h1" variant="h4" align="center">
-          Session
-        </Typography> */}
-
-        {/* <React.Fragment> */}
         <Typography variant="h5" gutterBottom>
           Create New Session
           </Typography>
@@ -66,6 +82,8 @@ export const CreateSession = () => {
                 required
                 id="subject"
                 label="Subject"
+                value={subject}
+                onChange={e => setSubject(e.target.value)}
               />
             </Grid>
             <Grid item xs={6}>
@@ -73,6 +91,8 @@ export const CreateSession = () => {
                 required
                 id="office"
                 label="Office"
+                value={office}
+                onChange={e => setOffice(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -82,6 +102,9 @@ export const CreateSession = () => {
                 label="Groups"
                 placeholder="enter group number"
                 fullWidth
+              // value={groups}
+              // onChange={e => setGroups(e.target.value)}
+              // onChange={(chips) => handleChange(chips)}
               />
             </Grid>
             <Grid item xs={12}>

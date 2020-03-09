@@ -9,7 +9,7 @@ import NextRequest from "./NextRequest";
 import VirtualizedList from "./VirtualizedList";
 
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "../../context/GlobalState";
+import { AuthContext } from "../../context/AuthState";
 
 import { useStyles } from "../Basic/mainStyles";
 import { Copyright } from "./../Basic/Copyright";
@@ -18,9 +18,9 @@ export default function Dashboard() {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
-  // const { isAuth } = useContext(GlobalContext);
+  // const { isAuth } = useContext(AuthContext);
   // const history = useHistory();
-  // const { loadUser } = useContext(GlobalContext);
+  // const { loadUser } = useContext(AuthContext);
 
   // useEffect(() => {
   //   loadUser().then(() => {

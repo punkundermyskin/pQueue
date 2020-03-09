@@ -5,7 +5,7 @@
 //     user: null
 // };
 
-export default function(state, action) {
+export default function (state, action) {
   switch (action.type) {
     case "USER_LOADING":
       return {
@@ -39,7 +39,8 @@ export default function(state, action) {
         token: null,
         user: null,
         isAuth: false,
-        isLoading: false
+        isLoading: false,
+        error: action.payload.error
       };
     default:
       return state;

@@ -4,27 +4,30 @@ var Schema = mongoose.Schema
 
 const SessionSchema = new mongoose.Schema({
     status: {
-        type: String
-        // required: [true, 'Please add a positive or negative number']
+        type: String,
+        required: [true, 'Please add a positive or negative number']
     },
     subject: {
-        type: String
+        type: String,
+        required: [true, 'Please add a subject']
     },
     office: {
-        type: String
+        type: String,
+        required: [true, 'Please add a office']
     },
     groups: {
-        type: [Number]
+        type: [Number],
+        // required: [true, 'Please add a groups']
     },
-    operators: {
+    participants: {
         type: [Schema.ObjectId]
     },
-    timeLimit: {
-        type: Date
-    },
-    createAt: {
+    start: {
         type: Date,
         default: Date.now
+    },
+    end: {
+        type: Date,
     }
 });
 

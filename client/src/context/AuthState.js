@@ -12,27 +12,34 @@ const initialState = {
 };
 
 // Create context
-export const GlobalContext = createContext(initialState);
+export const AuthContext = createContext(initialState);
 
 // Provider component
-export const GlobalProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  // Actions
-  async function loadUser() {
-    const token = state.token;
-    if (!token) {
-      return;
-    }
+  // Setup config/headers and token
+  const createConfig = () => {
+    // Get token from localstorage
+    const token = state.token
 
+    // Headers
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: token
+        'Content-type': 'application/json'
       }
     };
-    // config.headers['Authorization'] = state.token;
 
+    // If token, add to headers
+    if (token) {
+      config.headers['Authorization'] = token
+    }
+
+    return config
+  };
+
+  async function loadUser() {
+    const config = createConfig()
     try {
       const res = await axios.get("/api/auth/me", config);
 
@@ -43,43 +50,17 @@ export const GlobalProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: "AUTH_ERROR",
-        payload: error.response.error
+        // payload: error.response.error
+        payload: error.response.data
       });
     }
   }
 
-  // Actions
-  async function registerUser(
-    username,
-    firstName,
-    lastName,
-    role,
-    group,
-    machineID,
-    password
-  ) {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-    var body = JSON.stringify();
-    if (role === "operator") {
-      body = JSON.stringify({ username, firstName, lastName, role, password });
-    } else {
-      body = JSON.stringify({
-        username,
-        firstName,
-        lastName,
-        role,
-        group,
-        machineID,
-        password
-      });
-    }
+  async function registerUser(user) {
+    const config = createConfig()
 
     try {
-      const res = await axios.post("/api/auth", body, config);
+      const res = await axios.post("/api/auth", user, config);
 
       dispatch({
         type: "REGISTER_SUCCESS",
@@ -93,13 +74,8 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
-  // Actions
   async function loginUser(username, password) {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
+    const config = createConfig()
 
     const body = JSON.stringify({ username, password });
 
@@ -113,25 +89,15 @@ export const GlobalProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: "LOGIN_FAIL",
-        payload: error.response.error
+        // payload: error.response.error
+        payload: error.response.data
       });
     }
   }
 
-  // Actions
   async function logoutUser() {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-
-    const token = state.token;
-
-    if (token) {
-      config.headers["Authorization"] = token;
-    }
-
+    const config = createConfig()
+    const token = state.token
     const body = JSON.stringify({ token });
 
     try {
@@ -151,7 +117,7 @@ export const GlobalProvider = ({ children }) => {
   }
 
   return (
-    <GlobalContext.Provider
+    <AuthContext.Provider
       value={{
         isAuth: state.isAuth,
         user: state.user,
@@ -164,6 +130,6 @@ export const GlobalProvider = ({ children }) => {
       }}
     >
       {children}
-    </GlobalContext.Provider>
+    </AuthContext.Provider>
   );
 };

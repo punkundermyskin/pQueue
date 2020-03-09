@@ -12,7 +12,7 @@ import Container from "@material-ui/core/Container";
 
 import { NavLink, useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
-import { GlobalContext } from "../../context/GlobalState";
+import { AuthContext } from "../../context/AuthState";
 import { useAlert } from "react-alert";
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ export function SignUp() {
   const [group, setGroup] = useState("");
   const [machineID, setMachineID] = useState("");
 
-  const { registerUser, isAuth, loadUser } = useContext(GlobalContext);
+  const { registerUser, isAuth, loadUser, error } = useContext(AuthContext);
   const history = useHistory();
   const alert = useAlert();
   var [isStudent, setStudent] = useState(true);
@@ -55,27 +55,35 @@ export function SignUp() {
       if (isAuth) {
         history.push("/dashboard");
         alert.show("You are successfully registered!");
+      } else {
+        alert.show(error);
       }
     });
-  }, [isAuth]);
+  }, [isAuth, error]);
 
   const onSubmit = e => {
     e.preventDefault();
-    var role = "";
     if (isStudent) {
-      role = "student";
+      const user = {
+        username,
+        firstName,
+        lastName,
+        role: "student",
+        group,
+        machineID,
+        password
+      }
+      registerUser(user)
     } else {
-      role = "operator";
+      const user = {
+        username,
+        firstName,
+        lastName,
+        role: "operator",
+        password
+      }
+      registerUser(user)
     }
-    registerUser(
-      username,
-      firstName,
-      lastName,
-      role,
-      group,
-      machineID,
-      password
-    );
   };
 
   return (

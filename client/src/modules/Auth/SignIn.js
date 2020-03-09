@@ -16,7 +16,7 @@ import { NavLink, useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { useState, useContext } from "react";
 
-import { GlobalContext } from "../../context/GlobalState";
+import { AuthContext } from "../../context/AuthState";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -41,12 +41,12 @@ const useStyles = makeStyles(theme => ({
 export function SignIn() {
   const classes = useStyles();
 
-  const { isAuth } = useContext(GlobalContext);
+  const { isAuth, error } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const { loginUser, loadUser } = useContext(GlobalContext);
+  const { loginUser, loadUser } = useContext(AuthContext);
   const alert = useAlert();
 
   useEffect(() => {
@@ -54,9 +54,11 @@ export function SignIn() {
       if (isAuth) {
         history.push("/dashboard");
         alert.show("You have successfully logged in.");
+      } else {
+        alert.show(error);
       }
     });
-  }, [isAuth]);
+  }, [isAuth, error]);
 
   const onSubmit = e => {
     e.preventDefault();

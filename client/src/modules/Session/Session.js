@@ -1,93 +1,14 @@
-import React, { useEffect, useContext } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
+import React, { useContext } from 'react'
+// import { SessionsContext } from '../context/GlobalState'
 
-import { useHistory } from "react-router-dom";
-import { useAlert } from "react-alert";
+export const Session = ({ session }) => {
+    // const { deleteTransaction } = useContext(GlobalContext);
 
-import { GlobalContext } from "../../context/GlobalState";
-import { NavBar } from "../Basic/NavBar";
-import { Copyright } from "./../Basic/Copyright";
-import { CreateSession } from "./CreateSession";
-import { VirtualizedList } from "./VirtualizedList";
+    // const sign = transaction.amount < 0 ? '-' : '+';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: "flex"
-  },
-  appBar: {
-    position: "relative"
-  },
-  layout: {
-    width: "auto",
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
-      width: 600,
-      marginLeft: "auto",
-      marginRight: "auto"
-    }
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: "100vh",
-    overflow: "auto"
-  },
-  paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-      marginTop: theme.spacing(6),
-      marginBottom: theme.spacing(6),
-      padding: theme.spacing(3)
-    }
-  }
-}));
-
-export default function Session() {
-  const classes = useStyles();
-  const history = useHistory();
-  const { loadUser, user, isAuth } = useContext(GlobalContext);
-  const alert = useAlert();
-
-  // useEffect(() => {
-  //   loadUser().then(() => {
-  //     if (!isAuth) {
-  //       history.push("/login");
-  //     } else if (user.role !== "operator") {
-  //       alert.show("Not authorized to access this resource!");
-  //       history.push("/dashboard");
-  //     }
-  //   });
-  // }, [isAuth]);
-  return (
-    <div className={classes.root}>
-      <NavBar />
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <Grid item xs="auto" md={5} lg={5}>
-              <Paper className={classes.paper}>
-                <CreateSession />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={5} lg={5}>
-              <Paper className={classes.paper}>
-                <VirtualizedList />
-              </Paper>
-            </Grid>
-          </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
-        </Container>
-      </main>
-    </div>
-  );
+    return (
+        <li>
+            {session.subject} <button onClick={() => console.log(session._id)}>x</button>
+        </li>
+    )
 }

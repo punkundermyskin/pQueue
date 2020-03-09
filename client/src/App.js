@@ -3,25 +3,27 @@ import { Route, Switch } from "react-router-dom";
 import Login from "./modules/Auth/Login";
 import Register from "./modules/Auth/Register";
 import Dashboard from "./modules/Dashboard/Dashboard";
-import Session from "./modules/Session/Session";
+import Management from "./modules/Session/Management";
 
-import { GlobalProvider, GlobalContext } from "./context/GlobalState";
+import { AuthProvider, AuthContext } from "./context/AuthState";
+import { SessionsProvider, SessionsContext } from "./context/SessionsState"
 
 function App() {
   return (
     <Switch>
-      <GlobalProvider>
-        <Route exact path="/" component={Dashboard} context={GlobalContext} />
-        {/* <Route path="/login" component={SignIn} context={GlobalContext} /> */}
-        <Route path="/login" component={Login} context={GlobalContext} />
-        <Route path="/register" component={Register} context={GlobalContext} />
+      <AuthProvider>
+        <Route exact path="/" component={Dashboard} context={AuthContext} />
+        <Route path="/login" component={Login} context={AuthContext} />
+        <Route path="/register" component={Register} context={AuthContext} />
         <Route
           path="/dashboard"
           component={Dashboard}
-          context={GlobalContext}
+          context={AuthContext}
         />
-        <Route path="/session" component={Session} context={GlobalContext} />
-      </GlobalProvider>
+        <SessionsProvider>
+          <Route path="/management" component={Management} context={AuthContext, SessionsContext} />
+        </SessionsProvider>
+      </AuthProvider>
     </Switch>
   );
 }

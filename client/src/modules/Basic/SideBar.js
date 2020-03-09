@@ -8,6 +8,7 @@ import PeopleIcon from "@material-ui/icons/People";
 import EventIcon from "@material-ui/icons/Event";
 import PersonOutlineIcon from "@material-ui/icons/PersonOutline";
 // import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
@@ -16,11 +17,11 @@ import { useAlert } from "react-alert";
 
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
-import { GlobalContext } from "../.././context/GlobalState";
+import { AuthContext } from "../../context/AuthState";
 
 export function SideBar() {
   const history = useHistory();
-  const { logoutUser, isAuth, loadUser, user } = useContext(GlobalContext);
+  const { logoutUser, isAuth, loadUser, user } = useContext(AuthContext);
   const alert = useAlert();
 
   const logoutHandler = e => {
@@ -35,22 +36,25 @@ export function SideBar() {
     }
   };
 
-  const sessionHandler = e => {
-    history.push("/session")
-    // loadUser().then(() => {
-    //   if (!isAuth) {
-    //     history.push("/login");
-    //   } else if (user.role !== "operator") {
-    //     alert.show("Not authorized to access this resource!");
-    //     history.push("/dashboard");
-    //   } else {
-    //     history.push("/session");
-    //   }
-    // });
+  const sessionHandler = () => {
+    loadUser().then(() => {
+      if (!isAuth) {
+        history.push("/login");
+      } else if (user.role !== "operator") {
+        alert.show("Not authorized to access this resource!");
+        history.push("/dashboard");
+      } else {
+        history.push("/management");
+      }
+    });
   };
 
-  const dashboardHandler = e => {
+  const dashboardHandler = () => {
     history.push("/dashboard");
+  };
+
+  const feedbackHandler = () => {
+    // history.push("/dashboard");
   };
 
   const exitItemTitle = isAuth ? "Logout" : "Login";
@@ -82,6 +86,12 @@ export function SideBar() {
         <ListItemText primary="Profile" />
       </ListItem>
       <Divider />
+      <ListItem button onClick={feedbackHandler}>
+        <ListItemIcon>
+          <FeedbackIcon />
+        </ListItemIcon>
+        <ListItemText primary="Feedback" />
+      </ListItem>
       <ListItem button onClick={logoutHandler}>
         <ListItemIcon>
           {isAuth ? <ArrowBackIcon /> : <ArrowForwardIcon />}
