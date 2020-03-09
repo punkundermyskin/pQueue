@@ -3,6 +3,8 @@ import { render } from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 import App from "./App";
 
 // optional cofiguration
@@ -16,10 +18,13 @@ const options = {
 };
 
 render(
+
   <AlertProvider template={AlertTemplate} {...options}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </MuiPickersUtilsProvider>,
   </AlertProvider>,
   document.querySelector("#root")
 );

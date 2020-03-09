@@ -53,7 +53,7 @@ export const NavBar = () => {
             noWrap
             className={classes.title}
           >
-            Queue Management System
+            pQueue
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">

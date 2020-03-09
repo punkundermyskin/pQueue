@@ -36,16 +36,17 @@ export function SideBar() {
   };
 
   const sessionHandler = e => {
-    loadUser().then(() => {
-      if (!isAuth) {
-        history.push("/login");
-      } else if (user.role !== "operator") {
-        alert.show("Not authorized to access this resource!");
-        history.push("/dashboard");
-      } else {
-        history.push("/session");
-      }
-    });
+    history.push("/session")
+    // loadUser().then(() => {
+    //   if (!isAuth) {
+    //     history.push("/login");
+    //   } else if (user.role !== "operator") {
+    //     alert.show("Not authorized to access this resource!");
+    //     history.push("/dashboard");
+    //   } else {
+    //     history.push("/session");
+    //   }
+    // });
   };
 
   const dashboardHandler = e => {

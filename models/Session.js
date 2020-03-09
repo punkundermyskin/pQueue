@@ -7,6 +7,12 @@ const SessionSchema = new mongoose.Schema({
         type: String
         // required: [true, 'Please add a positive or negative number']
     },
+    subject: {
+        type: String
+    },
+    office: {
+        type: String
+    },
     groups: {
         type: [Number]
     },

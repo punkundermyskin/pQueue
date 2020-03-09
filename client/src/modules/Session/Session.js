@@ -11,7 +11,7 @@ import { useAlert } from "react-alert";
 import { GlobalContext } from "../../context/GlobalState";
 import { NavBar } from "../Basic/NavBar";
 import { Copyright } from "./../Basic/Copyright";
-import { Checkout } from "./Checkout";
+import { CreateSession } from "./CreateSession";
 import { VirtualizedList } from "./VirtualizedList";
 
 const useStyles = makeStyles(theme => ({
@@ -55,16 +55,16 @@ export default function Session() {
   const { loadUser, user, isAuth } = useContext(GlobalContext);
   const alert = useAlert();
 
-  useEffect(() => {
-    loadUser().then(() => {
-      if (!isAuth) {
-        history.push("/login");
-      } else if (user.role !== "operator") {
-        alert.show("Not authorized to access this resource!");
-        history.push("/dashboard");
-      }
-    });
-  }, [isAuth]);
+  // useEffect(() => {
+  //   loadUser().then(() => {
+  //     if (!isAuth) {
+  //       history.push("/login");
+  //     } else if (user.role !== "operator") {
+  //       alert.show("Not authorized to access this resource!");
+  //       history.push("/dashboard");
+  //     }
+  //   });
+  // }, [isAuth]);
   return (
     <div className={classes.root}>
       <NavBar />
@@ -74,7 +74,7 @@ export default function Session() {
           <Grid container spacing={3}>
             <Grid item xs="auto" md={5} lg={5}>
               <Paper className={classes.paper}>
-                <Checkout />
+                <CreateSession />
               </Paper>
             </Grid>
             <Grid item xs="auto" md={5} lg={5}>
