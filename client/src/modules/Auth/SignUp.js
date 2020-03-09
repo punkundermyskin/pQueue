@@ -12,7 +12,7 @@ import Container from "@material-ui/core/Container";
 
 import { NavLink, useHistory } from "react-router-dom";
 import { withRouter } from "react-router";
-import { AuthContext } from "../../context/AuthState";
+import { AuthContext } from "../../context/Auth/AuthState";
 import { useAlert } from "react-alert";
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ export function SignUp() {
   const [group, setGroup] = useState("");
   const [machineID, setMachineID] = useState("");
 
-  const { registerUser, isAuth, loadUser, error } = useContext(AuthContext);
+  const { registerUser, isAuth, loadUser, authError } = useContext(AuthContext);
   const history = useHistory();
   const alert = useAlert();
   var [isStudent, setStudent] = useState(true);
@@ -56,10 +56,10 @@ export function SignUp() {
         history.push("/dashboard");
         alert.show("You are successfully registered!");
       } else {
-        alert.show(error);
+        alert.show(authError);
       }
     });
-  }, [isAuth, error]);
+  }, [isAuth, authError]);
 
   const onSubmit = e => {
     e.preventDefault();

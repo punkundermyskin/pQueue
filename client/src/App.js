@@ -5,8 +5,9 @@ import Register from "./modules/Auth/Register";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import Management from "./modules/Session/Management";
 
-import { AuthProvider, AuthContext } from "./context/AuthState";
-import { SessionsProvider, SessionsContext } from "./context/SessionsState"
+import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
+import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
+import { UsersProvider, UsersContext } from "./context/Users/UsersState"
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
           context={AuthContext}
         />
         <SessionsProvider>
-          <Route path="/management" component={Management} context={AuthContext, SessionsContext} />
+          <UsersProvider>
+            <Route path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
+          </UsersProvider>
         </SessionsProvider>
       </AuthProvider>
     </Switch>

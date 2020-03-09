@@ -3,7 +3,8 @@ export default (state, action) => {
     case "GET_SESSIONS":
       return {
         ...state,
-        sessions: action.payload.data
+        sessions: action.payload.data,
+        sessionsSuccess: true
       };
     // case "DELETE_TRANSACTION":
     //   return {
@@ -15,12 +16,14 @@ export default (state, action) => {
     case "CREATE_SESSION":
       return {
         ...state,
-        sessions: [...state.sessions, action.payload.data]
+        sessions: [...state.sessions, action.payload.data],
+        sessionsSuccess: true
       };
     case "SESSIONS_ERROR":
       return {
         ...state,
-        error: action.payload
+        sessionsError: action.payload,
+        sessionsSuccess: false
       };
     default:
       return state;

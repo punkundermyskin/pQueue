@@ -7,8 +7,8 @@ const initialState = {
   isAuth: false,
   token: localStorage.getItem("token"),
   user: null,
-  loading: false,
-  error: null
+  authLoading: false,
+  authError: null
 };
 
 // Create context
@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }) => {
       // TODO: Check this stuff
       dispatch({
         type: "LOGOUT_SUCCESS",
-        payload: error.response.error
+        payload: error.response.data
       });
     }
   }
@@ -121,8 +121,8 @@ export const AuthProvider = ({ children }) => {
       value={{
         isAuth: state.isAuth,
         user: state.user,
-        error: state.error,
-        loading: state.loading,
+        authError: state.authError,
+        authLoading: state.authLoading,
         loadUser,
         registerUser,
         loginUser,

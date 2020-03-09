@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { addUser, loginUser, userProfile, logoutUser, logoutAllUser } = require('../controllers/auth');
-const auth = require('../middleware/auth')
+const usersAuth = require('../middleware/usersAuth')
 
 router
     .route('/')
@@ -13,17 +13,17 @@ router
 
 router
     .route('/me')
-    .get(auth)
+    .get(usersAuth)
     .get(userProfile);
 
 router
     .route('/me/logout')
-    .post(auth)
+    .post(usersAuth)
     .post(logoutUser)
 
 router
     .route('/me/logoutall')
-    .post(auth)
+    .post(usersAuth)
     .post(logoutAllUser)
 
 module.exports = router;

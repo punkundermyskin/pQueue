@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -13,7 +13,10 @@ import ChipInput from 'material-ui-chip-input'
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import { SessionsContext } from "../../context/SessionsState"
+import { SessionsContext } from "../../context/Sessions/SessionsState";
+import { UsersContext } from "../../context/Users/UsersState";
+import { AuthContext } from "../../context/Auth/AuthState";
+import { useAlert } from "react-alert";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,33 +42,44 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export const CreateSession = () => {
+export const CreateSession = ({ operators }) => {
   const classes = useStyles();
 
-  const { createSessions } = useContext(SessionsContext)
+  const { createSessions, sessionsSuccess, sessionsError } = useContext(SessionsContext)
+  // const { getOperators, users } = useContext(UsersContext)
+  // const { user } = useContext(AuthContext)
 
   const [subject, setSubject] = useState("");
   const [office, setOffice] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [groups, setGroups] = useState("");
-  const [machineID, setMachineID] = useState("");
+  const [groups, handleGroups] = useState("");
+  const [participants, setParticipants] = useState("");
   const [selectedBeginDate, handleBeginDateChange] = useState(new Date());
   const [selectedFinishDate, handleFinishDateChange] = useState(new Date());
 
+  const alert = useAlert();
+
+  // useEffect(() => {
+  //   getOperators()
+  // }, []);
+
   const onSubmit = e => {
     e.preventDefault();
-
+    console.log(participants)
     const newSession = {
       status: "active",
       subject,
       office,
-      groups
+      groups,
+      operators: participants
     }
 
-    createSessions(newSession);
-
-    // loginUser(username, password);
+    createSessions(newSession).then(() => {
+      if (sessionsSuccess) {
+        alert.show("New session created.");
+      } else {
+        alert.show("Something went wrong!");
+      }
+    });
   };
 
   return (
@@ -102,24 +116,26 @@ export const CreateSession = () => {
                 label="Groups"
                 placeholder="enter group number"
                 fullWidth
-              // value={groups}
-              // onChange={e => setGroups(e.target.value)}
-              // onChange={(chips) => handleChange(chips)}
+                // value={groups}
+                // onChange={e => setGroups(e.target.value)}
+                onChange={(chips) => handleGroups(chips)}
               />
             </Grid>
             <Grid item xs={12}>
               <Autocomplete
                 multiple
                 id="tags-standard"
-                options={top100Films}
-                getOptionLabel={option => option.title}
-                defaultValue={[top100Films[13]]}
+                options={operators}
+                // defaultValue={[user]}
+                getOptionLabel={option => option.username}
                 renderInput={params => (
                   <TextField
                     {...params}
                     variant="standard"
-                    label="Select operators"
+                    label="Add operators to your session"
                     placeholder="Operators"
+                    value={participants}
+                    onChange={e => setParticipants(e.target.value)}
                   />
                 )}
               />

@@ -4,7 +4,9 @@ import axios from "axios";
 
 // Initial State
 const initialState = {
-    sessions: []
+    sessions: [],
+    sessionsSuccess: false,
+    sessionsError: null
 };
 
 // Create context
@@ -15,7 +17,7 @@ export const SessionsProvider = ({ children }) => {
     const [state, dispatch] = useReducer(SessionReducer, initialState);
 
     const createConfig = () => {
-        const token = state.token
+        const token = localStorage.getItem("token")
 
         const config = {
             headers: {
@@ -43,7 +45,7 @@ export const SessionsProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "SESSIONS_ERROR",
-                payload: error.response.error
+                payload: error.response.data
             });
         }
     }
@@ -61,7 +63,7 @@ export const SessionsProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "SESSIONS_ERROR",
-                payload: error.response.error
+                payload: error.response.data
             });
         }
     }
@@ -70,6 +72,8 @@ export const SessionsProvider = ({ children }) => {
         <SessionsContext.Provider
             value={{
                 sessions: state.sessions,
+                sessionsSuccess: state.sessionsSuccess,
+                sessionsError: state.sessionsError,
                 getSessions,
                 createSessions
             }}

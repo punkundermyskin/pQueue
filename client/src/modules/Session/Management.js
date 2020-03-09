@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useLayoutEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
@@ -8,8 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
 
-import { AuthContext } from "../../context/AuthState";
-import { SessionsContext } from "../../context/SessionsState"
+import { AuthContext } from "../../context/Auth/AuthState";
+import { SessionsContext } from "../../context/Sessions/SessionsState";
+import { UsersContext } from "../../context/Users/UsersState";
 
 import { NavBar } from "../Basic/NavBar";
 import { Copyright } from "../Basic/Copyright";
@@ -57,6 +58,7 @@ export default function Management() {
   const history = useHistory();
   const { loadUser, user, isAuth } = useContext(AuthContext);
   const { sessions, getSessions } = useContext(SessionsContext);
+  const { getOperators, users } = useContext(UsersContext);
   const alert = useAlert();
 
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function Management() {
         history.push("/dashboard");
       } else {
         getSessions();
+        getOperators()
       }
     });
   }, [isAuth]);
@@ -80,7 +83,7 @@ export default function Management() {
           <Grid container spacing={3}>
             <Grid item xs="auto" md={5} lg={5}>
               <Paper className={classes.paper}>
-                <CreateSession />
+                <CreateSession operators={users} />
               </Paper>
             </Grid>
             <Grid item xs="auto" md={5} lg={5}>

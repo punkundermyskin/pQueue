@@ -17,7 +17,7 @@ import { useAlert } from "react-alert";
 
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthState";
+import { AuthContext } from "../../context/Auth/AuthState";
 
 export function SideBar() {
   const history = useHistory();

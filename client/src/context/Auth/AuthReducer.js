@@ -10,13 +10,13 @@ export default function (state, action) {
     case "USER_LOADING":
       return {
         ...state,
-        isLoading: true
+        authLoading: true
       };
     case "USER_LOADED":
       return {
         ...state,
         isAuth: true,
-        isLoading: false,
+        authLoading: false,
         user: action.payload.data
       };
     case "LOGIN_SUCCESS":
@@ -26,7 +26,7 @@ export default function (state, action) {
         ...state,
         ...action.payload,
         isAuth: true,
-        isLoading: false,
+        authLoading: false,
         user: action.payload.data
       };
     case "AUTH_ERROR":
@@ -39,8 +39,8 @@ export default function (state, action) {
         token: null,
         user: null,
         isAuth: false,
-        isLoading: false,
-        error: action.payload.error
+        authLoading: false,
+        authError: action.payload.error
       };
     default:
       return state;

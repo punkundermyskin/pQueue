@@ -20,9 +20,29 @@ exports.getUsers = async (req, res, next) => {
     }
 }
 
+// @desc    Get all operators
+// @route   GET /api/users/operatos
+// @access  Protected
+exports.getOperators = async (req, res, next) => {
+    try {
+        const operators = await Users.find({ 'role': 'operator' }).select('-password -tokens');
+
+        return res.status(200).json({
+            success: true,
+            count: operators.length,
+            data: operators
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        })
+    }
+}
+
 // @desc    Delete user
 // @route   DELETE /api/users/;id
-// @access  Public
+// @access  Protected
 exports.deleteUser = async (req, res, next) => {
     try {
         const user = await Users.findById(req.params.id);
