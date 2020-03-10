@@ -86,98 +86,100 @@ export const CreateSession = ({ operators }) => {
 
   return (
     <div>
-      <Container component="main" maxWidth="xs">
-        <Typography variant="h5" gutterBottom>
-          Create New Session
+      <Grid item xs="auto" md={5} lg={5}>
+        <Container component="main" maxWidth="xs">
+          <Typography variant="h5" gutterBottom>
+            Create New Session
           </Typography>
 
-        <form className={classes.form} noValidate onSubmit={onSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                required
-                id="subject"
-                label="Subject"
-                value={subject}
-                onChange={e => setSubject(e.target.value)}
-              />
+          <form className={classes.form} noValidate onSubmit={onSubmit}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  id="subject"
+                  label="Subject"
+                  value={subject}
+                  onChange={e => setSubject(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  id="office"
+                  label="Office"
+                  value={office}
+                  onChange={e => setOffice(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <ChipInput
+                  required
+                  id="groups"
+                  label="Groups"
+                  placeholder="enter group number"
+                  fullWidth
+                  // value={groups}
+                  // onChange={e => setGroups(e.target.value)}
+                  onChange={(chips) => handleGroups(chips)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Autocomplete
+                  multiple
+                  id="tags-standard"
+                  options={operators}
+                  // defaultValue={[user]}
+                  getOptionLabel={option => option.username}
+                  // onChange={(e,v) => setParticipants(v)}
+                  onChange={(e, v) => setParticipants(v)}
+                  // onChange={onTagsChange}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      variant="standard"
+                      label="Add operators to your session"
+                      placeholder="Operators"
+                      value={participants}
+                      onChange={({ target }) => setParticipants(target.value)}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TimePicker
+                  className={classes.fields}
+                  value={selectedBeginDate}
+                  label="Start"
+                  onChange={handleBeginDateChange}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TimePicker
+                  className={classes.fields}
+                  value={selectedFinishDate}
+                  label="End"
+                  onChange={handleFinishDateChange}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                required
-                id="office"
-                label="Office"
-                value={office}
-                onChange={e => setOffice(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ChipInput
-                required
-                id="groups"
-                label="Groups"
-                placeholder="enter group number"
-                fullWidth
-                // value={groups}
-                // onChange={e => setGroups(e.target.value)}
-                onChange={(chips) => handleGroups(chips)}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Autocomplete
-                multiple
-                id="tags-standard"
-                options={operators}
-                // defaultValue={[user]}
-                getOptionLabel={option => option.username}
-                // onChange={(e,v) => setParticipants(v)}
-                onChange={(e, v) => setParticipants(v)}
-                // onChange={onTagsChange}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    variant="standard"
-                    label="Add operators to your session"
-                    placeholder="Operators"
-                    value={participants}
-                    onChange={({ target }) => setParticipants(target.value)}
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TimePicker
-                className={classes.fields}
-                value={selectedBeginDate}
-                label="Start"
-                onChange={handleBeginDateChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TimePicker
-                className={classes.fields}
-                value={selectedFinishDate}
-                label="End"
-                onChange={handleFinishDateChange}
-              />
-            </Grid>
-          </Grid>
-          <Grid container justify="center">
-            <Grid item>
-              <Button
-                type="submit"
-                // fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Create
+            <Grid container justify="center">
+              <Grid item>
+                <Button
+                  type="submit"
+                  // fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Create
           </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-        {/* </React.Fragment> */}
-      </Container>
+          </form>
+          {/* </React.Fragment> */}
+        </Container>
+      </Grid>
     </div>
   );
 };

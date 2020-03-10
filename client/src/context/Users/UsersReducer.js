@@ -30,7 +30,7 @@ export default (state, action) => {
             return {
                 ...state,
                 usersSuccess: false,
-                userserror: action.payload.error
+                usersError: action.payload.error
             };
         default:
             return state;

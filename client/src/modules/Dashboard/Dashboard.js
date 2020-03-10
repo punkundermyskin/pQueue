@@ -5,11 +5,12 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { NavBar } from "../Basic/NavBar";
-import NextRequest from "./NextRequest";
+import { Session } from "./Session";
 import VirtualizedList from "./VirtualizedList";
 
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/Auth/AuthState";
+import { SessionsContext } from "../../context/Sessions/SessionsState";
 
 import { useStyles } from "../Basic/mainStyles";
 import { Copyright } from "./../Basic/Copyright";
@@ -17,6 +18,13 @@ import { Copyright } from "./../Basic/Copyright";
 export default function Dashboard() {
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const { getSessions, sessions, sessionsSuccess, sessionsError } = useContext(SessionsContext)
+
+  useEffect(() => {
+    getSessions()
+  }, []);
+
 
   // const { isAuth } = useContext(AuthContext);
   // const history = useHistory();
@@ -37,36 +45,13 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <Grid item xs="auto" md={3} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <NextRequest />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={3} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <NextRequest />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={3} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <NextRequest />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={3} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <NextRequest />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={3} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <NextRequest />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={3} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <NextRequest />
-              </Paper>
-            </Grid>
+            {sessions.map(session => (
+              <Grid item xs="auto" md={3} lg={3}>
+                <Paper className={fixedHeightPaper}>
+                  <Session key={session._id} session={session} />
+                </Paper>
+              </Grid>
+            ))}
           </Grid>
           <Box pt={4}>
             <Copyright />

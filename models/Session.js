@@ -19,7 +19,6 @@ const SessionSchema = new mongoose.Schema({
         type: [Number],
         // required: [true, 'Please add a groups']
     },
-    participants: [Schema.ObjectId],
     start: {
         type: Date,
         default: Date.now

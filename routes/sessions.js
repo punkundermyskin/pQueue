@@ -6,7 +6,7 @@ const operatorsAuth = require('../middleware/operatorsAuth')
 
 router
     .route('/')
-    .get(usersAuth)
+    // .get(usersAuth)
     .get(getSessions);
 
 router

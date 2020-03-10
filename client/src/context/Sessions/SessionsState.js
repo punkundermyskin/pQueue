@@ -45,7 +45,7 @@ export const SessionsProvider = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: "SESSIONS_ERROR",
-                payload: error.response.data
+                payload: error.response
             });
         }
     }

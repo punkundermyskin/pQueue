@@ -1,9 +1,13 @@
-import React, { useEffect, useContext, useLayoutEffect } from "react";
+import React, { useEffect, useContext, useLayoutEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -50,8 +54,23 @@ const useStyles = makeStyles(theme => ({
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3)
     }
-  }
+  },
+  table: {
+    minWidth: 650,
+  },
 }));
+
+function createData(name, calories, fat, carbs, protein) {
+  return { name, calories, fat, carbs, protein };
+}
+
+const rows = [
+  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+  createData('Eclair', 262, 16.0, 24, 6.0),
+  createData('Cupcake', 305, 3.7, 67, 4.3),
+  createData('Gingerbread', 356, 16.0, 49, 3.9),
+];
 
 export default function Management() {
   const classes = useStyles();
@@ -60,6 +79,7 @@ export default function Management() {
   const { sessions, getSessions } = useContext(SessionsContext);
   const { getOperators, users } = useContext(UsersContext);
   const alert = useAlert();
+  var [isHidden, setHidden] = useState(true);
 
   useEffect(() => {
     loadUser().then(() => {
@@ -83,16 +103,53 @@ export default function Management() {
           <Grid container spacing={3}>
             <Grid item xs="auto" md={5} lg={5}>
               <Paper className={classes.paper}>
-                <CreateSession operators={users} />
-              </Paper>
-            </Grid>
-            <Grid item xs="auto" md={5} lg={5}>
-              <Paper className={classes.paper}>
-                {/* <VirtualizedList /> */}
-                {sessions.map(session => (<Session key={session._id} session={session} />))}
+                {(isHidden) ?
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    // fullWidth
+                    onClick={() => setHidden(!isHidden)}
+                  >
+                    Create New Session
+              </Button> :
+
+                  <CreateSession operators={users} />}
+
               </Paper>
             </Grid>
           </Grid>
+          {/* <Grid item xs="auto" md={7} lg={7}> */}
+          {/* <Paper className={classes.paper}> */}
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Event</Th>
+                <Th>Date</Th>
+                <Th>Location</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Tablescon</Td>
+                <Td>9 April 2019</Td>
+                <Td>East Annex</Td>
+              </Tr>
+              <Tr>
+                <Td>Capstone Data</Td>
+                <Td>19 May 2019</Td>
+                <Td>205 Gorgas</Td>
+              </Tr>
+              <Tr>
+                <Td>Tuscaloosa D3</Td>
+                <Td>29 June 2019</Td>
+                <Td>Github</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+          {/* {sessions.map(session => (<Session key={session._id} session={session} />))} */}
+          {/* </Paper> */}
+          {/* </Grid> */}
+          {/* </Grid> */}
           <Box pt={4}>
             <Copyright />
           </Box>

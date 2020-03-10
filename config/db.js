@@ -9,6 +9,7 @@ const connectDB = async () => {
         });
 
         console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold);
+        // mongoose.connection.db.dropDatabase();
     } catch (err) {
         console.log(`Error: ${err.message}`.red);
         process.exit(1);

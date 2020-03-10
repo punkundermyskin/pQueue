@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       dispatch({
         type: "REGISTER_FAIL",
-        payload: error.response.error
+        payload: error.response.data
       });
     }
   }
