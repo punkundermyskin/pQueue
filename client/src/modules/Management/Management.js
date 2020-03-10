@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
-import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
+// import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css'
 
 import { useHistory } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -21,6 +21,7 @@ import { Copyright } from "../Basic/Copyright";
 import { CreateSession } from "./CreateSession";
 import { VirtualizedList } from "./VirtualizedList";
 import { Session } from "./Session"
+import SimpleTable from './Table'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,11 +50,23 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     padding: theme.spacing(2),
+    alignItems: "center",
     [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
       marginTop: theme.spacing(6),
       marginBottom: theme.spacing(6),
       padding: theme.spacing(3)
     }
+  },
+  paperButton: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    // padding: theme.spacing(2),
+    alignItems: "center",
+    // [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+    //   marginTop: theme.spacing(6),
+    //   marginBottom: theme.spacing(6),
+    //   padding: theme.spacing(3)
+    // }
   },
   table: {
     minWidth: 650,
@@ -101,55 +114,21 @@ export default function Management() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            <Grid item xs="auto" md={5} lg={5}>
-              <Paper className={classes.paper}>
-                {(isHidden) ?
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    // fullWidth
-                    onClick={() => setHidden(!isHidden)}
-                  >
-                    Create New Session
-              </Button> :
-
-                  <CreateSession operators={users} />}
-
-              </Paper>
-            </Grid>
+            {(isHidden) ?
+              (<Grid item xs={4} md={5} lg={5} className={classes.paperButton}>
+                <Button
+                  variant="contained"
+                  onClick={() => setHidden(!isHidden)}
+                >New Session</Button>
+              </Grid>) :
+              (<Grid item xs="auto" md={5} lg={5}>
+                <Paper className={classes.paperButton}>
+                  <CreateSession operators={users} />
+                </Paper>
+              </Grid>
+              )}
+            <SimpleTable sessions={sessions} />
           </Grid>
-          {/* <Grid item xs="auto" md={7} lg={7}> */}
-          {/* <Paper className={classes.paper}> */}
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>Event</Th>
-                <Th>Date</Th>
-                <Th>Location</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Tablescon</Td>
-                <Td>9 April 2019</Td>
-                <Td>East Annex</Td>
-              </Tr>
-              <Tr>
-                <Td>Capstone Data</Td>
-                <Td>19 May 2019</Td>
-                <Td>205 Gorgas</Td>
-              </Tr>
-              <Tr>
-                <Td>Tuscaloosa D3</Td>
-                <Td>29 June 2019</Td>
-                <Td>Github</Td>
-              </Tr>
-            </Tbody>
-          </Table>
-          {/* {sessions.map(session => (<Session key={session._id} session={session} />))} */}
-          {/* </Paper> */}
-          {/* </Grid> */}
-          {/* </Grid> */}
           <Box pt={4}>
             <Copyright />
           </Box>

@@ -5,8 +5,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { NavBar } from "../Basic/NavBar";
-import { Session } from "./Session";
-import VirtualizedList from "./VirtualizedList";
+import { SessionCard } from "./SessionCard";
 
 import { useHistory } from "react-router-dom";
 import { AuthContext } from "../../context/Auth/AuthState";
@@ -48,7 +47,7 @@ export default function Dashboard() {
             {sessions.map(session => (
               <Grid item xs="auto" md={3} lg={3}>
                 <Paper className={fixedHeightPaper}>
-                  <Session key={session._id} session={session} />
+                  <SessionCard key={session._id} session={session} />
                 </Paper>
               </Grid>
             ))}

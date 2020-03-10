@@ -68,6 +68,23 @@ export const SessionsProvider = ({ children }) => {
         }
     }
 
+    async function joinSession(id) {
+        const config = createConfig()
+
+        try {
+            const res = await axios.post("/api/sessions/" + id, config);
+
+            dispatch({
+                type: "JOIN_SESSIONS"
+            });
+        } catch (error) {
+            dispatch({
+                type: "SESSIONS_ERROR",
+                payload: error.response
+            });
+        }
+    }
+
     return (
         <SessionsContext.Provider
             value={{
@@ -75,7 +92,8 @@ export const SessionsProvider = ({ children }) => {
                 sessionsSuccess: state.sessionsSuccess,
                 sessionsError: state.sessionsError,
                 getSessions,
-                createSessions
+                createSessions,
+                joinSession
             }}
         >
             {children}

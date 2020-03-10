@@ -6,17 +6,15 @@ export default (state, action) => {
         sessions: action.payload.data,
         sessionsSuccess: true
       };
-    // case "DELETE_TRANSACTION":
-    //   return {
-    //     ...state,
-    //     transactions: state.transactions.filter(
-    //       transaction => transaction._id !== action.payload
-    //     )
-    //   };
     case "CREATE_SESSION":
       return {
         ...state,
         sessions: [...state.sessions, action.payload.data],
+        sessionsSuccess: true
+      };
+    case "JOIN_SESSIONS":
+      return {
+        ...state,
         sessionsSuccess: true
       };
     case "SESSIONS_ERROR":

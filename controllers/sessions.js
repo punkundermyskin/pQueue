@@ -50,6 +50,38 @@ exports.addSession = async (req, res, next) => {
     }
 }
 
+// @desc    Join session
+// @route   POST /api/sessions
+// @access  Public
+exports.joinSession = async (req, res, next) => {
+    try {
+        // const { text, amount } = req.body;
+        var id = req.params.id;
+        const data = next()
+        const user = await Users.find({ _id: data._id });
+        user.session = id
+        user.status = 'request'
+
+        return res.status(201).json({
+            success: true
+        })
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+
+            return res.status(400).json({
+                success: false,
+                error: messages
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                error: 'Server Error'
+            })
+        }
+    }
+}
+
 // @desc    Delete session
 // @route   DELETE /api/sessions/;id
 // @access  Public

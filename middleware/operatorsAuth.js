@@ -10,7 +10,7 @@ const operatorsAuth = async (req, res, next) => {
             throw new Error()
         }
         req.user = user
-        next()
+        next(data)
     } catch (err) {
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);

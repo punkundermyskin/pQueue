@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getSessions, addSession, deleteSession } = require('../controllers/sessions');
+const { getSessions, addSession, deleteSession, joinSession } = require('../controllers/sessions');
 const usersAuth = require('../middleware/usersAuth')
 const operatorsAuth = require('../middleware/operatorsAuth')
 
@@ -13,6 +13,11 @@ router
     .route('/')
     .get(operatorsAuth)
     .post(addSession);
+
+router
+    .route('/:id')
+    .get(usersAuth)
+    .post(joinSession);
 
 router
     .route('/:id')
