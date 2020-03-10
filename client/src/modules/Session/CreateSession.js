@@ -64,13 +64,15 @@ export const CreateSession = ({ operators }) => {
 
   const onSubmit = e => {
     e.preventDefault();
-    console.log(participants)
+
     const newSession = {
       status: "active",
       subject,
       office,
       groups,
-      operators: participants
+      participants,
+      start: selectedBeginDate,
+      end: selectedFinishDate
     }
 
     createSessions(newSession).then(() => {
@@ -128,6 +130,9 @@ export const CreateSession = ({ operators }) => {
                 options={operators}
                 // defaultValue={[user]}
                 getOptionLabel={option => option.username}
+                // onChange={(e,v) => setParticipants(v)}
+                onChange={(e, v) => setParticipants(v)}
+                // onChange={onTagsChange}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -135,7 +140,7 @@ export const CreateSession = ({ operators }) => {
                     label="Add operators to your session"
                     placeholder="Operators"
                     value={participants}
-                    onChange={e => setParticipants(e.target.value)}
+                    onChange={({ target }) => setParticipants(target.value)}
                   />
                 )}
               />

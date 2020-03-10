@@ -40,7 +40,15 @@ const UserSchema = new Schema({
         required: function () { return this.role === 'student'; }
     },
     host: {
-        type: String
+        type: Schema.ObjectId
+    },
+    status: {
+        type: String,
+        enum: ['request', 'unready', 'inline', 'processing', 'done',
+            'free', 'busy', 'leave']
+    },
+    progress: {
+        type: Number
     },
     password: {
         type: String,
