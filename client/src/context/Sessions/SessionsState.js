@@ -5,6 +5,7 @@ import axios from "axios";
 // Initial State
 const initialState = {
     sessions: [],
+    students: [],
     sessionsSuccess: false,
     sessionsError: null
 };
@@ -85,15 +86,35 @@ export const SessionsProvider = ({ children }) => {
         }
     }
 
+    async function getStudents(id) {
+        const config = createConfig()
+
+        try {
+            const res = await axios.get("/api/sessions/" + id + '/students', config);
+
+            dispatch({
+                type: "GET_SESSION_STUDENTS",
+                students: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: "SESSIONS_ERROR",
+                payload: error.response
+            });
+        }
+    }
+
     return (
         <SessionsContext.Provider
             value={{
                 sessions: state.sessions,
                 sessionsSuccess: state.sessionsSuccess,
                 sessionsError: state.sessionsError,
+                students: state.students,
                 getSessions,
                 createSessions,
-                joinSession
+                joinSession,
+                getStudents
             }}
         >
             {children}

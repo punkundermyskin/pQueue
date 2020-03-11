@@ -5,7 +5,7 @@ const Users = require('../models/User');
 // @access  Public
 exports.getUsers = async (req, res, next) => {
     try {
-        const users = await Users.find();
+        const users = await Users.find().select('-password -tokens');
 
         return res.status(200).json({
             success: true,

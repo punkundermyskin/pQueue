@@ -17,6 +17,13 @@ export default (state, action) => {
         ...state,
         sessionsSuccess: true
       };
+    case "GET_SESSION_STUDENTS":
+      return {
+        ...state,
+        // students: action.payload.data,
+        students: action.students.data,
+        sessionsSuccess: true
+      };
     case "SESSIONS_ERROR":
       return {
         ...state,

@@ -30,7 +30,7 @@ const theme = createMuiTheme({
     },
 });
 
-export default function SimpleTable({ sessions }) {
+export default function ActiveSessionsTable({ sessions }) {
     const classes = useStyles();
 
     const { joinSession, sessionsSuccess } = useContext(SessionsContext);
@@ -38,11 +38,10 @@ export default function SimpleTable({ sessions }) {
     const history = useHistory();
 
     const handleJoinButton = (id) => {
-
         joinSession(id).then(() => {
             if (sessionsSuccess) {
                 alert.show("You have successfully joined the session.");
-                //   history.push("/management/current-session");
+                history.push("/management/current-session");
             } else {
                 alert.show("Something went wrong!");
             }
@@ -71,7 +70,7 @@ export default function SimpleTable({ sessions }) {
                                         variant="contained"
                                         color="secondary"
                                         // className={classes.button}
-                                        onClick={handleJoinButton(session._id)}
+                                        onClick={() => handleJoinButton(session._id)}
                                         startIcon={<DirectionsRunIcon />}
                                     >
                                         Join

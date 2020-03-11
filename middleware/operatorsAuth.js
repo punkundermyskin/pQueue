@@ -4,13 +4,15 @@ const User = require('../models/User')
 const operatorsAuth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
+        // const token = req.header('Authorization')
         const data = jwt.verify(token, process.env.JWT_KEY)
         const user = await User.findOne({ _id: data._id, 'tokens.token': token })
         if (!user || user.role !== 'operator') {
             throw new Error()
         }
         req.user = user
-        next(data)
+        next()
+        // next(data)
     } catch (err) {
         if (err.name === 'ValidationError') {
             const messages = Object.values(err.errors).map(val => val.message);

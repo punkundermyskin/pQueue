@@ -1,4 +1,6 @@
 const Sessions = require('../models/Session');
+const Users = require('../models/User');
+const jwt = require('jsonwebtoken')
 
 // @desc    Get all sessions
 // @route   GET /api/sessions
@@ -57,13 +59,51 @@ exports.joinSession = async (req, res, next) => {
     try {
         // const { text, amount } = req.body;
         var id = req.params.id;
-        const data = next()
-        const user = await Users.find({ _id: data._id });
-        user.session = id
-        user.status = 'request'
+        // const data = next()
+        // const token = req.body.headers.Authorization
+
+        const token = req.header('Authorization').replace('Bearer ', '')
+        const data = jwt.verify(token, process.env.JWT_KEY)
+        // const user = await Users.find({ _id: data._id });
+        await Users.findOneAndUpdate({ _id: data._id }, { $set: { session: id, status: 'request' } }, { new: true })
+        // req.user.session = id
+        // user.session = id
+        // user.status = 'request'
+        // await user.save()
 
         return res.status(201).json({
-            success: true
+            success: true,
+            // data: user
+        })
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+
+            return res.status(400).json({
+                success: false,
+                error: messages
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                error: 'Server Error'
+            })
+        }
+    }
+}
+
+// @desc    Join session
+// @route   POST /api/sessions
+// @access  Public
+exports.getStudents = async (req, res, next) => {
+    try {
+
+        var id = req.params.id;
+        const students = await Users.find({ session: id }).select('-password -tokens');
+
+        return res.status(201).json({
+            success: true,
+            data: students
         })
     } catch (err) {
         if (err.name === 'ValidationError') {

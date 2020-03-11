@@ -17,7 +17,7 @@ router
 
 router
     .route('/:id')
-    .get(usersAuth)
+    .delete(usersAuth)
     .delete(deleteUser);
 
 module.exports = router;

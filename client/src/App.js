@@ -4,6 +4,7 @@ import Login from "./modules/Auth/Login";
 import Register from "./modules/Auth/Register";
 import Dashboard from "./modules/Dashboard/Dashboard";
 import Management from "./modules/Management/Management";
+import CurrentSession from './modules/Management/CurrentSession/CurrentSession'
 
 import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
@@ -23,7 +24,8 @@ function App() {
               component={Dashboard}
               context={AuthContext}
             />
-            <Route path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
+            <Route path="/management/current-session" component={CurrentSession} context={AuthContext, SessionsContext, UsersContext} />
+            <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
           </UsersProvider>
         </SessionsProvider>
       </AuthProvider>
