@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+
+import SocketContext from './../../../context/SocketContext/context'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -52,6 +54,8 @@ const useStyles = makeStyles(theme => ({
 
 export function Request() {
   const classes = useStyles();
+  const { queueLength } = useContext(SocketContext);
+
   return (
     <Grid
       container
@@ -61,7 +65,7 @@ export function Request() {
       alignItems="center"
     >
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-        John Wick
+        John Wick {queueLength}
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
         Main Service
@@ -71,7 +75,7 @@ export function Request() {
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
         {/* <Paper > */}
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" >
           Call Next
         </Button>
         {/* </Paper> */}

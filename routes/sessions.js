@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { getSessions, addSession, deleteSession, joinSession, getStudents } = require('../controllers/sessions');
+const { getSessions, addSession, deleteSession, joinSession, getStudents, sessionStatus } = require('../controllers/sessions');
 const usersAuth = require('../middleware/usersAuth')
 const operatorsAuth = require('../middleware/operatorsAuth')
+const sessionsAuth = require('../middleware/sessionsAuth')
 
 router
     .route('/')
-    // .get(usersAuth)
     .get(getSessions);
 
 router
     .route('/')
+    .post(usersAuth)
     .post(operatorsAuth)
     .post(addSession);
 
@@ -26,6 +27,7 @@ router
 
 router
     .route('/:id')
+    .delete(usersAuth)
     .delete(operatorsAuth)
     .delete(deleteSession);
 

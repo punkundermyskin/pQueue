@@ -24,7 +24,8 @@ const UserSchema = new Schema({
         required: [true, 'Please add last name']
     },
     session: {
-        type: Schema.ObjectId
+        // type: Schema.ObjectId
+        type: Schema.Types.ObjectId, ref: 'Session'
     },
     role: {
         type: String,

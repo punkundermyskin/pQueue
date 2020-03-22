@@ -12,6 +12,7 @@ router
 
 router
     .route('/operators')
+    .get(usersAuth)
     .get(operatorsAuth)
     .get(getOperators);
 

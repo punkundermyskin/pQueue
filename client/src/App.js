@@ -10,6 +10,8 @@ import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
 import { UsersProvider, UsersContext } from "./context/Users/UsersState"
 
+import SocketProvider from "./context/SocketContext/context";
+
 function App() {
   return (
     <Switch>
@@ -24,7 +26,9 @@ function App() {
               component={Dashboard}
               context={AuthContext}
             />
+            {/* <SocketProvider> */}
             <Route path="/management/current-session" component={CurrentSession} context={AuthContext, SessionsContext, UsersContext} />
+            {/* </SocketProvider> */}
             <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
           </UsersProvider>
         </SessionsProvider>

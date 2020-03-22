@@ -95,6 +95,33 @@ exports.joinSession = async (req, res, next) => {
 // @desc    Join session
 // @route   POST /api/sessions
 // @access  Public
+exports.sessionStatus = async (req, res, next) => {
+    try {
+
+        return res.status(201).json({
+            success: true,
+            // data: user
+        })
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+
+            return res.status(400).json({
+                success: false,
+                error: messages
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                error: 'Server Error'
+            })
+        }
+    }
+}
+
+// @desc    Join session
+// @route   POST /api/sessions
+// @access  Public
 exports.getStudents = async (req, res, next) => {
     try {
 

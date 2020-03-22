@@ -73,7 +73,7 @@ export const SessionsProvider = ({ children }) => {
         const config = createConfig()
 
         try {
-            const res = await axios.post("/api/sessions/" + id, config);
+            const res = await axios.post("/api/sessions/" + id, null, config);
 
             dispatch({
                 type: "JOIN_SESSIONS"

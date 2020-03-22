@@ -33,7 +33,7 @@ exports.addUser = async (req, res, next) => {
 
 // @desc    Login a registered user
 // @route   POST /api/users/login
-// @access  Public
+// @accsess  Public
 exports.loginUser = async (req, res, next) => {
     try {
         const { username, password } = req.body

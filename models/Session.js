@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-var Schema = mongoose.Schema
+// var Schema = mongoose.Schema
 
 const SessionSchema = new mongoose.Schema({
     status: {
