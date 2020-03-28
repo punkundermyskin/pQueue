@@ -1,13 +1,15 @@
-import { socket } from "Sockets";
+import { socket } from "./index";
 
-export const addClientToQueue = () => {
-    socket.emit('addClientIdToQueue');
+// export const addClientToQueue = () => {
+//     socket.emit('addClientIdToQueue');
+// };
+
+export const getQueueInfo = (id) => {
+    socket.emit('queueInfoToSocket', {
+        id: id
+    });
 };
 
-export const getQueueLength = () => {
-    socket.emit('queueLengthToSocket');
-};
-
-export const removeUserFromQueue = () => {
-    socket.emit('removeUserFromQueue');
-};
+// export const removeUserFromQueue = () => {
+//     socket.emit('removeUserFromQueue');
+// };

@@ -10,7 +10,7 @@ import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
 import { UsersProvider, UsersContext } from "./context/Users/UsersState"
 
-import SocketProvider from "./context/SocketContext/context";
+// import SocketProvider from "./context/SocketContext/context";
 
 function App() {
   return (
