@@ -9,8 +9,7 @@ import CurrentSession from './modules/Management/CurrentSession/CurrentSession'
 import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
 import { UsersProvider, UsersContext } from "./context/Users/UsersState"
-
-// import SocketProvider from "./context/SocketContext/context";
+import { QueueProvider, QueueContext } from "./context/Queue/QueueState"
 
 function App() {
   return (
@@ -26,9 +25,9 @@ function App() {
               component={Dashboard}
               context={AuthContext}
             />
-            {/* <SocketProvider> */}
-            <Route path="/management/current-session" component={CurrentSession} context={AuthContext, SessionsContext, UsersContext} />
-            {/* </SocketProvider> */}
+            <QueueProvider>
+              <Route path="/management/current-session" component={CurrentSession} context={AuthContext, QueueContext} />
+            </QueueProvider>
             <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
           </UsersProvider>
         </SessionsProvider>

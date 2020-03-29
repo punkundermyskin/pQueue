@@ -86,7 +86,7 @@ export default function CurrentSession() {
         alert.show("Not authorized to access this resource!");
         history.push("/dashboard");
       } else {
-        getStudents(user.session);
+        // getStudents(user.session);
         // getOperators()
       }
     });

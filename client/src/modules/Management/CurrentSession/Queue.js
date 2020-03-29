@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import Title from './Title';
 
-import SocketContext from './../../../context/SocketContext/context'
+// import SocketContext from '../../../context/Queue/context'
 
 const useStyles = makeStyles(theme => ({
     root: {

@@ -6,7 +6,6 @@ import AlertTemplate from "react-alert-template-basic";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import App from "./App";
-import SocketProvider from "./context/SocketContext/context";
 // import "./App.css";
 
 // optional cofiguration
@@ -24,9 +23,7 @@ render(
   <AlertProvider template={AlertTemplate} {...options}>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
-        <SocketProvider>
-          <App />
-        </SocketProvider>
+        <App />
       </BrowserRouter>
     </MuiPickersUtilsProvider>,
   </AlertProvider>,

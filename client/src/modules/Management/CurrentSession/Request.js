@@ -2,11 +2,10 @@ import React, { useContext, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
-import SocketContext from './../../../context/SocketContext/context'
 import { AuthContext } from './../../../context/Auth/AuthState'
-
-import { getQueueInfo } from './../../../sockets/emit'
+import { QueueContext } from './../../../context/Queue/QueueState'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,13 +56,21 @@ const useStyles = makeStyles(theme => ({
 
 export function Request() {
   const classes = useStyles();
-  const { getQueueInfo } = useContext(SocketContext);
+  const history = useHistory();
+  const { members, status, getQueueInfo } = useContext(QueueContext);
   const { user } = useContext(AuthContext);
-  
-  // useEffect(() => {
-  //   const sessionID = user.session._id.toString()
-  //   getQueueInfo(sessionID)
-  // }, []);
+
+  useEffect(() => {
+    if (user == null) {
+      history.push("/login");
+    } else {
+      const sessionID = user.session
+      getQueueInfo(sessionID)
+    }
+    // // console.log(sessionID)
+    // console.log(user.session)
+
+  }, []);
 
   return (
     <Grid
@@ -74,7 +81,7 @@ export function Request() {
       alignItems="center"
     >
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-        {/* John Wick { getQueueInfo } */}
+        John Wick {status}
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
         Main Service
