@@ -4,8 +4,8 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 
-import { AuthContext } from './../../../context/Auth/AuthState'
-import { QueueContext } from './../../../context/Queue/QueueState'
+import { AuthContext } from "./../../../context/Auth/AuthState";
+import { QueueContext } from "./../../../context/Queue/QueueState";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -57,19 +57,23 @@ const useStyles = makeStyles(theme => ({
 export function Request() {
   const classes = useStyles();
   const history = useHistory();
-  const { members, status, getQueueInfo } = useContext(QueueContext);
+  const { members, status, getQueueInfo, joinSession } = useContext(
+    QueueContext
+  );
   const { user } = useContext(AuthContext);
 
+  var sessionID = null;
+  if (user == null) {
+    history.push("/login");
+  } else {
+    sessionID = user.session;
+  }
+
   useEffect(() => {
-    if (user == null) {
-      history.push("/login");
-    } else {
-      const sessionID = user.session
-      getQueueInfo(sessionID)
-    }
+    getQueueInfo("5e68a1c71de6fd875e8d93bb");
+    // }
     // // console.log(sessionID)
     // console.log(user.session)
-
   }, []);
 
   return (
@@ -84,14 +88,20 @@ export function Request() {
         John Wick {status}
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-        Main Service
+        Main Service {members.length}
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
         %Whatever%
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
         {/* <Paper > */}
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            joinSession("5e68a1c71de6fd875e8d93bb");
+          }}
+        >
           Call Next
         </Button>
         {/* </Paper> */}

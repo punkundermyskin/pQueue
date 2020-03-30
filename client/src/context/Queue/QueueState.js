@@ -6,7 +6,11 @@ export const socket = io('http://localhost:5000', {
     query: {
         token: localStorage.getItem("token")
     },
-    forceNew: true
+    // forceNew: true
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    reconnectionAttempts: Infinity
 });
 
 // Initial State
@@ -41,9 +45,14 @@ export const QueueProvider = ({ children }) => {
         }
     }
 
-    socket.on('newMember', (data) => {
+    function joinSession(id) {
+        socket.emit('join');
+        console.log('join sent')
+    }
+
+    socket.on('update', (data) => {
         dispatch({
-            type: "NEW_MEMBER_APPEAR",
+            type: "UPDATE_QUEUE",
             payload: data
         });
     });
@@ -53,7 +62,8 @@ export const QueueProvider = ({ children }) => {
             value={{
                 members: state.members,
                 status: state.status,
-                getQueueInfo
+                getQueueInfo,
+                joinSession
             }}
         >
             {children}
