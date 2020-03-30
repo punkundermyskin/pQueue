@@ -16,7 +16,7 @@ export const socket = io('http://localhost:5000', {
 // Initial State
 const initialState = {
     members: [],
-    status: null
+    session: null
 };
 
 // Create context
@@ -28,9 +28,7 @@ export const QueueProvider = ({ children }) => {
 
     function getQueueInfo(id) {
         try {
-            socket.emit('queueInfoToSocket', {
-                id: id
-            });
+            socket.emit('queueInfoToSocket', id);
             socket.on('queueInfo', (data) => {
                 dispatch({
                     type: "GET_QUEUE_INFO",
@@ -46,8 +44,13 @@ export const QueueProvider = ({ children }) => {
     }
 
     function joinSession(id) {
-        socket.emit('join');
+        socket.emit('join', id);
         console.log('join sent')
+    }
+
+    function leaveSession(id) {
+        socket.emit('leave', id);
+        console.log('leave sent')
     }
 
     socket.on('update', (data) => {
@@ -57,13 +60,21 @@ export const QueueProvider = ({ children }) => {
         });
     });
 
+    socket.on('remove', (id) => {
+        dispatch({
+            type: "REMOVE_MEMBER",
+            payload: id
+        });
+    });
+
     return (
         <QueueContext.Provider
             value={{
                 members: state.members,
-                status: state.status,
+                status: state.session,
                 getQueueInfo,
-                joinSession
+                joinSession,
+                leaveSession
             }}
         >
             {children}

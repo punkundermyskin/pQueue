@@ -22,6 +22,8 @@ import { WaitingList } from "./WaitingList";
 import { Queue } from "./Queue";
 import { Request } from "./Request";
 
+import { QueueContext } from "./../../../context/Queue/QueueState";
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
@@ -74,6 +76,13 @@ export default function CurrentSession() {
   const history = useHistory();
   const { loadUser, user, isAuth } = useContext(AuthContext);
   const { students, getStudents } = useContext(SessionsContext);
+  const {
+    members,
+    session,
+    getQueueInfo,
+    joinSession,
+    leaveSession
+  } = useContext(QueueContext);
   //   const { getOperators, users } = useContext(UsersContext);
   const alert = useAlert();
   //   var [isHidden, setHidden] = useState(true);
@@ -86,6 +95,9 @@ export default function CurrentSession() {
         alert.show("Not authorized to access this resource!");
         history.push("/dashboard");
       } else {
+        const id = user.session
+        joinSession(id);
+        getQueueInfo(id);
         // getStudents(user.session);
         // getOperators()
       }
@@ -101,19 +113,20 @@ export default function CurrentSession() {
             {/* {students.map(student => (<Student key={student._id} student={student} />))} */}
             <Grid item xs={6} md={3} lg={3}>
               <Paper className={classes.paper}>
+                {/* {members.map(member => (<Queue key={member.id} member={member} />))} */}
                 <Queue />
-              </Paper>
-            </Grid>
-            <Grid item xs={12} md={6} lg={6}>
-              <Paper className={classes.paper}>
-                <Request />
               </Paper>
             </Grid>
             <Grid item xs={6} md={3} lg={3}>
               <Paper className={classes.paper}>
-                <WaitingList />
+                <Request />
               </Paper>
             </Grid>
+            {/* <Grid item xs={6} md={3} lg={3}>
+              <Paper className={classes.paper}>
+                <WaitingList />
+              </Paper>
+            </Grid> */}
           </Grid>
           <Box pt={4}>
             <Copyright />

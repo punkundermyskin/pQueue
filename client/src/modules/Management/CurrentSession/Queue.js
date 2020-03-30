@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
@@ -6,23 +6,24 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { FixedSizeList } from 'react-window';
 import Title from './Title';
 
+import { QueueContext } from "./../../../context/Queue/QueueState";
 // import SocketContext from '../../../context/Queue/context'
 
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         height: 600,
-        maxWidth: 250,
+        maxWidth: 150,
         backgroundColor: theme.palette.background.paper,
     },
 }));
 
-function renderRow(props) {
-    const { index, style } = props;
+function renderRow({ data, index, style }) {
+    // const { index, style } = props;
 
     return (
-        <ListItem button style={style} key={index}>
-            <ListItemText primary={`Item ${index + 1}`} />
+        <ListItem button style={style} key={data._id}>
+            <ListItemText primary={data.username} />
         </ListItem>
     );
 }
@@ -34,12 +35,19 @@ renderRow.propTypes = {
 
 export function Queue() {
     const classes = useStyles();
+    const {
+        members,
+        session,
+        getQueueInfo,
+        joinSession,
+        leaveSession
+    } = useContext(QueueContext);
 
     return (
         <div className={classes.root}>
             <Title>Queue:</Title>
 
-            <FixedSizeList height={570} width={250} itemSize={46} itemCount={200}>
+            <FixedSizeList height={570} width={150} itemSize={46} itemCount={members.length} itemData={members}>
                 {renderRow}
             </FixedSizeList>
         </div>

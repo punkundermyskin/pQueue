@@ -12,17 +12,18 @@ sockets.init = function (server) {
 
         var role = 'guest'
 
-        socket.on('queueInfoToSocket', async function (data) {
-            const students = await Users.find({ session: data.id }).select('-password -tokens')
-            const session = await Sessions.findOne({ _id: data.id })
+        socket.on('queueInfoToSocket', async function (id) {
+            const students = await Users.find({ session: id }).select('-password -tokens')
+            const session = await Sessions.findOne({ _id: id })
             console.log('queueInfoToSocket!!!')
             socket.emit('queueInfo', {
                 members: students,
-                status: session.status
+                session: session
             });
         });
 
         socket.on('join', async function (data) {
+            const room = 'room1'
             const token = socket.handshake.query.token
             role = await getRole(token)
             if (role == 'guest') {
@@ -30,12 +31,21 @@ sockets.init = function (server) {
             } else {
                 const user = socket.user
                 const sessionId = user.session._id.toString()
-                socket.join('room1', function () {
+                socket.join(room, function () {
                     console.log(socket.id + " now in rooms ", socket.rooms);
                 });
 
-                socket.to('room1').emit('update', user);
+                socket.to(room).emit('update', user);
             }
+        })
+
+        socket.on('leave', async function (data) {
+            room = 'room1'
+            console.log('[socket]', 'leave room :', room)
+            socket.leave(room);
+            const user = socket.user
+            await Users.findOneAndUpdate({ _id: user._id }, { $set: { session: null, status: null } }, { new: true })
+            socket.to(room).emit('remove', user.id);
         })
 
         async function getRole(token) {

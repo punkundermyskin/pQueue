@@ -4,7 +4,7 @@ export default (state, action) => {
       return {
         ...state,
         members: action.payload.members,
-        status: action.payload.status
+        session: action.payload.session
       };
     case "UPDATE_QUEUE":
       const member = action.payload
@@ -21,6 +21,14 @@ export default (state, action) => {
           members: updatedMembers
         };
       }
+    case "REMOVE_MEMBER":
+      const id = action.payload
+      const updatedMembers = state.members.filter(member => member._id != id);
+      return {
+        ...state,
+        members: updatedMembers
+      };
+
     case "SOCKET_ERROR":
       return {
         ...state,
@@ -38,12 +46,18 @@ function findUserByName(members, username) {
 }
 
 function updateMembers(members, member) {
-  return members.map((item, index) => {
-    if (item._id === member._id) {
-      return {
-        member
-      }
+  for (var x = 0; x < members.length; x++) {
+    if (members[x]._id === member._id) {
+      members[x] = member
     }
-    return item;
-  });
+    return members
+  }
+  // return members.map((item, index) => {
+  //   if (item._id === member._id) {
+  //     return {
+  //       member
+  //     }
+  //   }
+  //   return item;
+  // });
 }

@@ -57,24 +57,29 @@ const useStyles = makeStyles(theme => ({
 export function Request() {
   const classes = useStyles();
   const history = useHistory();
-  const { members, status, getQueueInfo, joinSession } = useContext(
-    QueueContext
-  );
+  const {
+    members,
+    session,
+    getQueueInfo,
+    joinSession,
+    leaveSession
+  } = useContext(QueueContext);
   const { user } = useContext(AuthContext);
 
-  var sessionID = null;
-  if (user == null) {
-    history.push("/login");
-  } else {
-    sessionID = user.session;
-  }
+  // var sessionID = null;
+  // if (user == null) {
+  //   history.push("/login");
+  // } else {
+  //   sessionID = user.session;
+  // }
 
-  useEffect(() => {
-    getQueueInfo("5e68a1c71de6fd875e8d93bb");
-    // }
-    // // console.log(sessionID)
-    // console.log(user.session)
-  }, []);
+  // useEffect(() => {
+  //   joinSession("5e68a1c71de6fd875e8d93bb");
+  //   getQueueInfo("5e68a1c71de6fd875e8d93bb");
+  //   // }
+  //   // // console.log(sessionID)
+  //   // console.log(user.session)
+  // }, []);
 
   return (
     <Grid
@@ -85,10 +90,10 @@ export function Request() {
       alignItems="center"
     >
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-        John Wick {status}
+        John Wick
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-        Main Service {members.length}
+        Main Service
       </Grid>
       <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
         %Whatever%
@@ -99,7 +104,8 @@ export function Request() {
           variant="contained"
           color="primary"
           onClick={() => {
-            joinSession("5e68a1c71de6fd875e8d93bb");
+            leaveSession(session._id);
+            history.push("/management");
           }}
         >
           Call Next
