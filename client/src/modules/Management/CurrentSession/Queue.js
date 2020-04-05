@@ -20,10 +20,10 @@ const useStyles = makeStyles(theme => ({
 
 function renderRow({ data, index, style }) {
     // const { index, style } = props;
-
+    const member = data[index]
     return (
-        <ListItem button style={style} key={data._id}>
-            <ListItemText primary={data.username} />
+        <ListItem button style={style} key={member._id}>
+            <ListItemText primary={member.username} />
         </ListItem>
     );
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 
 import { SessionsContext } from "../../context/Sessions/SessionsState";
 import { useAlert } from "react-alert";
+import { QueueContext } from "../../context/Queue/QueueState";
 
 const useStyles = makeStyles({
     table: {
@@ -34,6 +35,7 @@ export default function ActiveSessionsTable({ sessions }) {
     const classes = useStyles();
 
     const { joinSession, sessionsSuccess } = useContext(SessionsContext);
+    const { session, joinSocketSession, getQueueInfo, leaveSession } = useContext(QueueContext);
     const alert = useAlert();
     const history = useHistory();
 
@@ -41,6 +43,8 @@ export default function ActiveSessionsTable({ sessions }) {
         joinSession(id).then(() => {
             if (sessionsSuccess) {
                 alert.show("You have successfully joined the session.");
+                joinSocketSession(id);
+                getQueueInfo(id);
                 history.push("/management/current-session");
             } else {
                 alert.show("Something went wrong!");

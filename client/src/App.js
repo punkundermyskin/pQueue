@@ -27,8 +27,8 @@ function App() {
             />
             <QueueProvider>
               <Route path="/management/current-session" component={CurrentSession} context={AuthContext, QueueContext} />
+              <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
             </QueueProvider>
-            <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
           </UsersProvider>
         </SessionsProvider>
       </AuthProvider>

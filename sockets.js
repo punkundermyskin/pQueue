@@ -23,8 +23,8 @@ sockets.init = function (server) {
         });
 
         socket.on('join', async function (data) {
-            const room = 'room1'
-            const token = socket.handshake.query.token
+            const room = data.id
+            const token = data.token
             role = await getRole(token)
             if (role == 'guest') {
                 socket.disconnect()
@@ -39,8 +39,7 @@ sockets.init = function (server) {
             }
         })
 
-        socket.on('leave', async function (data) {
-            room = 'room1'
+        socket.on('leave', async function (room) {
             console.log('[socket]', 'leave room :', room)
             socket.leave(room);
             const user = socket.user

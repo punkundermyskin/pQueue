@@ -17,7 +17,6 @@ import { NavBar } from "../../Basic/NavBar";
 import { Copyright } from "../../Basic/Copyright";
 import { CreateSession } from "./../CreateSession";
 import ActiveSessionsTable from "./../ActiveSessionsTable";
-import { Student } from "./Student";
 import { WaitingList } from "./WaitingList";
 import { Queue } from "./Queue";
 import { Request } from "./Request";
@@ -80,7 +79,7 @@ export default function CurrentSession() {
     members,
     session,
     getQueueInfo,
-    joinSession,
+    joinSocketSession,
     leaveSession
   } = useContext(QueueContext);
   //   const { getOperators, users } = useContext(UsersContext);
@@ -94,12 +93,6 @@ export default function CurrentSession() {
       } else if (user.role !== "operator") {
         alert.show("Not authorized to access this resource!");
         history.push("/dashboard");
-      } else {
-        const id = user.session
-        joinSession(id);
-        getQueueInfo(id);
-        // getStudents(user.session);
-        // getOperators()
       }
     });
   }, [isAuth]);
@@ -110,10 +103,8 @@ export default function CurrentSession() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* {students.map(student => (<Student key={student._id} student={student} />))} */}
             <Grid item xs={6} md={3} lg={3}>
               <Paper className={classes.paper}>
-                {/* {members.map(member => (<Queue key={member.id} member={member} />))} */}
                 <Queue />
               </Paper>
             </Grid>

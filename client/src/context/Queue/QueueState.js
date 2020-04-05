@@ -3,9 +3,9 @@ import io from "socket.io-client";
 import QueueReducer from "./QueueReducer";
 
 export const socket = io('http://localhost:5000', {
-    query: {
-        token: localStorage.getItem("token")
-    },
+    // query: {
+    //     token: localStorage.getItem("token")
+    // },
     // forceNew: true
     reconnection: true,
     reconnectionDelay: 1000,
@@ -43,8 +43,11 @@ export const QueueProvider = ({ children }) => {
         }
     }
 
-    function joinSession(id) {
-        socket.emit('join', id);
+    function joinSocketSession(id) {
+        socket.emit('join', {
+            id: id,
+            token: localStorage.getItem("token")
+        });
         console.log('join sent')
     }
 
@@ -71,9 +74,9 @@ export const QueueProvider = ({ children }) => {
         <QueueContext.Provider
             value={{
                 members: state.members,
-                status: state.session,
+                session: state.session,
                 getQueueInfo,
-                joinSession,
+                joinSocketSession,
                 leaveSession
             }}
         >
