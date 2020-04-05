@@ -16,7 +16,7 @@ import { AuthContext } from "../../context/Auth/AuthState";
 import { SessionsContext } from "../../context/Sessions/SessionsState";
 import { UsersContext } from "../../context/Users/UsersState";
 
-import { NavBar } from "../Basic/NavBar";
+import { Navbar } from "../Basic/Navbar";
 import { Copyright } from "../Basic/Copyright";
 import { CreateSession } from "./CreateSession";
 import ActiveSessionsTable from './ActiveSessionsTable'
@@ -89,13 +89,14 @@ export default function Management() {
         history.push("/dashboard");
       } else {
         getSessions();
+        console.log(sessions)
         getOperators()
       }
     });
   }, [isAuth]);
   return (
     <div className={classes.root}>
-      <NavBar />
+      <Navbar />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
@@ -107,7 +108,7 @@ export default function Management() {
                   fullWidth
                   onClick={() => setHidden(!isHidden)}
                 >New Session</Button>
-                <ActiveSessionsTable sessions={sessions} />
+                <ActiveSessionsTable />
               </Grid>) :
               (<Grid item xs="auto" md={4} lg={4}>
                 <Paper className={classes.paper}>
@@ -118,7 +119,7 @@ export default function Management() {
             {(isHidden) ? null :
               (<Grid item xs={12} md={8} lg={8} className={classes.paper}>
                 {/* <Paper className={classes.paper}> */}
-                <ActiveSessionsTable sessions={sessions} />
+                <ActiveSessionsTable />
                 {/* </Paper> */}
               </Grid>)}
 

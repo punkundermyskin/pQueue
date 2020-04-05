@@ -26,10 +26,10 @@ export const QueueContext = createContext(initialState);
 export const QueueProvider = ({ children }) => {
     const [state, dispatch] = useReducer(QueueReducer, initialState);
 
-    function getQueueInfo(id) {
+    async function getQueueInfo(id) {
         try {
-            socket.emit('queueInfoToSocket', id);
-            socket.on('queueInfo', (data) => {
+            await socket.emit('queueInfoToSocket', id);
+            await socket.on('queueInfo', (data) => {
                 dispatch({
                     type: "GET_QUEUE_INFO",
                     payload: data
@@ -43,8 +43,8 @@ export const QueueProvider = ({ children }) => {
         }
     }
 
-    function joinSocketSession(id) {
-        socket.emit('join', {
+    async function joinSocketSession(id) {
+        await socket.emit('join', {
             id: id,
             token: localStorage.getItem("token")
         });

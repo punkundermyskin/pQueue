@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import { NavBar } from "../Basic/NavBar";
+import { Navbar } from "../Basic/Navbar";
 import { SessionCard } from "./SessionCard";
 
 import { useHistory } from "react-router-dom";
@@ -39,7 +39,7 @@ export default function Dashboard() {
 
   return (
     <div className={classes.root}>
-      <NavBar />
+      <Navbar />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>

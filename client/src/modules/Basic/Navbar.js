@@ -16,7 +16,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { SideBar } from "./SideBar";
 import { useStyles } from "./mainStyles";
 
-export const NavBar = () => {
+export const Navbar = () => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const handleDrawerOpen = () => {

@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 
 import { useStyles } from "./stylesAuth";
-import { NavBar } from "../Basic/NavBar";
+import { Navbar } from "../Basic/Navbar";
 import { Copyright } from "../Basic/Copyright";
 import { SignIn } from "./SignIn";
 
@@ -13,7 +13,7 @@ export default function Login() {
   const path = window.location.pathname;
   return (
     <div className={classes.root}>
-      <NavBar />
+      <Navbar />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>

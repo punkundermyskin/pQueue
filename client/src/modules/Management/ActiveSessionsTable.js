@@ -31,21 +31,26 @@ const theme = createMuiTheme({
     },
 });
 
-export default function ActiveSessionsTable({ sessions }) {
+export default function ActiveSessionsTable() {
     const classes = useStyles();
 
-    const { joinSession, sessionsSuccess } = useContext(SessionsContext);
+    const { joinSession, sessionsSuccess, sessions } = useContext(SessionsContext);
     const { session, joinSocketSession, getQueueInfo, leaveSession } = useContext(QueueContext);
     const alert = useAlert();
     const history = useHistory();
 
     const handleJoinButton = (id) => {
         joinSession(id).then(() => {
+
             if (sessionsSuccess) {
                 alert.show("You have successfully joined the session.");
-                joinSocketSession(id);
-                getQueueInfo(id);
-                history.push("/management/current-session");
+                joinSocketSession(id)
+                // getQueueInfo(id)
+                getQueueInfo(id).then(() => {
+                    console.log(session)
+                    history.push("/management/current-session");
+                })
+
             } else {
                 alert.show("Something went wrong!");
             }
