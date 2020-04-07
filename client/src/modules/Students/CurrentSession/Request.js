@@ -71,7 +71,7 @@ export function Request() {
     members,
     session,
     getQueueInfo,
-    joinSession,
+    joinLine,
     leaveSession
   } = useContext(QueueContext);
   const { user } = useContext(AuthContext);
@@ -152,21 +152,21 @@ export function Request() {
             color="primary"
             // className={classes.mainField}
             onClick={() => {
-              leaveSession(session._id);
-              history.push("/management");
+              joinLine(session._id);
             }}
           >
-            Finish Servering
+            Get In Line
             </Button>
           <Button
             variant="contained"
             color="primary"
             // className={classes.mainField}
             onClick={() => {
-              console.log(session.start)
+              leaveSession(session._id);
+              history.push("/students");
             }}
           >
-            Return To Queue
+            Leave Session
             </Button>
           {/* </Grid> */}
         </Grid>

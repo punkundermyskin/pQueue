@@ -10,6 +10,8 @@ import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
 import { UsersProvider, UsersContext } from "./context/Users/UsersState"
 import { QueueProvider, QueueContext } from "./context/Queue/QueueState"
+import Students from "./modules/Students/Students";
+import StudentCurrentSession from './modules/Students/CurrentSession/StudentCurrentSession'
 
 function App() {
   return (
@@ -26,8 +28,10 @@ function App() {
               context={AuthContext}
             />
             <QueueProvider>
+              <Route exact path="/students" component={Students} context={AuthContext, SessionsContext, QueueContext} />
+              <Route path="/students/current-session" component={StudentCurrentSession} context={AuthContext, QueueContext} />
               <Route path="/management/current-session" component={CurrentSession} context={AuthContext, QueueContext} />
-              <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext} />
+              <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext, QueueContext} />
             </QueueProvider>
           </UsersProvider>
         </SessionsProvider>

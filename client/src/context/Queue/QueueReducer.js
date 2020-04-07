@@ -1,10 +1,12 @@
 export default (state, action) => {
   switch (action.type) {
     case "GET_QUEUE_INFO":
+      console.log('reducer get info')
       return {
         ...state,
         members: action.payload.members,
-        session: action.payload.session
+        session: action.payload.session,
+        isLoading: false
       };
     case "UPDATE_QUEUE":
       const member = action.payload

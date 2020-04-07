@@ -89,7 +89,6 @@ export default function Management() {
         history.push("/dashboard");
       } else {
         getSessions();
-        console.log(sessions)
         getOperators()
       }
     });

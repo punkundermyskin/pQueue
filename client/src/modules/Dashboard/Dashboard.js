@@ -12,7 +12,7 @@ import { AuthContext } from "../../context/Auth/AuthState";
 import { SessionsContext } from "../../context/Sessions/SessionsState";
 
 import { useStyles } from "../Basic/mainStyles";
-import { Copyright } from "./../Basic/Copyright";
+import { Copyright } from "../Basic/Copyright";
 
 export default function Dashboard() {
   const classes = useStyles();

@@ -49,6 +49,19 @@ export function SideBar() {
     });
   };
 
+  const studentsHandler = () => {
+    loadUser().then(() => {
+      if (!isAuth) {
+        history.push("/login");
+      } else if (user.role !== "student") {
+        alert.show("Not authorized to access this resource!");
+        history.push("/dashboard");
+      } else {
+        history.push("/students");
+      }
+    });
+  };
+
   const dashboardHandler = () => {
     history.push("/dashboard");
   };
@@ -67,7 +80,7 @@ export function SideBar() {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={studentsHandler}>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>

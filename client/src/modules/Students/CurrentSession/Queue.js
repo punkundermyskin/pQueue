@@ -11,7 +11,7 @@ import { QueueContext } from "../../../context/Queue/QueueState";
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
-        height: 350,
+        height: 600,
         maxWidth: 150,
         backgroundColor: theme.palette.background.paper,
     },

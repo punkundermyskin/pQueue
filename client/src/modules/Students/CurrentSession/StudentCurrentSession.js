@@ -20,10 +20,7 @@ import { UsersContext } from "../../../context/Users/UsersState";
 
 import { Navbar } from "../../Basic/Navbar";
 import { Copyright } from "../../Basic/Copyright";
-import { CreateSession } from "../CreateSession";
-import ActiveSessionsTable from "../ActiveSessionsTable";
 import { Queue } from "./Queue";
-import { WaitingRoom } from './WaitingRoom'
 import { Request } from "./Request";
 
 import { QueueContext } from "../../../context/Queue/QueueState";
@@ -91,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function CurrentSession() {
+export default function StudentCurrentSession() {
   const classes = useStyles();
   const history = useHistory();
   const { loadUser, user, isAuth } = useContext(AuthContext);
@@ -107,15 +104,14 @@ export default function CurrentSession() {
   //   const { getOperators, users } = useContext(UsersContext);
   const alert = useAlert();
 
-  const queue = members.filter(member => member.status == 'inline')
-  const checkedMembers = members.filter(member => member.status != 'inline' && member.status != 'request')
-  const waitingMembers = members.filter(member => member.status == 'request');
+  const queueMembers = members.filter(member => member.status == 'inline')
+  const otherMembers = members.filter(member => member.status != 'inline');
 
   useEffect(() => {
     loadUser().then(() => {
       if (!isAuth) {
         history.push("/login");
-      } else if (user.role !== "operator") {
+      } else if (user.role !== "student") {
         alert.show("Not authorized to access this resource!");
         history.push("/dashboard");
       }
@@ -164,27 +160,21 @@ export default function CurrentSession() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container>
-            <Grid item xs={12} md={3} lg={3}>
+            <Grid item xs={12} md={6} lg={3}>
               <Paper className={classes.request}>
                 <Request />
               </Paper>
             </Grid>
-            <Grid item xs={4} md={3} lg={3}>
+            <Grid item xs={6} md={3} lg={3}>
               <Paper className={classes.paper}>
                 <Title>Line:</Title>
-                <Queue members={queue} />
+                <Queue members={queueMembers} />
               </Paper>
             </Grid>
-            <Grid item xs={4} md={3} lg={3}>
+            <Grid item xs={6} md={3} lg={3}>
               <Paper className={classes.paper}>
                 <Title>Members: </Title>
-                <Queue members={checkedMembers} />
-              </Paper>
-            </Grid>
-            <Grid item xs={4} md={3} lg={3}>
-              <Paper className={classes.paper}>
-                <Title>Waiting Room: </Title>
-                <WaitingRoom members={waitingMembers} />
+                <Queue members={otherMembers} />
               </Paper>
             </Grid>
             {/* <Grid item xs={6} md={3} lg={3}>

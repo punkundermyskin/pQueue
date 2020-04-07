@@ -16,7 +16,8 @@ export const socket = io('http://localhost:5000', {
 // Initial State
 const initialState = {
     members: [],
-    session: null
+    session: null,
+    isLoading: true
 };
 
 // Create context
@@ -28,8 +29,10 @@ export const QueueProvider = ({ children }) => {
 
     async function getQueueInfo(id) {
         try {
-            await socket.emit('queueInfoToSocket', id);
+            await socket.emit('getQueueInfo', id);
+            console.log('send request to server')
             await socket.on('queueInfo', (data) => {
+                console.log('get info from server')
                 dispatch({
                     type: "GET_QUEUE_INFO",
                     payload: data
@@ -44,15 +47,25 @@ export const QueueProvider = ({ children }) => {
     }
 
     async function joinSocketSession(id) {
-        await socket.emit('join', {
+        await socket.emit('joinSessionRoom', {
             id: id,
             token: localStorage.getItem("token")
         });
-        console.log('join sent')
+        console.log('join Session Room sent')
     }
 
-    function leaveSession(id) {
-        socket.emit('leave', id);
+    async function joinLine() {
+        await socket.emit('joinLine', localStorage.getItem("token"))
+        console.log('join line sent')
+    }
+
+    async function leaveLine() {
+        await socket.emit('leaveLine', localStorage.getItem("token"))
+        console.log('leave line sent')
+    }
+
+    function leaveSession() {
+        socket.emit('leave', localStorage.getItem("token"))
         console.log('leave sent')
     }
 
@@ -70,14 +83,29 @@ export const QueueProvider = ({ children }) => {
         });
     });
 
+    // OPERATORS part !!!
+
+    function approveMember(member) {
+        socket.emit('approveMember', {
+            token: localStorage.getItem("token"),
+            memberID: member._id
+        });
+        console.log('approve member sent')
+    }
+
+
     return (
         <QueueContext.Provider
             value={{
                 members: state.members,
                 session: state.session,
+                isLoading: state.isLoading,
                 getQueueInfo,
                 joinSocketSession,
-                leaveSession
+                joinLine,
+                leaveLine,
+                leaveSession,
+                approveMember
             }}
         >
             {children}

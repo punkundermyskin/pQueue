@@ -42,7 +42,7 @@ export default function ActiveSessionsTable() {
     const handleJoinButton = (id) => {
         joinSession(id).then(() => {
             if (sessionsSuccess) {
-                history.push("/management/current-session");
+                history.push("/students/current-session");
                 alert.show("You have successfully joined the session.");
                 joinSocketSession(id)
                 getQueueInfo(id)
