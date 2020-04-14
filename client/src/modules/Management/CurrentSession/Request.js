@@ -83,19 +83,26 @@ export function Request() {
   //   sessionID = user.session;
   // }
 
-  const currentDate = moment();
-  const future = moment(session.end);
-  const timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
+  // const currentDate = moment();
+  // const future = moment(session.end);
+  // const timeLeft = moment(future.diff(currentDate)).format("HH:mm:ss");
+  // 
+  // const [dt, setDt] = useState(new Date().toLocaleString());
+  // 
+  // useEffect(() => {
+  //   console.log(1234)
+  //   let secTimer = setInterval(() => {
+  //     setDt(new Date().toLocaleString())
+  //   }, 1000)
 
-  const [dt, setDt] = useState(new Date().toLocaleString());
+  //   return () => clearInterval(secTimer);
+  // }, []);
 
-  useEffect(() => {
-    let secTimer = setInterval(() => {
-      setDt(new Date().toLocaleString())
-    }, 1000)
-
-    return () => clearInterval(secTimer);
-  }, []);
+  const finishServeringHandler = () => {
+    console.log(1234)
+    leaveSession(session._id);
+    history.push("/management");
+  }
 
   return (
     <div className={classes.root} >
@@ -114,7 +121,7 @@ export function Request() {
           <Typography component="h2" variant="h6" className={classes.title} gutterBottom >
             {/* {moment(session.end).fromNow()} */}
             {/* {moment().format('MMMM Do YYYY, h:mm:ss a')} */}
-            {timeLeft}
+            {session.end}
             {/* {moment(dt)} */}
           </Typography>
         </Grid>
@@ -151,10 +158,7 @@ export function Request() {
             variant="contained"
             color="primary"
             // className={classes.mainField}
-            onClick={() => {
-              leaveSession(session._id);
-              history.push("/management");
-            }}
+            onClick={finishServeringHandler}
           >
             Finish Servering
             </Button>

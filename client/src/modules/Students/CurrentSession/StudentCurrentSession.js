@@ -71,7 +71,7 @@ const useStyles = makeStyles(theme => ({
     // }
   },
   request: {
-    background: 'linear-gradient(45deg, #FE6B8B 10%, #4153AF 90%)',
+    background: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)',
     color: 'white',
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
@@ -105,7 +105,8 @@ export default function StudentCurrentSession() {
   const alert = useAlert();
 
   const queueMembers = members.filter(member => member.status == 'inline')
-  const otherMembers = members.filter(member => member.status != 'inline');
+  const otherMembers = members.filter(member => member.status != 'inline')
+  const queueUser = members.find((element) => { return element._id === user._id })
 
   useEffect(() => {
     loadUser().then(() => {
@@ -162,7 +163,7 @@ export default function StudentCurrentSession() {
           <Grid container>
             <Grid item xs={12} md={6} lg={3}>
               <Paper className={classes.request}>
-                <Request />
+                <Request user={queueUser} />
               </Paper>
             </Grid>
             <Grid item xs={6} md={3} lg={3}>

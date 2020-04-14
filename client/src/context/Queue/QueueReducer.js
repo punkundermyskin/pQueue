@@ -1,3 +1,5 @@
+import update from 'immutability-helper';
+
 export default (state, action) => {
   switch (action.type) {
     case "GET_QUEUE_INFO":
@@ -6,7 +8,8 @@ export default (state, action) => {
         ...state,
         members: action.payload.members,
         session: action.payload.session,
-        isLoading: false
+        isLoading: false,
+        setSpinner: false
       };
     case "UPDATE_QUEUE":
       const member = action.payload
@@ -14,13 +17,15 @@ export default (state, action) => {
       if (!existingMember) {
         return {
           ...state,
-          members: [...state.members, action.payload]
+          members: [...state.members, action.payload],
+          setSpinner: false
         };
       } else {
         const updatedMembers = updateMembers(state.members, member)
         return {
           ...state,
-          members: updatedMembers
+          members: updatedMembers,
+          setSpinner: false
         };
       }
     case "REMOVE_MEMBER":
@@ -28,13 +33,24 @@ export default (state, action) => {
       const updatedMembers = state.members.filter(member => member._id != id);
       return {
         ...state,
-        members: updatedMembers
+        members: updatedMembers,
+        setSpinner: false
       };
-
+    case "QUEUE_LOADING":
+      return {
+        ...state,
+        setSpinner: true
+      };
+    case "QUEUE_FINISH_LOADING":
+      return {
+        ...state,
+        setSpinner: false
+      };
     case "SOCKET_ERROR":
       return {
         ...state,
-        sessionsError: action.payload
+        sessionsError: action.payload,
+        setSpinner: false
       };
     default:
       return state;
@@ -48,18 +64,8 @@ function findUserByName(members, username) {
 }
 
 function updateMembers(members, member) {
-  for (var x = 0; x < members.length; x++) {
-    if (members[x]._id === member._id) {
-      members[x] = member
-    }
-    return members
-  }
-  // return members.map((item, index) => {
-  //   if (item._id === member._id) {
-  //     return {
-  //       member
-  //     }
-  //   }
-  //   return item;
-  // });
+  var updatedMembers = members.filter(item => item._id != member._id);
+  updatedMembers.push(member)
+  console.log('updatedMembers')
+  return updatedMembers
 }

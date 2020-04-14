@@ -46,6 +46,7 @@ export default function ActiveSessionsTable() {
                 alert.show("You have successfully joined the session.");
                 joinSocketSession(id)
                 getQueueInfo(id)
+
             } else {
                 alert.show("Something went wrong!");
             }

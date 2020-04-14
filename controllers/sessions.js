@@ -58,12 +58,20 @@ exports.addSession = async (req, res, next) => {
 // @access  Public
 exports.joinSession = async (req, res, next) => {
     try {
-        var id = req.params.id;
+        var joinSessionID = req.params.id;
 
-        const token = req.header('Authorization').replace('Bearer ', '')
-        const data = jwt.verify(token, process.env.JWT_KEY)
-        const user = await Sessions.find({ _id: data._id });
-        await Users.findOneAndUpdate({ _id: data._id }, { $set: { session: id, status: 'request' } }, { new: true })
+        const user = req.user
+        const userID = user._id.toString()
+        var currentSessionID
+        try {
+            currentSessionID = user.session._id.toString()
+        } catch (error) {
+            currentSessionID = null
+        }
+
+        if (user.session == null || currentSessionID != joinSessionID) {
+            await Users.findOneAndUpdate({ _id: userID }, { $set: { session: joinSessionID, status: 'request' } }, { new: true })
+        }
 
         return res.status(201).json({
             success: true,

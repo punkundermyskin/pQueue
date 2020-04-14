@@ -1,8 +1,8 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 import io from "socket.io-client";
 import QueueReducer from "./QueueReducer";
 
-export const socket = io('http://localhost:5000', {
+export const socket = io('http://localhost:5000', { // change to local ip
     // query: {
     //     token: localStorage.getItem("token")
     // },
@@ -17,7 +17,9 @@ export const socket = io('http://localhost:5000', {
 const initialState = {
     members: [],
     session: null,
-    isLoading: true
+    isLoading: true,
+    setSpinner: false,
+    sessionsError: null
 };
 
 // Create context
@@ -27,27 +29,50 @@ export const QueueContext = createContext(initialState);
 export const QueueProvider = ({ children }) => {
     const [state, dispatch] = useReducer(QueueReducer, initialState);
 
-    async function getQueueInfo(id) {
-        try {
-            await socket.emit('getQueueInfo', id);
-            console.log('send request to server')
-            await socket.on('queueInfo', (data) => {
-                console.log('get info from server')
-                dispatch({
-                    type: "GET_QUEUE_INFO",
-                    payload: data
-                });
+    // console.log('QueueProvider')
+
+    useEffect(() => {
+        console.log('QueueProvider')
+        socket.on('queueInfo', (data) => {
+            console.log('get info from server')
+            dispatch({
+                type: "GET_QUEUE_INFO",
+                payload: data
             });
-        } catch (error) {
+        });
+
+        socket.on('update', (data) => {
+            console.log('update')
+            dispatch({
+                type: "UPDATE_QUEUE",
+                payload: data
+            });
+        });
+
+        socket.on('message', (data) => {
             dispatch({
                 type: "SOCKET_ERROR",
-                payload: error
+                payload: data
             });
-        }
+        });
+
+        socket.on('remove', (id) => {
+            console.log('socket on - remove - run ', Date.now())
+            dispatch({
+                type: "REMOVE_MEMBER",
+                payload: id
+            });
+        });
+    }, []);
+
+    function getQueueInfo(id) {
+        setLoader()
+        socket.emit('getQueueInfo', id);
+        console.log('send request to server')
     }
 
-    async function joinSocketSession(id) {
-        await socket.emit('joinSessionRoom', {
+    function joinSocketSession(id) {
+        socket.emit('joinSessionRoom', {
             id: id,
             token: localStorage.getItem("token")
         });
@@ -65,32 +90,25 @@ export const QueueProvider = ({ children }) => {
     }
 
     function leaveSession() {
-        socket.emit('leave', localStorage.getItem("token"))
+        socket.emit('leaveSessionRoom', localStorage.getItem("token"))
         console.log('leave sent')
     }
-
-    socket.on('update', (data) => {
-        dispatch({
-            type: "UPDATE_QUEUE",
-            payload: data
-        });
-    });
-
-    socket.on('remove', (id) => {
-        dispatch({
-            type: "REMOVE_MEMBER",
-            payload: id
-        });
-    });
 
     // OPERATORS part !!!
 
     function approveMember(member) {
+        setLoader()
         socket.emit('approveMember', {
             token: localStorage.getItem("token"),
             memberID: member._id
         });
         console.log('approve member sent')
+    }
+
+    function setLoader() {
+        dispatch({
+            type: "QUEUE_LOADING"
+        });
     }
 
 
@@ -100,6 +118,8 @@ export const QueueProvider = ({ children }) => {
                 members: state.members,
                 session: state.session,
                 isLoading: state.isLoading,
+                setSpinner: state.setSpinner,
+                sessionsError: state.sessionsError,
                 getQueueInfo,
                 joinSocketSession,
                 joinLine,

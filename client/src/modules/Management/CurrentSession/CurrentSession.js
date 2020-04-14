@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 
 import Loader from 'react-loader-spinner'
+import LoadingOverlay from 'react-loading-overlay';
 
 import Title from './Title';
 import RequestTitle from './RequestTitle';
@@ -100,6 +101,8 @@ export default function CurrentSession() {
     members,
     session,
     isLoading,
+    setSpinner,
+    sessionsError,
     getQueueInfo,
     joinSocketSession,
     leaveSession
@@ -112,6 +115,7 @@ export default function CurrentSession() {
   const waitingMembers = members.filter(member => member.status == 'request');
 
   useEffect(() => {
+    console.log(1234)
     loadUser().then(() => {
       if (!isAuth) {
         history.push("/login");
@@ -119,12 +123,16 @@ export default function CurrentSession() {
         alert.show("Not authorized to access this resource!");
         history.push("/dashboard");
       }
-      // const id = '5e68a1c71de6fd875e8d93bb'
-      // joinSocketSession(id)
-      // getQueueInfo(id)
-
     });
   }, []);
+
+  useEffect(() => {
+    console.log(1234)
+    if (sessionsError != null) {
+      const message = sessionsError.substring(0, sessionsError.length - 13);
+      alert.show(message);
+    }
+  }, [sessionsError]);
 
   if (isLoading == true) {
     return (
@@ -162,41 +170,47 @@ export default function CurrentSession() {
       <Navbar />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container>
-            <Grid item xs={12} md={3} lg={3}>
-              <Paper className={classes.request}>
-                <Request />
-              </Paper>
-            </Grid>
-            <Grid item xs={4} md={3} lg={3}>
-              <Paper className={classes.paper}>
-                <Title>Line:</Title>
-                <Queue members={queue} />
-              </Paper>
-            </Grid>
-            <Grid item xs={4} md={3} lg={3}>
-              <Paper className={classes.paper}>
-                <Title>Members: </Title>
-                <Queue members={checkedMembers} />
-              </Paper>
-            </Grid>
-            <Grid item xs={4} md={3} lg={3}>
-              <Paper className={classes.paper}>
-                <Title>Waiting Room: </Title>
-                <WaitingRoom members={waitingMembers} />
-              </Paper>
-            </Grid>
-            {/* <Grid item xs={6} md={3} lg={3}>
+        <LoadingOverlay
+          active={setSpinner}
+          spinner
+          text='Loading your content...'
+        >
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid container>
+              <Grid item xs={12} md={3} lg={3}>
+                <Paper className={classes.request}>
+                  <Request />
+                </Paper>
+              </Grid>
+              <Grid item xs={4} md={3} lg={3}>
+                <Paper className={classes.paper}>
+                  <Title>Line:</Title>
+                  <Queue members={queue} />
+                </Paper>
+              </Grid>
+              <Grid item xs={4} md={3} lg={3}>
+                <Paper className={classes.paper}>
+                  <Title>Members: </Title>
+                  <Queue members={checkedMembers} />
+                </Paper>
+              </Grid>
+              <Grid item xs={4} md={3} lg={3}>
+                <Paper className={classes.paper}>
+                  <Title>Waiting Room: </Title>
+                  <WaitingRoom members={waitingMembers} />
+                </Paper>
+              </Grid>
+              {/* <Grid item xs={6} md={3} lg={3}>
                 <Paper className={classes.paper}>
                   <WaitingList />
                 </Paper>
               </Grid> */}
-          </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
-        </Container>
+            </Grid>
+            <Box pt={4}>
+              <Copyright />
+            </Box>
+          </Container>
+        </LoadingOverlay>
       </main>
     </div>
   );
