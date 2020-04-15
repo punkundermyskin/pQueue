@@ -20,6 +20,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     getSessions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -30,7 +31,7 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {sessions.map((session) => (
-              <Grid item xs="auto" md={3} lg={3}>
+              <Grid item xs="auto" md={3} lg={3} key={session._id}>
                 <Paper className={fixedHeightPaper}>
                   <SessionCard key={session._id} session={session} />
                 </Paper>

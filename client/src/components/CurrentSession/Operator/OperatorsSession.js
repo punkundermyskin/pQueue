@@ -30,11 +30,13 @@ export default function OperatorsSession() {
   );
   const alert = useAlert();
 
-  const queue = members.filter((member) => member.status == "inline");
+  const queue = members.filter((member) => member.status === "inline");
   const checkedMembers = members.filter(
-    (member) => member.status != "inline" && member.status != "request"
+    (member) => member.status !== "inline" && member.status !== "request"
   );
-  const waitingMembers = members.filter((member) => member.status == "request");
+  const waitingMembers = members.filter(
+    (member) => member.status === "request"
+  );
 
   useEffect(() => {
     loadUser().then(() => {
@@ -45,16 +47,18 @@ export default function OperatorsSession() {
         history.push("/dashboard");
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (sessionsError != null) {
+    if (sessionsError !== null) {
       const message = sessionsError.substring(0, sessionsError.length - 13);
       alert.show(message);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionsError]);
 
-  if (isLoading == true) {
+  if (isLoading === true) {
     return (
       <div className={classes.root}>
         <Navbar />

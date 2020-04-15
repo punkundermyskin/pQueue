@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -47,7 +47,7 @@ export default function ActiveSessionsTable() {
       if (sessionsSuccess) {
         joinSocketSession(id);
         getQueueInfo(id);
-        if (user.role == "student") {
+        if (user.role === "student") {
           history.push("/student/current-session");
         } else {
           history.push("/operator/current-session");

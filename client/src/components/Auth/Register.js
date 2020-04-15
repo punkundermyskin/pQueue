@@ -10,7 +10,6 @@ import { SignUp } from "./SignUp";
 
 export default function Register() {
   const classes = useStyles();
-  const path = window.location.pathname;
   return (
     <div className={classes.root}>
       <Navbar />

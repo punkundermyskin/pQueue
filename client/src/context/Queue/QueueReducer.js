@@ -1,5 +1,3 @@
-import update from "immutability-helper";
-
 export default (state, action) => {
   switch (action.type) {
     case "GET_QUEUE_INFO":
@@ -30,7 +28,9 @@ export default (state, action) => {
       }
     case "REMOVE_MEMBER":
       const id = action.payload;
-      const updatedMembers = state.members.filter((member) => member._id != id);
+      const updatedMembers = state.members.filter(
+        (member) => member._id !== id
+      );
       return {
         ...state,
         members: updatedMembers,
@@ -64,7 +64,7 @@ function findUserByName(members, username) {
 }
 
 function updateMembers(members, member) {
-  var updatedMembers = members.filter((item) => item._id != member._id);
+  var updatedMembers = members.filter((item) => item._id !== member._id);
   updatedMembers.push(member);
   console.log("updatedMembers");
   return updatedMembers;

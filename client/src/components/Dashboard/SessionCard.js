@@ -7,12 +7,12 @@ export const SessionCard = ({ session }) => {
   return (
     <React.Fragment>
       <Title>{session.subject}</Title>
-      <Grid container direction="column" justify="center" alignItems="left">
+      <Grid container direction="column" justify="center">
         <Grid>status: {session.status}</Grid>
         <Grid>office: {session.office}</Grid>
         Groups:
         {session.groups.map((group) => (
-          <li>
+          <li key={group}>
             {group} <button onClick={() => console.log(session._id)}>x</button>
           </li>
         ))}

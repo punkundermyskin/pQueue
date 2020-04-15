@@ -59,6 +59,7 @@ export function SignUp() {
         alert.show(authError);
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth, authError]);
 
   const onSubmit = (e) => {

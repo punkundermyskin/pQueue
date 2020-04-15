@@ -29,8 +29,8 @@ export default function StudentsSession() {
   } = useContext(QueueContext);
   const alert = useAlert();
 
-  const queueMembers = members.filter(member => member.status == 'inline')
-  const otherMembers = members.filter(member => member.status != 'inline')
+  const queueMembers = members.filter(member => member.status === 'inline')
+  const otherMembers = members.filter(member => member.status !== 'inline')
   const queueUser = members.find((element) => { return element._id === user._id })
 
   useEffect(() => {
@@ -42,9 +42,10 @@ export default function StudentsSession() {
         history.push("/dashboard");
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isLoading == true) {
+  if (isLoading === true) {
     return (
       <div className={classes.root}>
         <Navbar />

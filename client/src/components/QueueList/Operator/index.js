@@ -40,6 +40,7 @@ export default function Operator() {
         getOperators();
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth]);
   return (
     <div className={classes.root}>

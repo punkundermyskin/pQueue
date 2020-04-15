@@ -32,6 +32,7 @@ export default function Student() {
         getSessions();
       }
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth]);
   return (
     <div className={classes.root}>

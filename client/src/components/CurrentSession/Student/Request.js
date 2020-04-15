@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Loader from 'react-loader-spinner'
@@ -63,11 +62,11 @@ export function Request({ user }) {
             Main Service
         </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-            {(user.status == 'request') ? ('in wait') : (null)}
-            {(user.status == 'unready') ? ('unready') : (null)}
-            {(user.status == 'inline') ? ('in line') : (null)}
-            {(user.status == 'processing') ? ('in processing') : (null)}
-            {(user.status == 'done') ? ('done') : (null)}
+            {(user.status === 'request') ? ('in wait') : (null)}
+            {(user.status === 'unready') ? ('unready') : (null)}
+            {(user.status === 'inline') ? ('in line') : (null)}
+            {(user.status === 'processing') ? ('in processing') : (null)}
+            {(user.status === 'done') ? ('done') : (null)}
             <Button
               variant="contained"
               color="primary"

@@ -30,10 +30,7 @@ export const QueueContext = createContext(initialState);
 export const QueueProvider = ({ children }) => {
   const [state, dispatch] = useReducer(QueueReducer, initialState);
 
-  // console.log('QueueProvider')
-
   useEffect(() => {
-    console.log("QueueProvider");
     socket.on("queueInfo", (data) => {
       console.log("get info from server");
       dispatch({
