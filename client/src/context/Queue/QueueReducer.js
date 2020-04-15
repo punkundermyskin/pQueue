@@ -1,56 +1,56 @@
-import update from 'immutability-helper';
+import update from "immutability-helper";
 
 export default (state, action) => {
   switch (action.type) {
     case "GET_QUEUE_INFO":
-      console.log('reducer get info')
+      console.log("reducer get info");
       return {
         ...state,
         members: action.payload.members,
         session: action.payload.session,
         isLoading: false,
-        setSpinner: false
+        setSpinner: false,
       };
     case "UPDATE_QUEUE":
-      const member = action.payload
-      const existingMember = findUserByName(state.members, member.username)
+      const member = action.payload;
+      const existingMember = findUserByName(state.members, member.username);
       if (!existingMember) {
         return {
           ...state,
           members: [...state.members, action.payload],
-          setSpinner: false
+          setSpinner: false,
         };
       } else {
-        const updatedMembers = updateMembers(state.members, member)
+        const updatedMembers = updateMembers(state.members, member);
         return {
           ...state,
           members: updatedMembers,
-          setSpinner: false
+          setSpinner: false,
         };
       }
     case "REMOVE_MEMBER":
-      const id = action.payload
-      const updatedMembers = state.members.filter(member => member._id != id);
+      const id = action.payload;
+      const updatedMembers = state.members.filter((member) => member._id != id);
       return {
         ...state,
         members: updatedMembers,
-        setSpinner: false
+        setSpinner: false,
       };
     case "QUEUE_LOADING":
       return {
         ...state,
-        setSpinner: true
+        setSpinner: true,
       };
     case "QUEUE_FINISH_LOADING":
       return {
         ...state,
-        setSpinner: false
+        setSpinner: false,
       };
     case "SOCKET_ERROR":
       return {
         ...state,
         sessionsError: action.payload,
-        setSpinner: false
+        setSpinner: false,
       };
     default:
       return state;
@@ -60,12 +60,12 @@ export default (state, action) => {
 function findUserByName(members, username) {
   return members.find((element) => {
     return element.username === username;
-  })
+  });
 }
 
 function updateMembers(members, member) {
-  var updatedMembers = members.filter(item => item._id != member._id);
-  updatedMembers.push(member)
-  console.log('updatedMembers')
-  return updatedMembers
+  var updatedMembers = members.filter((item) => item._id != member._id);
+  updatedMembers.push(member);
+  console.log("updatedMembers");
+  return updatedMembers;
 }

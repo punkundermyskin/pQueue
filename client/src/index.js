@@ -12,20 +12,20 @@ import App from "./App";
 const options = {
   // you can also just use 'bottom center'
   position: positions.BOTTOM_CENTER,
-  timeout: 5000,
-  offset: "30px",
+  timeout: 3000,
+  offset: "10px",
   // you can also just use 'scale'
-  transition: transitions.SCALE
+  transition: transitions.FADE,
 };
 
 render(
-
   <AlertProvider template={AlertTemplate} {...options}>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </MuiPickersUtilsProvider>,
+    </MuiPickersUtilsProvider>
+    ,
   </AlertProvider>,
   document.querySelector("#root")
 );

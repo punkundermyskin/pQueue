@@ -1,41 +1,74 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Login from "./modules/Auth/Login";
-import Register from "./modules/Auth/Register";
-import Dashboard from "./modules/Dashboard/Dashboard";
-import Management from "./modules/Management/Management";
-import CurrentSession from './modules/Management/CurrentSession/CurrentSession'
+
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Operator from "./components/QueueList/Operator";
+import Student from "./components/QueueList/Student";
+import StudentsSession from "./components/CurrentSession/Student/StudentsSession";
+import OperatorsSession from "./components/CurrentSession/Operator/OperatorsSession";
 
 import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
-import { SessionsProvider, SessionsContext } from "./context/Sessions/SessionsState"
-import { UsersProvider, UsersContext } from "./context/Users/UsersState"
-import { QueueProvider, QueueContext } from "./context/Queue/QueueState"
-import Students from "./modules/Students/Students";
-import StudentCurrentSession from './modules/Students/CurrentSession/StudentCurrentSession'
+import {
+  SessionsProvider,
+  SessionsContext,
+} from "./context/Sessions/SessionsState";
+import { UsersProvider, UsersContext } from "./context/Users/UsersState";
+import { QueueProvider, QueueContext } from "./context/Queue/QueueState";
 
 function App() {
   return (
     <Switch>
-      <AuthProvider>
-        <Route path="/login" component={Login} context={AuthContext} />
-        <Route path="/register" component={Register} context={AuthContext} />
-        <SessionsProvider>
+      <QueueProvider>
+        <AuthProvider>
           <UsersProvider>
-            <Route exact path="/" component={Dashboard} context={AuthContext} />
-            <Route
-              path="/dashboard"
-              component={Dashboard}
-              context={AuthContext}
-            />
-            <QueueProvider>
-              <Route exact path="/students" component={Students} context={AuthContext, SessionsContext, QueueContext} />
-              <Route path="/students/current-session" component={StudentCurrentSession} context={AuthContext, QueueContext} />
-              <Route path="/management/current-session" component={CurrentSession} context={AuthContext, QueueContext} />
-              <Route exact path="/management" component={Management} context={AuthContext, SessionsContext, UsersContext, QueueContext} />
-            </QueueProvider>
+            <SessionsProvider>
+              <Route
+                exact
+                path="/"
+                component={Dashboard}
+                context={AuthContext}
+              />
+              <Route
+                path="/dashboard"
+                component={Dashboard}
+                context={AuthContext}
+              />
+              <Route path="/login" component={Login} context={AuthContext} />
+              <Route
+                path="/register"
+                component={Register}
+                context={AuthContext}
+              />
+              <Route
+                exact
+                path="/student"
+                component={Student}
+                context={(AuthContext, SessionsContext, QueueContext)}
+              />
+              <Route
+                exact
+                path="/operator"
+                component={Operator}
+                context={
+                  (AuthContext, SessionsContext, UsersContext, QueueContext)
+                }
+              />
+              <Route
+                path="/student/current-session"
+                component={StudentsSession}
+                context={(AuthContext, QueueContext)}
+              />
+              <Route
+                path="/operator/current-session"
+                component={OperatorsSession}
+                context={(AuthContext, QueueContext)}
+              />
+            </SessionsProvider>
           </UsersProvider>
-        </SessionsProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </QueueProvider>
     </Switch>
   );
 }
