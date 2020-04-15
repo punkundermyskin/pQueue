@@ -6,29 +6,26 @@ import AlertTemplate from "react-alert-template-basic";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import App from "./App";
-import SocketProvider from "./context/SocketContext/context";
 // import "./App.css";
 
 // optional cofiguration
 const options = {
   // you can also just use 'bottom center'
   position: positions.BOTTOM_CENTER,
-  timeout: 5000,
-  offset: "30px",
+  timeout: 3000,
+  offset: "10px",
   // you can also just use 'scale'
-  transition: transitions.SCALE
+  transition: transitions.FADE,
 };
 
 render(
-
   <AlertProvider template={AlertTemplate} {...options}>
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <BrowserRouter>
-        <SocketProvider>
-          <App />
-        </SocketProvider>
+        <App />
       </BrowserRouter>
-    </MuiPickersUtilsProvider>,
+    </MuiPickersUtilsProvider>
+    ,
   </AlertProvider>,
   document.querySelector("#root")
 );

@@ -27,9 +27,10 @@ exports.getSessions = async (req, res, next) => {
 // @access  Public
 exports.addSession = async (req, res, next) => {
     try {
-        const { text, amount } = req.body;
-
-        const session = await Sessions.create(req.body);
+        const reqSession = req.body;
+        const user = req.user
+        reqSession.owner = user._id
+        const session = await Sessions.create(reqSession);
 
         return res.status(201).json({
             success: true,
@@ -57,19 +58,20 @@ exports.addSession = async (req, res, next) => {
 // @access  Public
 exports.joinSession = async (req, res, next) => {
     try {
-        // const { text, amount } = req.body;
-        var id = req.params.id;
-        // const data = next()
-        // const token = req.body.headers.Authorization
+        var joinSessionID = req.params.id;
 
-        const token = req.header('Authorization').replace('Bearer ', '')
-        const data = jwt.verify(token, process.env.JWT_KEY)
-        // const user = await Users.find({ _id: data._id });
-        await Users.findOneAndUpdate({ _id: data._id }, { $set: { session: id, status: 'request' } }, { new: true })
-        // req.user.session = id
-        // user.session = id
-        // user.status = 'request'
-        // await user.save()
+        const user = req.user
+        const userID = user._id.toString()
+        var currentSessionID
+        try {
+            currentSessionID = user.session._id.toString()
+        } catch (error) {
+            currentSessionID = null
+        }
+
+        if (user.session == null || currentSessionID != joinSessionID) {
+            await Users.findOneAndUpdate({ _id: userID }, { $set: { session: joinSessionID, status: 'request' } }, { new: true })
+        }
 
         return res.status(201).json({
             success: true,

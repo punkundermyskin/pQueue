@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// var Schema = mongoose.Schema
+var Schema = mongoose.Schema
 
 const SessionSchema = new mongoose.Schema({
     status: {
@@ -14,6 +14,9 @@ const SessionSchema = new mongoose.Schema({
     office: {
         type: String,
         required: [true, 'Please add a office']
+    },
+    owner: {
+        type: Schema.Types.ObjectId, ref: 'User'
     },
     groups: {
         type: [Number],

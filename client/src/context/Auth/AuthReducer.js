@@ -1,23 +1,16 @@
-// const initialState = {
-//     token: localStorage.getItem('token'),
-//     isAuthenticated: null,
-//     isLoading: false,
-//     user: null
-// };
-
 export default function (state, action) {
   switch (action.type) {
     case "USER_LOADING":
       return {
         ...state,
-        authLoading: true
+        authLoading: true,
       };
     case "USER_LOADED":
       return {
         ...state,
         isAuth: true,
         authLoading: false,
-        user: action.payload.data
+        user: action.payload.data,
       };
     case "LOGIN_SUCCESS":
     case "REGISTER_SUCCESS":
@@ -27,7 +20,7 @@ export default function (state, action) {
         ...action.payload,
         isAuth: true,
         authLoading: false,
-        user: action.payload.data
+        user: action.payload.data,
       };
     case "AUTH_ERROR":
     case "LOGIN_FAIL":
@@ -40,7 +33,7 @@ export default function (state, action) {
         user: null,
         isAuth: false,
         authLoading: false,
-        authError: action.payload.error
+        authError: action.payload.error,
       };
     default:
       return state;
