@@ -69,8 +69,13 @@ exports.joinSession = async (req, res, next) => {
             currentSessionID = null
         }
 
-        if (user.session == null || currentSessionID != joinSessionID) {
-            await Users.findOneAndUpdate({ _id: userID }, { $set: { session: joinSessionID, status: 'request' } }, { new: true })
+        if (!user.session || currentSessionID != joinSessionID) {
+            const session = await Sessions.findById(joinSessionID)
+            var status = 'request'
+            if (session.owner._id.equals(user._id)) {
+                status = 'unready'
+            }
+            await Users.findOneAndUpdate({ _id: userID }, { $set: { session: joinSessionID, status: status } }, { new: true })
         }
 
         return res.status(201).json({

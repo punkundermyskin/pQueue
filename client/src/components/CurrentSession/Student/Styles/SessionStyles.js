@@ -39,26 +39,5 @@ export const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(3),
         padding: theme.spacing(2),
         alignItems: "center"
-        // [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        //     marginTop: theme.spacing(6),
-        //     marginBottom: theme.spacing(6),
-        //     padding: theme.spacing(3)
-        // }
-    },
-    request: {
-        background: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)',
-        color: 'white',
-        marginTop: theme.spacing(3),
-        marginBottom: theme.spacing(3),
-        padding: theme.spacing(2),
-        alignItems: "center",
-        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-            marginTop: theme.spacing(6),
-            marginBottom: theme.spacing(6),
-            padding: theme.spacing(3)
-        },
-        requestTitle: {
-            color: 'white'
-        }
     }
 }));

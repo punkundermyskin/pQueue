@@ -106,6 +106,38 @@ export const QueueProvider = ({ children }) => {
     console.log("approve member sent");
   }
 
+  async function setFreeOperator() {
+    await socket.emit("freeOperator", localStorage.getItem("token"));
+    console.log("freeOperator sent");
+  }
+
+  async function setUnreadyOperator() {
+    await socket.emit("unreadyOperator", localStorage.getItem("token"));
+    console.log("unreadyOperator sent");
+  }
+
+  function requestStudentForProcess() {
+    setLoader();
+    const token = localStorage.getItem("token")
+    socket.emit("requestStudentForProcess", token);
+    console.log("request Student For Process sent");
+  }
+
+  function returnStudentToQueue() {
+    setLoader();
+    const token = localStorage.getItem("token")
+    socket.emit("returnStudentToQueue", token);
+    console.log("return Student To Queue sent");
+  }
+
+  function finishServeringStudent() {
+    setLoader();
+    const token = localStorage.getItem("token")
+    socket.emit("finishServeringStudent", token);
+    console.log("finish Servering Student sent");
+  }
+
+
   // ---------------------------------
 
   function setLoader() {
@@ -128,6 +160,11 @@ export const QueueProvider = ({ children }) => {
         leaveLine,
         leaveSession,
         approveMember,
+        requestStudentForProcess,
+        setFreeOperator,
+        setUnreadyOperator,
+        finishServeringStudent,
+        returnStudentToQueue
       }}
     >
       {children}

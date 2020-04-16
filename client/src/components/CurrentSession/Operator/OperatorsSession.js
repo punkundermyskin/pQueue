@@ -14,7 +14,10 @@ import { Navbar } from "../../Basic/Navbar";
 import { Copyright } from "../../Basic/Copyright";
 import { Queue } from "./../Queue";
 import { WaitingRoom } from "./WaitingRoom";
-import { Request } from "./Request";
+import { Request } from "./Status/Request";
+import { Unready } from "./Status/Unready";
+import { Free } from "./Status/Free";
+import { Busy } from "./Status/Busy";
 
 import { AuthContext } from "../../../context/Auth/AuthState";
 import { QueueContext } from "../../../context/Queue/QueueState";
@@ -37,6 +40,30 @@ export default function OperatorsSession() {
   const waitingMembers = members.filter(
     (member) => member.status === "request"
   );
+  const processingStudents = members.filter(
+    (member) => member.status === "processing"
+  );
+  const queueOperator = members.find((element) => { return element._id === user._id })
+  const busyOperators = members.filter((member) => member.status === "busy");
+
+  var processingPairs = []
+  var myProcessingPair = null
+  for (var i = 0; i < processingStudents.length; i++) {
+    const student = processingStudents[i];
+    for (var j = 0; j < busyOperators.length; j++) {
+      const operator = busyOperators[j];
+      if (student.host === operator._id) {
+        var pair = { 'student': student, 'operator': operator }
+        processingPairs.push(pair);
+        if (operator._id === queueOperator._id) {
+          myProcessingPair = pair
+        }
+      }
+    }
+  }
+
+
+
 
   useEffect(() => {
     loadUser().then(() => {
@@ -58,7 +85,7 @@ export default function OperatorsSession() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionsError]);
 
-  if (isLoading === true) {
+  if (isLoading === true, !queueOperator) {
     return (
       <div className={classes.root}>
         <Navbar />
@@ -100,9 +127,10 @@ export default function OperatorsSession() {
           <Container maxWidth="lg" className={classes.container}>
             <Grid container>
               <Grid item xs={12} md={3} lg={3}>
-                <Paper className={classes.request}>
-                  <Request />
-                </Paper>
+                {(queueOperator.status === 'request') ? (<Request user={queueOperator} />) : (null)}
+                {(queueOperator.status === 'unready') ? (<Unready user={queueOperator} />) : (null)}
+                {(queueOperator.status === 'free') ? (<Free user={queueOperator} />) : (null)}
+                {(queueOperator.status === 'busy') ? (<Busy pair={myProcessingPair} />) : (null)}
               </Grid>
               <Grid item xs={4} md={3} lg={3}>
                 <Paper className={classes.paper}>

@@ -48,6 +48,9 @@ const UserSchema = new Schema({
         enum: ['request', 'unready', 'inline', 'processing', 'done',
             'free', 'busy', 'leave']
     },
+    timeJoinQueue: {
+        type: Date,
+    },
     progress: {
         type: Number
     },

@@ -25,10 +25,9 @@ export function SideBar() {
   const logoutHandler = (e) => {
     e.preventDefault();
     if (isAuth) {
-      logoutUser().then(() => {
-        history.push("/dashboard");
-        alert.show("You have successfully logged out.");
-      });
+      history.push("/dashboard");
+      logoutUser()
+      alert.show("You have successfully logged out.")
     } else {
       history.push("/login");
     }

@@ -1,12 +1,12 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles(theme => ({
     root: {
-        width: "100%",
-        height: "100%",
+        width: '100%',
+        height: '100%',
     },
     appBar: {
-        position: "relative",
+        position: "relative"
     },
     layout: {
         width: "auto",
@@ -15,14 +15,14 @@ export const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
             width: 600,
             marginLeft: "auto",
-            marginRight: "auto",
-        },
+            marginRight: "auto"
+        }
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
         height: "100vh",
-        overflow: "auto",
+        overflow: "auto"
     },
     paper: {
         marginTop: theme.spacing(3),
@@ -32,17 +32,33 @@ export const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
             marginTop: theme.spacing(6),
             marginBottom: theme.spacing(6),
-            padding: theme.spacing(3),
-        },
+            padding: theme.spacing(3)
+        }
     },
     mainField: {
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(3),
         padding: theme.spacing(2),
-        alignItems: "center",
+        alignItems: "center"
     },
     title: {
         marginBottom: theme.spacing(3),
-        color: "white ",
+        color: 'white '
     },
+    status: {
+        background: props => props.backgroundColor,
+        color: 'white',
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
+        alignItems: "center",
+        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+            marginTop: theme.spacing(6),
+            marginBottom: theme.spacing(6),
+            padding: theme.spacing(3)
+        },
+        requestTitle: {
+            color: 'white'
+        }
+    }
 }));

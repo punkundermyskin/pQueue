@@ -4,12 +4,13 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Loader from 'react-loader-spinner'
+import Paper from "@material-ui/core/Paper";
 
-import { QueueContext } from "../../../context/Queue/QueueState";
-import { useStyles } from "./Styles/RequestStyles";
+import { QueueContext } from "../../../../context/Queue/QueueState";
+import { useStyles } from "../Styles/StatusStyles";
 
-export function Request({ user }) {
-  const classes = useStyles();
+export function Processing({ pair }) {
+  const classes = useStyles({ backgroundColor: "linear-gradient(45deg, #FE6B8B 10%, #4153AF 90%)" });
   const history = useHistory();
   const {
     session,
@@ -17,9 +18,9 @@ export function Request({ user }) {
     leaveSession
   } = useContext(QueueContext);
 
-  if (user) {
-    return (
-      <div className={classes.root} >
+  return (
+    <div className={classes.root} >
+      <Paper className={classes.status}>
         <Grid
           container
           direction="row"
@@ -28,7 +29,7 @@ export function Request({ user }) {
         >
           <Grid item>
             <Typography component="h2" variant="h6" className={classes.title} gutterBottom >
-              Current Request
+              Processing
       </Typography>
           </Grid>
           <Grid item>
@@ -52,37 +53,24 @@ export function Request({ user }) {
           justify="space-around"
           alignItems="center"
         >
-          <Typography variant="h4" gutterBottom>
-            John
-        </Typography>
-          <Typography variant="h5" gutterBottom>
-            Wick
-        </Typography>
+          {(pair) ? (
+            <div>
+              <Typography variant="h4" gutterBottom>
+                {pair['student'].username}
+              </Typography>
+              <Typography variant="h5" gutterBottom>
+                {pair['operator'].username}
+              </Typography>
+            </div>
+          ) : (null)}
           <Grid item xs="auto" md={6} lg={6}>
             Main Service
         </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-            {(user.status === 'request') ? ('in wait') : (null)}
-            {(user.status === 'unready') ? ('unready') : (null)}
-            {(user.status === 'inline') ? ('in line') : (null)}
-            {(user.status === 'processing') ? ('in processing') : (null)}
-            {(user.status === 'done') ? ('done') : (null)}
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                joinLine(session._id);
-              }}
-            >
-              Get In Line
-              </Button>
-          </Grid>
+            Good Luck Mate
+            </Grid>
         </Grid>
-      </div>
-    );
-  } else {
-    return (
-      <Loader type="None" color="#somecolor" height={80} width={80} />
-    )
-  }
+      </Paper>
+    </div>
+  );
 }
