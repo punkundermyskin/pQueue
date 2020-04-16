@@ -27,17 +27,27 @@ sockets.init = function (server) {
             console.log('get joinSessionRoom')
             const room = data.id
             const token = data.token
-            role = await getRole(token)
+            const role = await getRole(token)
             if (role == 'guest') {
                 socket.disconnect()
             } else {
                 const user = socket.user
-                // const sessionId = user.session._id.toString()
+                var status = 'request'
+                if (role == 'operator') {
+                    const session = await Sessions.findOne({ _id: room })
+                    if (user._id.equals(session.owner._id)) {
+                        status = 'unready'
+                    }
+                }
+
+                const updatedUser = await Users.findOneAndUpdate({ _id: userID }, { $set: { session: room, status: status } }, { new: true })
                 socket.join(room, function () {
                     console.log(user.username + " now in rooms ", room);
+                    // socket.to(room).emit('update', updatedUser);
+                    // console.log('send update(joinSessionRoom) to room ', room)
                 });
 
-                socket.to(room).emit('update', user);
+                socket.to(room).emit('update', updatedUser);
                 console.log('send update(joinSessionRoom) to room ', room)
             }
         })

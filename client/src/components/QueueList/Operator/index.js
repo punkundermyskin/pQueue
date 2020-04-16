@@ -67,12 +67,12 @@ export default function Operator() {
                 <ActiveSessionsTable />
               </Grid>
             ) : (
-              <Grid item xs="auto" md={4} lg={4}>
-                <Paper className={classes.paper}>
-                  <CreateSession operators={users} />
-                </Paper>
-              </Grid>
-            )}
+                <Grid item xs="auto" md={4} lg={4}>
+                  <Paper className={classes.paper}>
+                    <CreateSession operators={users} />
+                  </Paper>
+                </Grid>
+              )}
             {isHidden ? null : (
               <Grid item xs={12} md={8} lg={8} className={classes.paper}>
                 <ActiveSessionsTable />

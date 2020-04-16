@@ -8,7 +8,7 @@ const initialState = {
   token: localStorage.getItem("token"),
   user: null,
   authLoading: false,
-  authError: null,
+  authError: null
 };
 
 // Create context
@@ -21,61 +21,62 @@ export const AuthProvider = ({ children }) => {
   // Setup config/headers and token
   const createConfig = () => {
     // Get token from localstorage
-    const token = state.token;
+    const token = state.token
 
     // Headers
     const config = {
       headers: {
-        "Content-type": "application/json",
-      },
+        'Content-type': 'application/json'
+      }
     };
 
     // If token, add to headers
     if (token) {
-      config.headers["Authorization"] = token;
+      config.headers['Authorization'] = token
     }
 
-    return config;
+    return config
   };
 
   async function loadUser() {
-    const config = createConfig();
+    const config = createConfig()
     try {
       const res = await axios.get("/api/auth/me", config);
 
       dispatch({
         type: "USER_LOADED",
-        payload: res.data,
+        payload: res.data
       });
     } catch (error) {
-      dispatch({
-        type: "AUTH_ERROR",
-        // payload: error.response.error
-        payload: error.response.data,
-      });
+      console.log(error)
+      // dispatch({
+      //   type: "AUTH_ERROR",
+      //   // payload: error.response.data.error
+      //   payload: error.response.data
+      // });
     }
   }
 
   async function registerUser(user) {
-    const config = createConfig();
+    const config = createConfig()
 
     try {
       const res = await axios.post("/api/auth", user, config);
 
       dispatch({
         type: "REGISTER_SUCCESS",
-        payload: res.data,
+        payload: res.data
       });
     } catch (error) {
       dispatch({
         type: "REGISTER_FAIL",
-        payload: error.response.data,
+        payload: error.response.data
       });
     }
   }
 
   async function loginUser(username, password) {
-    const config = createConfig();
+    const config = createConfig()
 
     const body = JSON.stringify({ username, password });
 
@@ -84,20 +85,20 @@ export const AuthProvider = ({ children }) => {
 
       dispatch({
         type: "LOGIN_SUCCESS",
-        payload: res.data,
+        payload: res.data
       });
     } catch (error) {
       dispatch({
         type: "LOGIN_FAIL",
         // payload: error.response.error
-        payload: error.response.data,
+        payload: error.response.data
       });
     }
   }
 
   async function logoutUser() {
-    const config = createConfig();
-    const token = state.token;
+    const config = createConfig()
+    const token = state.token
     const body = JSON.stringify({ token });
 
     try {
@@ -105,13 +106,13 @@ export const AuthProvider = ({ children }) => {
 
       dispatch({
         type: "LOGOUT_SUCCESS",
-        payload: res.data,
+        payload: res.data
       });
     } catch (error) {
       // TODO: Check this stuff
       dispatch({
         type: "LOGOUT_SUCCESS",
-        payload: error.response.data,
+        payload: error.response.data
       });
     }
   }
@@ -126,7 +127,7 @@ export const AuthProvider = ({ children }) => {
         loadUser,
         registerUser,
         loginUser,
-        logoutUser,
+        logoutUser
       }}
     >
       {children}

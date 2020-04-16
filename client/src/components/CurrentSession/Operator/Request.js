@@ -12,11 +12,11 @@ export function Request() {
   const classes = useStyles();
   const history = useHistory();
   const { session, leaveSession } = useContext(QueueContext);
-
+  console.log(session);
   const finishServeringHandler = () => {
-    console.log(1234);
+
     leaveSession(session._id);
-    history.push("/management");
+    history.push("/operator");
   };
 
   return (
@@ -44,7 +44,7 @@ export function Request() {
             className={classes.title}
             gutterBottom
           >
-            {session.end}
+            {/* {session.end} */}
           </Typography>
         </Grid>
       </Grid>

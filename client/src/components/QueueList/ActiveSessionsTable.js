@@ -37,26 +37,18 @@ export default function ActiveSessionsTable() {
   const { joinSession, sessionsSuccess, sessions } = useContext(
     SessionsContext
   );
-  const { joinSocketSession, getQueueInfo } = useContext(QueueContext);
+  const { joinSocketSession } = useContext(QueueContext);
   const { user } = useContext(AuthContext);
   const alert = useAlert();
   const history = useHistory();
 
   const handleJoinButton = (id) => {
-    joinSession(id).then(() => {
-      if (sessionsSuccess) {
-        joinSocketSession(id);
-        getQueueInfo(id);
-        if (user.role === "student") {
-          history.push("/student/current-session");
-        } else {
-          history.push("/operator/current-session");
-        }
-        alert.show("You have successfully joined the session.");
-      } else {
-        alert.show("Something went wrong!");
-      }
-    });
+    joinSocketSession(id);
+    if (user.role === "student") {
+      history.push("/student/current-session");
+    } else {
+      history.push("/operator/current-session");
+    }
   };
   return (
     <TableContainer component={Paper}>

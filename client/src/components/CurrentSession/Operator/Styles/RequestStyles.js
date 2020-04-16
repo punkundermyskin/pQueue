@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 export const useStyles = makeStyles((theme) => ({
     root: {
         width: "100%",
-        height: "100%",
+        // height: "100%",
     },
     appBar: {
         position: "relative",
@@ -21,7 +21,7 @@ export const useStyles = makeStyles((theme) => ({
     appBarSpacer: theme.mixins.toolbar,
     content: {
         flexGrow: 1,
-        height: "100vh",
+        // height: "100vh",
         overflow: "auto",
     },
     paper: {

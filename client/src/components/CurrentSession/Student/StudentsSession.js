@@ -59,7 +59,7 @@ export default function StudentsSession() {
               direction="column"
               alignItems="center"
               justify="center"
-              style={{ minHeight: '50vh' }}
+            // style={{ minHeight: '50vh' }}
             >
 
               <Grid item xs={3}>
