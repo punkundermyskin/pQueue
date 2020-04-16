@@ -22,9 +22,17 @@ export default function (state, action) {
         authLoading: false,
         user: action.payload.data,
       };
+    case "LOGOUT":
+      localStorage.removeItem("token");
+      return {
+        ...state,
+        token: null,
+        user: null,
+        isAuth: false,
+        authLoading: false
+      };
     case "AUTH_ERROR":
     case "LOGIN_FAIL":
-    case "LOGOUT_SUCCESS":
     case "REGISTER_FAIL":
       localStorage.removeItem("token");
       return {

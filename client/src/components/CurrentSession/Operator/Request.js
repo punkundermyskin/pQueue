@@ -14,9 +14,8 @@ export function Request() {
   const { session, leaveSession } = useContext(QueueContext);
 
   const finishServeringHandler = () => {
-    console.log(1234);
-    leaveSession(session._id);
-    history.push("/management");
+    leaveSession('5e8cc51f26c5978a45692c54');
+    history.push("/operator");
   };
 
   return (

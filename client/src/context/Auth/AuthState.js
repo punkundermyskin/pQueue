@@ -96,24 +96,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   async function logoutUser() {
-    const config = createConfig();
-    const token = state.token;
-    const body = JSON.stringify({ token });
-
-    try {
-      const res = await axios.post("/api/auth/me/logout", body, config);
-
-      dispatch({
-        type: "LOGOUT_SUCCESS",
-        payload: res.data,
-      });
-    } catch (error) {
-      // TODO: Check this stuff
-      dispatch({
-        type: "LOGOUT_SUCCESS",
-        payload: error.response.data,
-      });
-    }
+    dispatch({
+      type: "LOGOUT",
+      payload: null,
+    });
   }
 
   return (

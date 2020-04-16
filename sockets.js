@@ -13,7 +13,7 @@ sockets.init = function (server) {
         var role = 'guest'
 
         socket.on('getQueueInfo', async function (id) {
-            const students = await Users.find({ session: id }).select('-password -tokens')
+            const students = await Users.find({ session: id })
             const session = await Sessions.findOne({ _id: id })
             console.log('get QueueInfo request ')
             socket.emit('queueInfo', {
@@ -49,7 +49,7 @@ sockets.init = function (server) {
             if (role != 'student', user.status != 'unready') {
                 socket.disconnect()
             } else {
-                const updatedUser = await Users.findOneAndUpdate({ _id: user._id }, { $set: { status: 'inline' } }, { new: true }).select('-password -tokens')
+                const updatedUser = await Users.findOneAndUpdate({ _id: user._id }, { $set: { status: 'inline' } }, { new: true })
                 const room = user.session._id.toString() // DANGEROUS
                 socket.to(room).emit('update', updatedUser);
                 console.log('send update(joinLine) to room ', room)
@@ -67,7 +67,7 @@ sockets.init = function (server) {
             } else {
                 const user = socket.user
                 const room = user.session._id.toString()
-                const updatedUser = await Users.findOneAndUpdate({ _id: user._id }, { $set: { status: 'unready' } }, { new: true }).select('-password -tokens')
+                const updatedUser = await Users.findOneAndUpdate({ _id: user._id }, { $set: { status: 'unready' } }, { new: true })
                 socket.to(room).emit('update', updatedUser);
                 console.log('send update(leaveLine) to room ', room)
                 socket.emit('update', updatedUser);
@@ -86,7 +86,10 @@ sockets.init = function (server) {
                 const room = user.session._id.toString()
                 socket.leave(room);
                 console.log(user.username, 'leave room :', room)
-                await Users.findOneAndUpdate({ _id: user._id }, { $set: { session: null, status: null } }, { new: true }).select('-password -tokens')
+                const updatedUser = await Users.findOne({ _id: user._id })
+                updatedUser.status = undefined;
+                updatedUser.session = undefined;
+                updatedUser.save()
                 socket.broadcast.to(room).emit('remove', user.id);
                 console.log('send remove(leaveSessionRoom) to room ', room)
                 socket.emit('remove', user.id);
@@ -107,7 +110,7 @@ sockets.init = function (server) {
             if (role == 'operator' && (user.status != 'request' || owner._id.toString() == user._id.toString()) &&
                 user.session._id.toString() == member.session._id.toString()) {
                 const updatedMember = await Users.findOneAndUpdate({ _id: member._id },
-                    { $set: { status: 'unready' } }, { new: true }).select('-password -tokens')
+                    { $set: { status: 'unready' } }, { new: true })
                 const room = user.session._id.toString()
                 socket.broadcast.to(room).emit('update', updatedMember);
                 console.log('send update(leaveSessionRoom) to room ', room)
@@ -125,7 +128,7 @@ sockets.init = function (server) {
         async function getRole(token) {
             try {
                 const data = jwt.verify(token, process.env.JWT_KEY)
-                const user = await Users.findOne({ _id: data._id, 'tokens.token': token }).select('-password -tokens')
+                const user = await Users.findOne({ _id: data._id, 'tokens.token': token })
                 if (!user) {
                     throw new Error()
                 }

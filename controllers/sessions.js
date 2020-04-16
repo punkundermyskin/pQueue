@@ -128,7 +128,7 @@ exports.getStudents = async (req, res, next) => {
     try {
 
         var id = req.params.id;
-        const students = await Users.find({ session: id }).select('-password -tokens');
+        const students = await Users.find({ session: id })
 
         return res.status(201).json({
             success: true,

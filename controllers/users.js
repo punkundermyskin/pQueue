@@ -5,7 +5,7 @@ const Users = require('../models/User');
 // @access  Public
 exports.getUsers = async (req, res, next) => {
     try {
-        const users = await Users.find().select('-password -tokens');
+        const users = await Users.find()
 
         return res.status(200).json({
             success: true,
@@ -25,7 +25,7 @@ exports.getUsers = async (req, res, next) => {
 // @access  Protected
 exports.getOperators = async (req, res, next) => {
     try {
-        const operators = await Users.find({ 'role': 'operator' }).select('-password -tokens');
+        const operators = await Users.find({ 'role': 'operator' })
 
         return res.status(200).json({
             success: true,

@@ -54,14 +54,9 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true,
-        minLength: 7
-    },
-    tokens: [{
-        token: {
-            type: String,
-            required: true
-        }
-    }]
+        minLength: 7,
+        select: false
+    }
 });
 
 UserSchema.pre('save', async function (next) {
@@ -79,15 +74,13 @@ UserSchema.methods.generateAuthToken = async function () {
     const token = jwt.sign({ _id: user._id }, process.env.JWT_KEY, {
         expiresIn: "1h"
     })
-    user.tokens = user.tokens.concat({ token })
-    await user.save()
     return token
 }
 
 UserSchema.statics.findByCredentials = async (username, password) => {
     // Search for a user by email and password.
     var User = mongoose.model('User', UserSchema);
-    const user = await User.findOne({ username })
+    const user = await User.findOne({ username }).select('+password')
     if (!user) {
         throw new Error({ error: 'Invalid login credentials' })
     }

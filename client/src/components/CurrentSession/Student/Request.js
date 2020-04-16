@@ -37,7 +37,7 @@ export function Request({ user }) {
               color="secondary"
               onClick={() => {
                 leaveSession(session._id);
-                history.push("/students");
+                history.push("/student");
               }}
             >
               Leave
