@@ -123,10 +123,13 @@ export const QueueProvider = ({ children }) => {
     console.log("request Student For Process sent");
   }
 
-  function returnStudentToQueue() {
+  function returnStudentToQueue(progress) {
     setLoader();
     const token = localStorage.getItem("token")
-    socket.emit("returnStudentToQueue", token);
+    socket.emit("returnStudentToQueue", {
+      token: token,
+      progress: progress
+    });
     console.log("return Student To Queue sent");
   }
 

@@ -56,6 +56,9 @@ sockets.init = function (server) {
                 user.status = undefined;
                 user.session = undefined;
                 user.host = undefined;
+                student.startProcessingTime = undefined
+                student.timeJoinQueue = undefined
+                student.progress = undefined
                 user.save()
                 socket.broadcast.to(room).emit('remove', user.id);
                 console.log('send remove(leaveSessionRoom) to room ', room)
@@ -93,6 +96,8 @@ sockets.init = function (server) {
             } else {
                 const room = user.session._id.toString()
                 user.status = 'unready'
+                user.startProcessingTime = undefined
+                user.timeJoinQueue = undefined
                 user.save()
                 socket.to(room).emit('update', user);
                 console.log('send update(leaveLine) to room ', room)
@@ -181,6 +186,7 @@ sockets.init = function (server) {
                     if (!student.host || student.host._id.equals(operator._id)) {
                         student.host = operator._id
                         student.status = 'processing'
+                        student.startProcessingTime = Date.now()
                         operator.status = 'busy'
                         student.save()
                         operator.save()
@@ -208,8 +214,10 @@ sockets.init = function (server) {
             }
         })
 
-        socket.on('returnStudentToQueue', async function (token) {
-            console.log('get returnStudentToQueue')
+        socket.on('returnStudentToQueue', async function (data) {
+            const token = data.token
+            const progress = data.progress
+            console.log('get returnStudentToQueue, progress: ', progress)
             role = await getRole(token)
             var operator = socket.user
             if (role == 'operator' || operator.status == 'busy') {
@@ -217,7 +225,9 @@ sockets.init = function (server) {
                 const hostID = operator._id.toString()
                 var student = await Users.findOne({ session: room, status: 'processing', host: hostID })
                 student.status = 'unready'
-                // student.progress = 0.5 - TODO
+                student.startProcessingTime = undefined
+                student.timeJoinQueue = undefined
+                student.progress = progress
                 operator.status = 'unready'
                 student.save()
                 operator.save()
@@ -245,7 +255,9 @@ sockets.init = function (server) {
                 const hostID = operator._id.toString()
                 var student = await Users.findOne({ session: room, status: 'processing', host: hostID })
                 student.status = 'done'
-                // student.progress = 1 - TODO
+                student.startProcessingTime = undefined
+                student.timeJoinQueue = undefined
+                student.progress = undefined
                 operator.status = 'unready'
                 student.save()
                 operator.save()

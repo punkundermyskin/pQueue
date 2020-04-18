@@ -3,26 +3,23 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import Loader from 'react-loader-spinner'
+import Paper from "@material-ui/core/Paper";
 
 import { QueueContext } from "../../../../context/Queue/QueueState";
+import { useStyles } from "./../../Styles/StatusStyles";
 
-import { useStyles } from "../Styles/StatusStyles";
-
-export function Busy({ pair }) {
-  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #e0672f 10%, #4153AF 90%)' });
+export function Processing({ pair }) {
+  const classes = useStyles({ backgroundColor: "linear-gradient(45deg, #FE6B8B 10%, #4153AF 90%)" });
   const history = useHistory();
-  const { session, leaveSession, finishServeringStudent, returnStudentToQueue } = useContext(QueueContext);
+  const {
+    session,
+    joinLine,
+    leaveSession
+  } = useContext(QueueContext);
 
-  const leaveSessionHandler = () => {
-    leaveSession(session._id);
-    history.push("/operator");
-  };
-
-  // if (pair) {
   return (
-    <div className={classes.root}>
+    <div className={classes.root} >
       <Paper className={classes.status}>
         <Grid
           container
@@ -31,20 +28,18 @@ export function Busy({ pair }) {
           alignItems="center"
         >
           <Grid item>
-            <Typography
-              component="h2"
-              variant="h6"
-              className={classes.title}
-              gutterBottom
-            >
-              Current Request
-          </Typography>
+            <Typography component="h2" variant="h6" className={classes.title} gutterBottom >
+              Processing
+      </Typography>
           </Grid>
           <Grid item>
             <Button
               variant="contained"
               color="secondary"
-              onClick={leaveSessionHandler}
+              onClick={() => {
+                leaveSession(session._id);
+                history.push("/student");
+              }}
             >
               Leave
               </Button>
@@ -68,38 +63,14 @@ export function Busy({ pair }) {
               </Typography>
             </div>
           ) : (null)}
-
           <Grid item xs="auto" md={6} lg={6}>
             Main Service
         </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                finishServeringStudent()
-              }}
-            >
-              Finish Servering
-          </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                // console.log(session.start);
-                returnStudentToQueue()
-              }}
-            >
-              Return To Queue
-          </Button>
-          </Grid>
+            Good Luck Mate
+            </Grid>
         </Grid>
       </Paper>
     </div>
   );
-  // } else {
-  //   return (
-  //     <Loader type="None" color="#somecolor" height={80} width={80} />
-  //   )
-  // }
 }

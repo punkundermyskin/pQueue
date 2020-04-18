@@ -28,7 +28,11 @@ const SessionSchema = new mongoose.Schema({
     },
     end: {
         type: Date,
-    }
+    },
+    minutesForRequest: {
+        type: Number,
+        required: [true, 'Please add some minutes for request']
+    },
 });
 
 module.exports = mongoose.model('Session', SessionSchema);

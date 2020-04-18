@@ -7,10 +7,10 @@ import Loader from 'react-loader-spinner'
 import Paper from "@material-ui/core/Paper";
 
 import { QueueContext } from "../../../../context/Queue/QueueState";
-import { useStyles } from "../Styles/StatusStyles";
+import { useStyles } from "./../../Styles/StatusStyles";
 
-export function Unready({ user }) {
-  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #29a2ab 10%, #4153AF 90%)' });
+export function Done({ user }) {
+  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)' });
   const history = useHistory();
   const {
     session,
@@ -22,6 +22,7 @@ export function Unready({ user }) {
     return (
       <div className={classes.root} >
         <Paper className={classes.status}>
+
           <Grid
             container
             direction="row"
@@ -30,7 +31,7 @@ export function Unready({ user }) {
           >
             <Grid item>
               <Typography component="h2" variant="h6" className={classes.title} gutterBottom >
-                Unready
+                Done
       </Typography>
             </Grid>
             <Grid item>
@@ -64,15 +65,7 @@ export function Unready({ user }) {
               Main Service
         </Grid>
             <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  joinLine(session._id);
-                }}
-              >
-                Get In Line
-              </Button>
+              Nice Job
             </Grid>
           </Grid>
         </Paper>

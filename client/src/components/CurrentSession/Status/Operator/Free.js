@@ -7,12 +7,12 @@ import Paper from "@material-ui/core/Paper";
 
 import { QueueContext } from "../../../../context/Queue/QueueState";
 
-import { useStyles } from "../Styles/StatusStyles";
+import { useStyles } from "./../../Styles/StatusStyles";
 
-export function Request() {
-  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #7f8282 10%, #4153AF 90%)' });
+export function Free() {
+  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)' });
   const history = useHistory();
-  const { session, leaveSession, requestStudentForProcess } = useContext(QueueContext);
+  const { session, leaveSession, requestStudentForProcess, setUnreadyOperator } = useContext(QueueContext);
 
   const leaveSessionHandler = () => {
     leaveSession(session._id);
@@ -40,7 +40,7 @@ export function Request() {
               className={classes.title}
               gutterBottom
             >
-              Waiting Room
+              Free
           </Typography>
           </Grid>
           <Grid item>
@@ -71,8 +71,23 @@ export function Request() {
             Main Service
         </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-            Ask your colleague to verify you
-        </Grid>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={getStudentForProcess}
+            >
+              Next Student
+          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setUnreadyOperator()
+              }}
+            >
+              Pause
+          </Button>
+          </Grid>
         </Grid>
       </Paper>
     </div>

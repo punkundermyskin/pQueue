@@ -3,23 +3,29 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
-import Loader from 'react-loader-spinner'
 import Paper from "@material-ui/core/Paper";
 
-import { QueueContext } from "../../../../context/Queue/QueueState";
-import { useStyles } from "../Styles/StatusStyles";
+import { QueueContext } from "../../../context/Queue/QueueState";
 
-export function Processing({ pair }) {
-  const classes = useStyles({ backgroundColor: "linear-gradient(45deg, #FE6B8B 10%, #4153AF 90%)" });
+import { useStyles } from "./../Styles/StatusStyles";
+
+export function Request() {
+  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #7f8282 10%, #4153AF 90%)' });
   const history = useHistory();
-  const {
-    session,
-    joinLine,
-    leaveSession
-  } = useContext(QueueContext);
+  const { session, leaveSession, requestStudentForProcess } = useContext(QueueContext);
+
+  const leaveSessionHandler = () => {
+    leaveSession(session._id);
+    history.push("/operator");
+  };
+
+
+  const getStudentForProcess = () => {
+    requestStudentForProcess();
+  };
 
   return (
-    <div className={classes.root} >
+    <div className={classes.root}>
       <Paper className={classes.status}>
         <Grid
           container
@@ -28,18 +34,20 @@ export function Processing({ pair }) {
           alignItems="center"
         >
           <Grid item>
-            <Typography component="h2" variant="h6" className={classes.title} gutterBottom >
-              Processing
-      </Typography>
+            <Typography
+              component="h2"
+              variant="h6"
+              className={classes.title}
+              gutterBottom
+            >
+              Waiting Room
+          </Typography>
           </Grid>
           <Grid item>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => {
-                leaveSession(session._id);
-                history.push("/student");
-              }}
+              onClick={leaveSessionHandler}
             >
               Leave
               </Button>
@@ -53,22 +61,18 @@ export function Processing({ pair }) {
           justify="space-around"
           alignItems="center"
         >
-          {(pair) ? (
-            <div>
-              <Typography variant="h4" gutterBottom>
-                {pair['student'].username}
-              </Typography>
-              <Typography variant="h5" gutterBottom>
-                {pair['operator'].username}
-              </Typography>
-            </div>
-          ) : (null)}
+          <Typography variant="h4" gutterBottom>
+            John
+        </Typography>
+          <Typography variant="h5" gutterBottom>
+            Wick
+        </Typography>
           <Grid item xs="auto" md={6} lg={6}>
             Main Service
         </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-            Good Luck Mate
-            </Grid>
+            Ask operator to verify you
+        </Grid>
         </Grid>
       </Paper>
     </div>

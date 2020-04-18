@@ -4,26 +4,24 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import Loader from 'react-loader-spinner'
+import ReturnToQueueButton from './ReturnToQueueButton'
 
 import { QueueContext } from "../../../../context/Queue/QueueState";
 
-import { useStyles } from "../Styles/StatusStyles";
+import { useStyles } from "./../../Styles/StatusStyles";
 
-export function Free() {
-  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)' });
+export function Busy({ pair }) {
+  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #e0672f 10%, #4153AF 90%)' });
   const history = useHistory();
-  const { session, leaveSession, requestStudentForProcess, setUnreadyOperator } = useContext(QueueContext);
+  const { session, leaveSession, finishServeringStudent, returnStudentToQueue } = useContext(QueueContext);
 
   const leaveSessionHandler = () => {
     leaveSession(session._id);
     history.push("/operator");
   };
 
-
-  const getStudentForProcess = () => {
-    requestStudentForProcess();
-  };
-
+  // if (pair) {
   return (
     <div className={classes.root}>
       <Paper className={classes.status}>
@@ -40,7 +38,7 @@ export function Free() {
               className={classes.title}
               gutterBottom
             >
-              Free
+              Current Request
           </Typography>
           </Grid>
           <Grid item>
@@ -62,11 +60,11 @@ export function Free() {
           alignItems="center"
         >
           <Typography variant="h4" gutterBottom>
-            John
-        </Typography>
+            {(pair) ? (pair['student'].username) : ('John')}
+          </Typography>
           <Typography variant="h5" gutterBottom>
-            Wick
-        </Typography>
+            {(pair) ? (pair['operator'].username) : ('Wick')}
+          </Typography>
           <Grid item xs="auto" md={6} lg={6}>
             Main Service
         </Grid>
@@ -74,22 +72,21 @@ export function Free() {
             <Button
               variant="contained"
               color="primary"
-              onClick={getStudentForProcess}
-            >
-              Next Student
-          </Button>
-            <Button
-              variant="contained"
-              color="primary"
               onClick={() => {
-                setUnreadyOperator()
+                finishServeringStudent()
               }}
             >
-              Pause
-          </Button>
+              Finish Servering
+            </Button>
+            <ReturnToQueueButton />
           </Grid>
         </Grid>
       </Paper>
     </div>
   );
+  // } else {
+  //   return (
+  //     <Loader type="None" color="#somecolor" height={80} width={80} />
+  //   )
+  // }
 }

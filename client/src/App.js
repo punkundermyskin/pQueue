@@ -6,8 +6,7 @@ import Register from "./components/Auth/Register";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Operator from "./components/QueueList/Operator";
 import Student from "./components/QueueList/Student";
-import StudentsSession from "./components/CurrentSession/Student/StudentsSession";
-import OperatorsSession from "./components/CurrentSession/Operator/OperatorsSession";
+import CurrentSession from "./components/CurrentSession";
 
 import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import {
@@ -57,12 +56,12 @@ function App() {
               />
               <Route
                 path="/student/current-session"
-                component={StudentsSession}
+                component={CurrentSession}
                 context={(AuthContext, QueueContext)}
               />
               <Route
                 path="/operator/current-session"
-                component={OperatorsSession}
+                component={CurrentSession}
                 context={(AuthContext, QueueContext)}
               />
             </SessionsProvider>

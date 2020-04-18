@@ -51,6 +51,9 @@ const UserSchema = new Schema({
     timeJoinQueue: {
         type: Date,
     },
+    startProcessingTime: {
+        type: Date,
+    },
     progress: {
         type: Number
     },

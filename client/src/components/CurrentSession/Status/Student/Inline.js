@@ -7,22 +7,23 @@ import Loader from 'react-loader-spinner'
 import Paper from "@material-ui/core/Paper";
 
 import { QueueContext } from "../../../../context/Queue/QueueState";
-import { useStyles } from "../Styles/StatusStyles";
+import { useStyles } from "./../../Styles/StatusStyles";
 
-export function Done({ user }) {
-  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)' });
+export function Inline({ user, queue }) {
+  const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #e0672f 10%, #4153AF 90%)' });
   const history = useHistory();
   const {
     session,
-    joinLine,
+    leaveLine,
     leaveSession
   } = useContext(QueueContext);
+
+  const estimatedTimeBeforeCall = (queue.length - 2) * session.minutesForRequest
 
   if (user) {
     return (
       <div className={classes.root} >
         <Paper className={classes.status}>
-
           <Grid
             container
             direction="row"
@@ -31,7 +32,7 @@ export function Done({ user }) {
           >
             <Grid item>
               <Typography component="h2" variant="h6" className={classes.title} gutterBottom >
-                Done
+                Inline
       </Typography>
             </Grid>
             <Grid item>
@@ -56,16 +57,32 @@ export function Done({ user }) {
             alignItems="center"
           >
             <Typography variant="h4" gutterBottom>
-              John
-        </Typography>
+              {user.firstName}
+            </Typography>
             <Typography variant="h5" gutterBottom>
-              Wick
-        </Typography>
+              {(estimatedTimeBeforeCall) ? (<div>{estimatedTimeBeforeCall} minutes</div>) : (<div> You Are Next</div>)}
+            </Typography>
             <Grid item xs="auto" md={6} lg={6}>
-              Main Service
-        </Grid>
+              <Typography variant="body1" alighn={'justify'} gutterBottom>
+                {(estimatedTimeBeforeCall) ? (<div>estimated waiting time</div>) : (
+                  <div>
+                    operator will come
+                    <br />
+                    to you in a minute
+                  </div>
+                )}
+              </Typography>
+            </Grid>
             <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-              Nice Job
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  leaveLine();
+                }}
+              >
+                Unready
+              </Button>
             </Grid>
           </Grid>
         </Paper>

@@ -7,7 +7,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 
-import { QueueContext } from "../../../context/Queue/QueueState";
+import { QueueContext } from "../../context/Queue/QueueState";
 
 import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import HowToRegIcon from "@material-ui/icons/HowToReg";

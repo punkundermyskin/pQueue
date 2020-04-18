@@ -5,9 +5,9 @@ import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 
-import { QueueContext } from "../../../../context/Queue/QueueState";
+import { QueueContext } from "../../../context/Queue/QueueState";
 
-import { useStyles } from "../Styles/StatusStyles";
+import { useStyles } from "./../Styles/StatusStyles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 
@@ -17,15 +17,24 @@ const theme = createMuiTheme({
   },
 });
 
-export function Unready() {
+export function Unready({ user }) {
   const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #29a2ab 10%, #4153AF 90%)' });
   const history = useHistory();
-  const { session, leaveSession, setFreeOperator } = useContext(QueueContext);
+  const { session, leaveSession, setFreeOperator, joinLine } = useContext(QueueContext);
+
+  const isStudent = (user.role === 'student')
 
   const leaveSessionHandler = () => {
     leaveSession(session._id);
-    history.push("/operator");
+    if (isStudent) {
+      history.push("/student")
+    } else {
+      history.push("/operator")
+    }
+
   };
+
+  const title = (isStudent) ? ('Preparation') : ('Pause')
 
   return (
     <div className={classes.root}>
@@ -43,8 +52,8 @@ export function Unready() {
               className={classes.title}
               gutterBottom
             >
-              Unready
-          </Typography>
+              {title}
+            </Typography>
           </Grid>
           <Grid item>
             <Button
@@ -74,17 +83,31 @@ export function Unready() {
             Main Service
         </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
-            <ThemeProvider theme={theme}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setFreeOperator()
-                }}
-              >
-                Start Servering
-          </Button>
-            </ThemeProvider>
+            {(!isStudent) ? (
+              <div>
+                <ThemeProvider theme={theme}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => {
+                      setFreeOperator()
+                    }}
+                  >
+                    Start Servering
+                  </Button>
+                </ThemeProvider>
+              </div>
+            ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    joinLine(session._id)
+                  }}
+                >
+                  Get In Line
+                </Button>
+              )}
           </Grid>
         </Grid>
       </Paper>
