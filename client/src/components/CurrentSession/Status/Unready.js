@@ -10,6 +10,7 @@ import { QueueContext } from "../../../context/Queue/QueueState";
 import { useStyles } from "./../Styles/StatusStyles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
+import Countdown from "react-countdown";
 
 const theme = createMuiTheme({
   palette: {
@@ -35,6 +36,11 @@ export function Unready({ user }) {
   };
 
   const title = (isStudent) ? ('Preparation') : ('Pause')
+
+  const end = new Date(session.end)
+  const endSessionTime = end.getTime()
+
+  const Completionist = () => <span style={{ color: 'red' }}>Session is about finished</span>;
 
   return (
     <div className={classes.root}>
@@ -74,14 +80,17 @@ export function Unready({ user }) {
           alignItems="center"
         >
           <Typography variant="h4" gutterBottom>
-            John
-        </Typography>
+            {user.firstName}
+          </Typography>
           <Typography variant="h5" gutterBottom>
-            Wick
-        </Typography>
+            {user.lastName}
+          </Typography>
           <Grid item xs="auto" md={6} lg={6}>
-            Main Service
-        </Grid>
+            <Countdown date={endSessionTime} daysInHours={true}>
+              <Completionist />
+            </Countdown>
+            ...till the end of the session
+          </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
             {(!isStudent) ? (
               <div>

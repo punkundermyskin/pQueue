@@ -43,6 +43,9 @@ const UserSchema = new Schema({
     host: {
         type: Schema.ObjectId
     },
+    hostName: {
+        type: String
+    },
     status: {
         type: String,
         enum: ['request', 'unready', 'inline', 'processing', 'done',

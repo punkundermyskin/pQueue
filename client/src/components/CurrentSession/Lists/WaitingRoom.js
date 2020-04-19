@@ -7,7 +7,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 
-import { QueueContext } from "../../context/Queue/QueueState";
+import { QueueContext } from "../../../context/Queue/QueueState";
 
 import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
@@ -15,7 +15,8 @@ import HowToRegIcon from "@material-ui/icons/HowToReg";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: 360,
+    height: '100%',
+    // maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
 }));
@@ -42,7 +43,7 @@ export function WaitingRoom({ members }) {
             <ListItemIcon>
               <HowToRegIcon />
             </ListItemIcon>
-            <ListItemText id={member._id} primary={member.username} />
+            <ListItemText id={member._id} primary={member.firstName + ' ' + member.lastName} secondary={member.role} />
             <ListItemSecondaryAction>
               <IconButton edge="end">
                 <NotInterestedIcon color={"secondary"} />

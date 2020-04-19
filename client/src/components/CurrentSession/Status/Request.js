@@ -9,7 +9,7 @@ import { QueueContext } from "../../../context/Queue/QueueState";
 
 import { useStyles } from "./../Styles/StatusStyles";
 
-export function Request() {
+export function Request({ user }) {
   const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #7f8282 10%, #4153AF 90%)' });
   const history = useHistory();
   const { session, leaveSession, requestStudentForProcess } = useContext(QueueContext);
@@ -17,11 +17,6 @@ export function Request() {
   const leaveSessionHandler = () => {
     leaveSession(session._id);
     history.push("/operator");
-  };
-
-
-  const getStudentForProcess = () => {
-    requestStudentForProcess();
   };
 
   return (
@@ -62,14 +57,16 @@ export function Request() {
           alignItems="center"
         >
           <Typography variant="h4" gutterBottom>
-            John
-        </Typography>
+            {user.firstName}
+          </Typography>
           <Typography variant="h5" gutterBottom>
-            Wick
-        </Typography>
+            {user.lastName}
+          </Typography >
           <Grid item xs="auto" md={6} lg={6}>
-            Main Service
-        </Grid>
+            <Typography variant="h6" gutterBottom>
+              Wellcome to session
+          </Typography >
+          </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
             Ask operator to verify you
         </Grid>

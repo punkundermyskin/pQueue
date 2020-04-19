@@ -30,7 +30,9 @@ sockets.init = function (server) {
             const token = data.token
             role = await getRole(token)
             if (role == 'guest') {
-                socket.disconnect()
+                socket.join(room, function () {
+                    console.log("guest now in rooms ", room);
+                });
             } else {
                 const user = socket.user
                 // const sessionId = user.session._id.toString()
@@ -56,9 +58,10 @@ sockets.init = function (server) {
                 user.status = undefined;
                 user.session = undefined;
                 user.host = undefined;
-                student.startProcessingTime = undefined
-                student.timeJoinQueue = undefined
-                student.progress = undefined
+                user.hostName = undefined
+                user.startProcessingTime = undefined
+                user.timeJoinQueue = undefined
+                user.progress = undefined
                 user.save()
                 socket.broadcast.to(room).emit('remove', user.id);
                 console.log('send remove(leaveSessionRoom) to room ', room)
@@ -185,6 +188,7 @@ sockets.init = function (server) {
                     var student = studentsInline[i]
                     if (!student.host || student.host._id.equals(operator._id)) {
                         student.host = operator._id
+                        student.hostName = operator.firstName + ' ' + operator.lastName
                         student.status = 'processing'
                         student.startProcessingTime = Date.now()
                         operator.status = 'busy'

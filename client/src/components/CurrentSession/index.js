@@ -12,8 +12,9 @@ import LoadingOverlay from "react-loading-overlay";
 import Title from "./Title";
 import { Navbar } from "../Basic/Navbar";
 import { Copyright } from "../Basic/Copyright";
-import { Queue } from "./Queue";
-import { WaitingRoom } from "./WaitingRoom";
+import { Queue } from "./Lists/Queue";
+import { Members } from "./Lists/Members";
+import { WaitingRoom } from "./Lists/WaitingRoom";
 
 import { Request } from "./Status/Request";
 import { Unready } from "./Status/Unready";
@@ -129,7 +130,7 @@ export default function CurrentSession() {
             text="Loading your content..."
           >
             <Container maxWidth="lg" className={classes.container}>
-              <Grid container>
+              <Grid container spacing={1}>
                 <Grid item xs={12} md={12} lg={12}>
                   {(user.role === 'operator') ? (
                     <div>
@@ -157,20 +158,39 @@ export default function CurrentSession() {
                     );
                   })}
                 </Grid>
-                <Grid item xs={4} md={3} lg={3}>
-                  <Paper className={classes.paper}>
-                    <Title>Line:</Title>
-                    <Queue members={queue} />
-                  </Paper>
-                </Grid>
-                <Grid item xs={4} md={3} lg={3}>
-                  <Paper className={classes.paper}>
-                    <Title>Members: </Title>
-                    <Queue members={checkedMembers} />
-                  </Paper>
-                </Grid>
+
                 {(user.role === 'operator') ? (
-                  <Grid item xs={4} md={3} lg={3}>
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Paper className={classes.paper}>
+                      <Title>Line:</Title>
+                      <Queue queue={queue} />
+                    </Paper>
+                  </Grid>
+                ) : (
+                    <Grid item xs={12} md={6} lg={6}>
+                      <Paper className={classes.paper}>
+                        <Title>Line:</Title>
+                        <Queue queue={queue} />
+                      </Paper>
+                    </Grid>
+                  )}
+                {(user.role === 'operator') ? (
+                  <Grid item xs={12} md={4} lg={4}>
+                    <Paper className={classes.paper}>
+                      <Title>Members: </Title>
+                      <Members members={checkedMembers} />
+                    </Paper>
+                  </Grid>
+                ) : (
+                    <Grid item xs={12} md={6} lg={6}>
+                      <Paper className={classes.paper}>
+                        <Title>Members: </Title>
+                        <Members members={checkedMembers} />
+                      </Paper>
+                    </Grid>
+                  )}
+                {(user.role === 'operator') ? (
+                  <Grid item xs={12} md={4} lg={4}>
                     <Paper className={classes.paper}>
                       <Title>Waiting Room: </Title>
                       <WaitingRoom members={waitingMembers} />

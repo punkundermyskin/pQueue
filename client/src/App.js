@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Operator from "./components/QueueList/Operator";
 import Student from "./components/QueueList/Student";
 import CurrentSession from "./components/CurrentSession";
+import TV from "./components/CurrentSession/TV";
 
 import { AuthProvider, AuthContext } from "./context/Auth/AuthState";
 import {
@@ -63,6 +64,12 @@ function App() {
                 path="/operator/current-session"
                 component={CurrentSession}
                 context={(AuthContext, QueueContext)}
+              />
+              <Route
+                exact
+                path="/watch"
+                component={TV}
+                context={(QueueContext)}
               />
             </SessionsProvider>
           </UsersProvider>
