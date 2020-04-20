@@ -13,6 +13,7 @@ import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { green } from "@material-ui/core/colors";
 import { useHistory } from "react-router-dom";
+import SetMachineIDButton from './Student/SetMachineIDButton'
 
 import { SessionsContext } from "../../context/Sessions/SessionsState";
 import { useAlert } from "react-alert";
@@ -77,15 +78,17 @@ export default function ActiveSessionsTable() {
             <TableRow key={session._id}>
               <TableCell component="th" scope="row">
                 <ThemeProvider theme={theme}>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    // className={classes.button}
-                    onClick={() => handleJoinButton(session._id)}
-                    startIcon={<DirectionsRunIcon />}
-                  >
-                    Join
-                  </Button>
+                  {(user.role === 'operator') ? (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      // className={classes.button}
+                      onClick={() => handleJoinButton(session._id)}
+                      startIcon={<DirectionsRunIcon />}
+                    >
+                      Join
+                    </Button>
+                  ) : (<SetMachineIDButton sessionID={session._id} />)}
                 </ThemeProvider>
               </TableCell>
               <TableCell align="right">{session.status}</TableCell>

@@ -92,6 +92,24 @@ export default function CurrentSession() {
   } else {
 
     const queue = members.filter((member) => member.status === "inline");
+    for (var i = 0; i < queue.length; i++) {
+      var student = queue[i];
+      const timeJoinQueue = student.timeJoinQueue
+      student.timeJoinQueue = new Date(timeJoinQueue)
+    }
+    const sortedQueue = queue.slice().sort((a, b) => b.timeJoinQueue - a.timeJoinQueue).reverse()
+
+    var queuePosition
+    for (var i = 0; i < sortedQueue.length; i++) {
+      var student = queue[i];
+      if (socketUser._id === student._id) {
+        queuePosition = i
+      }
+    }
+    const operators = members.filter(
+      (member) => member.role === "operator"
+    );
+    const operatorsCount = operators.length
     const checkedMembers = members.filter(
       (member) => member.status !== "inline" && member.status !== "request"
     );
@@ -119,6 +137,7 @@ export default function CurrentSession() {
         }
       }
     }
+
     return (
       <div className={classes.root}>
         <Navbar />
@@ -143,7 +162,7 @@ export default function CurrentSession() {
                       <div>
                         {(socketUser.status === 'request') ? (<Request user={socketUser} />) : (null)}
                         {(socketUser.status === 'unready') ? (<Unready user={socketUser} />) : (null)}
-                        {(socketUser.status === 'inline') ? (<Inline user={socketUser} queue={queue} />) : (null)}
+                        {(socketUser.status === 'inline') ? (<Inline user={socketUser} queuePosition={queuePosition} operatorsCount={operatorsCount} />) : (null)}
                         {(socketUser.status === 'processing') ? (<Processing pair={myProcessingPair} />) : (null)}
                         {(socketUser.status === 'done') ? (<Done user={socketUser} />) : (null)}
                       </div>
@@ -163,7 +182,7 @@ export default function CurrentSession() {
                   <Grid item xs={12} md={4} lg={4}>
                     <Paper className={classes.paper}>
                       <Title>Line:</Title>
-                      <Queue queue={queue} />
+                      <Queue queue={sortedQueue} />
                     </Paper>
                   </Grid>
                 ) : (

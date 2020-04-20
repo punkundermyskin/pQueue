@@ -177,7 +177,7 @@ sockets.init = function (server) {
             console.log('get requestStudentForProcess')
             const role = await getRole(token)
             const operator = socket.user
-            if (role == 'operator') { // && operator.status == 'free') {
+            if (role == 'operator' && operator.status == 'free') {
                 const studentsInline = await Users.
                     find({ session: operator.session._id, status: 'inline', role: 'student' })
                     .sort({ timeJoinQueue: 'descending' })
@@ -211,6 +211,37 @@ sockets.init = function (server) {
                     console.log('send empty line')
                     socket.emit('message', message);
                 }
+            } else {
+                const message = "No access!" + Date.now()
+                console.log('send error message')
+                socket.emit('message', message);
+            }
+        })
+
+        socket.on('requestStudentForProcessByID', async function (data) {
+            console.log('get requestStudentForProcess by id')
+            const token = data.token
+            const studentID = data.id
+            const role = await getRole(token)
+            const operator = socket.user
+            if (role == 'operator' && operator.status == 'free') {
+                const student = await Users.findOne({ _id: studentID })
+                const room = operator.session.toString()
+                student.host = operator._id
+                student.hostName = operator.firstName + ' ' + operator.lastName
+                student.status = 'processing'
+                student.startProcessingTime = Date.now()
+                operator.status = 'busy'
+                student.save()
+                operator.save()
+                socket.broadcast.to(room).emit('update', student);
+                console.log('send update(requestStudentForProcessByID) student to room ', room)
+                socket.broadcast.to(room).emit('update', operator);
+                console.log('send update(requestStudentForProcessByID) operator to room ', room)
+                socket.emit('update', student);
+                console.log('send update(requestStudentForProcessByID) student to user ', operator.username)
+                socket.emit('update', operator);
+                console.log('send update(requestStudentForProcessByID) operator to user ', operator.username)
             } else {
                 const message = "No access!" + Date.now()
                 console.log('send error message')

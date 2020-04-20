@@ -57,14 +57,14 @@ export function Request({ user }) {
           alignItems="center"
         >
           <Typography variant="h4" gutterBottom>
-            {user.firstName}
+            {user.firstName + ' ' + user.lastName}
           </Typography>
-          <Typography variant="h5" gutterBottom>
-            {user.lastName}
+          <Typography variant="h6" gutterBottom>
+
           </Typography >
           <Grid item xs="auto" md={6} lg={6}>
             <Typography variant="h6" gutterBottom>
-              Wellcome to session
+              Wellcome  to the session
           </Typography >
           </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>

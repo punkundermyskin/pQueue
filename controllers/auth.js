@@ -68,7 +68,7 @@ exports.loginUser = async (req, res, next) => {
 }
 
 // @desc    Login a registered user
-// @route   POST /api/users/me
+// @route   POST /api/auth/me
 // @access  Public
 exports.userProfile = async (req, res, next) => {
     // View logged in user profile
@@ -78,3 +78,35 @@ exports.userProfile = async (req, res, next) => {
         data: req.user
     });
 }
+
+// @desc    Update user machine id
+// @route   POST /api/auth/update-machneid
+// @access  Public
+exports.updateUserMachineID = async (req, res, next) => {
+    try {
+        const machineID = req.body.machineID
+        var user = req.user
+        user.machineID = machineID
+        user.save()
+
+        return res.status(200).json({
+            success: true,
+            machineID: machineID
+        });
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+
+            return res.status(400).json({
+                success: false,
+                error: messages
+            });
+        } else {
+            return res.status(500).json({
+                success: false,
+                error: 'Server Error'
+            })
+        }
+    }
+}
+

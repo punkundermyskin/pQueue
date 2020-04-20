@@ -44,6 +44,7 @@ export const CreateSession = ({ operators }) => {
   const [office, setOffice] = useState("");
   const [groups, handleGroups] = useState("");
   const [participants, setParticipants] = useState("");
+  const [minutesForRequest, setMinutesForRequest] = useState(5);
   const [selectedBeginDate, handleBeginDateChange] = useState(new Date());
   const [selectedFinishDate, handleFinishDateChange] = useState(new Date());
 
@@ -57,6 +58,7 @@ export const CreateSession = ({ operators }) => {
       office,
       groups,
       participants,
+      minutesForRequest,
       start: selectedBeginDate,
       end: selectedFinishDate,
     };
@@ -97,7 +99,7 @@ export const CreateSession = ({ operators }) => {
                 onChange={(e) => setOffice(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6}>
               <ChipInput
                 required
                 id="groups"
@@ -107,12 +109,21 @@ export const CreateSession = ({ operators }) => {
                 onChange={(chips) => handleGroups(chips)}
               />
             </Grid>
+            <Grid item xs={6}>
+              <TextField
+                required
+                id="minutesForRequest"
+                label="Minutes for Request"
+                value={minutesForRequest}
+                onChange={(e) => setMinutesForRequest(e.target.value)}
+              />
+            </Grid>
             <Grid item xs={12}>
               <Autocomplete
                 multiple
                 id="tags-standard"
                 options={operators}
-                getOptionLabel={(option) => option.username}
+                getOptionLabel={(option) => option.firstName + ' ' + option.lastName}
                 onChange={(e, v) => setParticipants(v)}
                 renderInput={(params) => (
                   <TextField

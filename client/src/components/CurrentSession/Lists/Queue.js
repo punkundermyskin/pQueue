@@ -15,6 +15,8 @@ import { QueueContext } from '../../../context/Queue/QueueState'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
+// import { QueueContext } from './../../../context/Queue/QueueState';
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -24,68 +26,57 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function renderRow({ data, index, style }) {
-
-    const member = data[index]
-
-    const name = member.firstName + ' ' + member.lastName
-
-    const time = new Date(member.timeJoinQueue)
-    const timeJoinQueue = moment(time)
-
-    const hostName = (member.hostName) ? (' (host: ' + member.hostName + ')') : ('')
-
-    const progress = (member.progress) ? (member.progress) : (5)
-
-    return (
-        <ListItem button key={member._id}>
-            {/* <ListItemAvatar> */}
-            <ListItemAvatar>
-                <Avatar style={{ backgroundColor: 'white' }}>
-                    <EmojiPeopleIcon htmlColor={'#00c853'} />
-                </Avatar>
-            </ListItemAvatar>
-
-            <ListItemText primary={name + hostName} secondary={timeJoinQueue.format('HH:mm:ss')} />
-            {/* <ListItemSecondaryAction> */}
-            {/* <IconButton > */}
-
-            <ListItemIcon>
-                <CircularProgress variant="static" value={progress} />
-            </ListItemIcon>
-            {/* </IconButton> */}
-            {/* </ListItemSecondaryAction> */}
-        </ListItem>
-    );
-}
-
-renderRow.propTypes = {
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
-};
 
 export function Queue({ queue }) {
     const classes = useStyles();
 
-    for (var i = 0; i < queue.length; i++) {
-        var student = queue[i];
-        const timeJoinQueue = student.timeJoinQueue
-        student.timeJoinQueue = new Date(timeJoinQueue)
+    const { requestStudentForProcessByID } = useContext(QueueContext);
+
+    function renderRow({ data, index, style }) {
+
+        const member = data[index]
+
+        const name = member.firstName + ' ' + member.lastName
+
+        const time = new Date(member.timeJoinQueue)
+        const timeJoinQueue = moment(time)
+
+        const hostName = (member.hostName) ? (' (host: ' + member.hostName + ')') : ('')
+
+        const progress = (member.progress) ? (member.progress) : (5)
+
+        return (
+            <ListItem button key={member._id} onClick={() => { requestStudentForProcessByID(member._id) }}>
+                {/* <ListItemAvatar> */}
+                <ListItemAvatar>
+                    <Avatar style={{ backgroundColor: 'white' }}>
+                        <EmojiPeopleIcon htmlColor={'#00c853'} />
+                    </Avatar>
+                </ListItemAvatar>
+
+                <ListItemText primary={name + hostName} secondary={timeJoinQueue.format('HH:mm:ss')} />
+                {/* <ListItemSecondaryAction> */}
+                {/* <IconButton > */}
+
+                <ListItemIcon>
+                    <CircularProgress variant="static" value={progress} />
+                </ListItemIcon>
+                {/* </IconButton> */}
+                {/* </ListItemSecondaryAction> */}
+            </ListItem>
+        );
     }
 
-    const sortedQueue = queue.slice().sort((a, b) => b.timeJoinQueue - a.timeJoinQueue).reverse()
+    renderRow.propTypes = {
+        index: PropTypes.number.isRequired,
+        style: PropTypes.object.isRequired,
+    };
 
     return (
         <div className={classes.root}>
-            <FixedSizeList height={300} width={'100%'} itemSize={46} itemCount={sortedQueue.length} itemData={sortedQueue}>
+            <FixedSizeList height={300} width={'100%'} itemSize={46} itemCount={queue.length} itemData={queue} >
                 {renderRow}
             </FixedSizeList>
         </div>
     );
-}
-
-function findUserByID(users, ID) {
-    return users.find((element) => {
-        return element.id === ID;
-    });
 }

@@ -44,7 +44,7 @@ export default function ReturnToQueueButton() {
 
     return (
         <div>
-            <Button variant="contained" color="primary" onClick={handleClickOpen}>
+            <Button variant="contained" onClick={handleClickOpen}>
                 Return to Queue
             </Button>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

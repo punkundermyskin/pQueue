@@ -79,17 +79,30 @@ export function Unready({ user }) {
           justify="space-around"
           alignItems="center"
         >
-          <Typography variant="h4" gutterBottom>
-            {user.firstName}
-          </Typography>
-          <Typography variant="h5" gutterBottom>
-            {user.lastName}
-          </Typography>
+          {(user.role === 'operator') ? (
+            <div>
+              <Typography variant="h4" gutterBottom>
+                {user.firstName}
+              </Typography>
+              <Typography variant="h5" gutterBottom>
+                {user.lastName}
+              </Typography>
+            </div>
+          ) : (
+              <div>
+                <Typography variant="h4" gutterBottom>
+                  {user.firstName + ' ' + user.lastName}
+                </Typography>
+                <Typography variant="h5" gutterBottom>
+                  {session.office + '-' + user.machineID}
+                </Typography>
+              </div>
+            )}
           <Grid item xs="auto" md={6} lg={6}>
             <Countdown date={endSessionTime} daysInHours={true}>
               <Completionist />
             </Countdown>
-            ...till the end of the session
+            {/* ...till the end of the session */}
           </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
             {(!isStudent) ? (

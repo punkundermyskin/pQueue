@@ -123,6 +123,16 @@ export const QueueProvider = ({ children }) => {
     console.log("request Student For Process sent");
   }
 
+  function requestStudentForProcessByID(id) {
+    setLoader();
+    const token = localStorage.getItem("token")
+    socket.emit("requestStudentForProcessByID", {
+      token,
+      id
+    });
+    console.log("request Student For Process sent");
+  }
+
   function returnStudentToQueue(progress) {
     setLoader();
     const token = localStorage.getItem("token")
@@ -164,6 +174,7 @@ export const QueueProvider = ({ children }) => {
         leaveSession,
         approveMember,
         requestStudentForProcess,
+        requestStudentForProcessByID,
         setFreeOperator,
         setUnreadyOperator,
         finishServeringStudent,

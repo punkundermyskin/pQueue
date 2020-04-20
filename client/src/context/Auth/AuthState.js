@@ -102,6 +102,30 @@ export const AuthProvider = ({ children }) => {
     });
   }
 
+  async function updateUserMachineID(machineID) {
+    const config = createConfig();
+
+    try {
+      const body = JSON.stringify({ machineID });
+      const res = await axios.post("/api/auth/update-machneid", body, config);
+
+      console.log('updateUserMachineID - success: ', res)
+      // TODO: - !
+      // dispatch({
+      //   type: "UPDATE_MACHINEID_SUCCESS",
+      //   payload: res.data,
+      // });
+    } catch (error) {
+
+      console.log('updateUserMachineID - error: ', error)
+      // TODO: - !
+      // dispatch({
+      //   type: "UPDATE_MACHINEID_FAIL",
+      //   payload: error.response.data,
+      // });
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -113,6 +137,7 @@ export const AuthProvider = ({ children }) => {
         registerUser,
         loginUser,
         logoutUser,
+        updateUserMachineID
       }}
     >
       {children}

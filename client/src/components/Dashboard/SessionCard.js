@@ -22,7 +22,7 @@ export const SessionCard = ({ session }) => {
     <React.Fragment>
       <Title>{session.subject}</Title>
       <Grid container direction="column" justify="center">
-        <Grid>status: {session.status}</Grid>
+        {/* <Grid>status: {session.status}</Grid> */}
         <Grid>office: {session.office}</Grid>
         Groups:
         {session.groups.map((group) => (
@@ -41,7 +41,7 @@ export const SessionCard = ({ session }) => {
             }}
           >
             Watch
-              </Button>
+            </Button>
         </Grid>
       </Grid>
     </React.Fragment>

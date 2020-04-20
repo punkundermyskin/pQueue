@@ -9,7 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import { QueueContext } from "../../../../context/Queue/QueueState";
 import { useStyles } from "./../../Styles/StatusStyles";
 
-export function Inline({ user, queue }) {
+export function Inline({ user, queuePosition, operatorsCount }) {
   const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #e0672f 10%, #4153AF 90%)' });
   const history = useHistory();
   const {
@@ -18,7 +18,8 @@ export function Inline({ user, queue }) {
     leaveSession
   } = useContext(QueueContext);
 
-  const estimatedTimeBeforeCall = (queue.length - 2) * session.minutesForRequest
+  const minutesForRequest = session.minutesForRequest
+  const estimatedTimeBeforeCall = (queuePosition) * session.minutesForRequest / operatorsCount
 
   if (user) {
     return (
@@ -60,11 +61,11 @@ export function Inline({ user, queue }) {
               {user.firstName}
             </Typography>
             <Typography variant="h5" gutterBottom>
-              {(estimatedTimeBeforeCall) ? (<div>{estimatedTimeBeforeCall} minutes</div>) : (<div> You Are Next</div>)}
+              {(estimatedTimeBeforeCall !== 0) ? (<div>{estimatedTimeBeforeCall} minutes</div>) : (<div> You Are Next</div>)}
             </Typography>
             <Grid item xs="auto" md={6} lg={6}>
               <Typography variant="body1" alighn={'justify'} gutterBottom>
-                {(estimatedTimeBeforeCall) ? (<div>estimated waiting time</div>) : (
+                {(estimatedTimeBeforeCall !== 0) ? (<div>estimated waiting time</div>) : (
                   <div>
                     operator will come
                     <br />

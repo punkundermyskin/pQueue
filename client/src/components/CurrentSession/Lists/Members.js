@@ -21,11 +21,32 @@ const useStyles = makeStyles(theme => ({
 function renderRow({ data, index, style }) {
 
     const member = data[index]
-
+    const userName = member.firstName + ' ' + member.lastName
+    const hostName = (member.hostName) ? (' (host: ' + member.hostName + ')') : ('')
+    const machineID = (member.machineID) ? (' PC #' + member.machineID) : ('')
+    const primaryField = userName + machineID
+    const secondaryField = member.role + hostName
     var progress = 5
     if (member.role === 'student') {
         if (member.progress) {
             progress = member.progress
+        }
+    }
+
+    var color = 'gray'
+    if (member.role === 'operator') {
+        switch (member.status) {
+            case 'unready':
+                color = 'gray'
+                break;
+            case 'free':
+                color = 'green'
+                break;
+            case 'busy':
+                color = 'red'
+                break;
+            default:
+                break;
         }
     }
 
@@ -34,10 +55,10 @@ function renderRow({ data, index, style }) {
             <ListItemIcon>
                 {(member.role === 'student') ? (
                     <CircularProgress variant="static" value={progress} />) : (
-                        <PersonRoundedIcon color={'secondary'} />
+                        <PersonRoundedIcon style={{ color: color }} />
                     )}
             </ListItemIcon>
-            <ListItemText primary={member.firstName + ' ' + member.lastName} secondary={member.role} />
+            <ListItemText primary={primaryField} secondary={secondaryField} />
         </ListItem>
     );
 }

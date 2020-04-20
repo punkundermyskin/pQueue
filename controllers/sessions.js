@@ -28,9 +28,24 @@ exports.getSessions = async (req, res, next) => {
 exports.addSession = async (req, res, next) => {
     try {
         const reqSession = req.body;
+        const participants = reqSession.participants
+
         const user = req.user
         reqSession.owner = user._id
         const session = await Sessions.create(reqSession);
+
+        for (var i = 0; i < participants.length; i++) {
+            const participantID = participants[i]._id
+            var participant = await Users.findById(participantID)
+
+            if (!participant.session) {
+                const sessionID = session._id.toString()
+                participant.status = 'unready'
+                participant.session = sessionID
+                participant.save()
+            }
+
+        }
 
         return res.status(201).json({
             success: true,

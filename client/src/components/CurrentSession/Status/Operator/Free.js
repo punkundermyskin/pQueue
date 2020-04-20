@@ -4,15 +4,21 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
+import Countdown from "react-countdown";
 
 import { QueueContext } from "../../../../context/Queue/QueueState";
 
 import { useStyles } from "./../../Styles/StatusStyles";
 
-export function Free() {
+export function Free({ user }) {
   const classes = useStyles({ backgroundColor: 'linear-gradient(45deg, #008000 10%, #4153AF 90%)' });
   const history = useHistory();
   const { session, leaveSession, requestStudentForProcess, setUnreadyOperator } = useContext(QueueContext);
+
+  const end = new Date(session.end)
+  const endDate = end.getTime()
+
+  const Completionist = () => <span style={{ color: 'red' }}>Session is ended!</span>;
 
   const leaveSessionHandler = () => {
     leaveSession(session._id);
@@ -62,14 +68,17 @@ export function Free() {
           alignItems="center"
         >
           <Typography variant="h4" gutterBottom>
-            John
-        </Typography>
+            {user.firstName}
+          </Typography>
           <Typography variant="h5" gutterBottom>
-            Wick
-        </Typography>
+            {user.lastName}
+          </Typography>
           <Grid item xs="auto" md={6} lg={6}>
-            Main Service
-        </Grid>
+            <Countdown date={endDate} daysInHours={true}>
+              <Completionist />
+            </Countdown>
+            {/* ...till the end of the session */}
+          </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
             <Button
               variant="contained"
@@ -78,9 +87,11 @@ export function Free() {
             >
               Next Student
           </Button>
+          </Grid>
+
+          <Grid item xs="auto">
             <Button
               variant="contained"
-              color="primary"
               onClick={() => {
                 setUnreadyOperator()
               }}

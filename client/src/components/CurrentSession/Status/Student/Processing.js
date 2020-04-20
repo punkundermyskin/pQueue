@@ -53,19 +53,18 @@ export function Processing({ pair }) {
           justify="space-around"
           alignItems="center"
         >
-          {(pair) ? (
-            <div>
-              <Typography variant="h4" gutterBottom>
-                {pair['student'].username}
-              </Typography>
-              <Typography variant="h5" gutterBottom>
-                {pair['operator'].username}
-              </Typography>
-            </div>
-          ) : (null)}
+          <Typography variant="h4" gutterBottom>
+            {(pair) ? (pair['operator'].firstName + ' ' + pair['operator'].lastName) : ('John')}
+          </Typography>
+          <Typography variant="h5" gutterBottom>
+            will
+            </Typography>
+          <Typography variant="h5" gutterBottom>
+            proceed your request
+            </Typography>
           <Grid item xs="auto" md={6} lg={6}>
-            Main Service
-        </Grid>
+            {/* Main Service */}
+          </Grid>
           <Grid item xs="auto" md={6} lg={6} className={classes.paper}>
             Good Luck Mate
             </Grid>
