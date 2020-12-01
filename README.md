@@ -7,14 +7,14 @@ developed by using MERN-stack (MongoDB+Express.js+React.js+Node.js) and socket.i
 
 ## Screenshots
 
-<img src="./Screenshoots/1.png" alt="Sing up" style="zoom:50%;" />
+![Sing up](./Screenshoots/1.png)
 
-<img src="./Screenshoots/2.png" alt="Today" style="zoom:50%;" />
+![Today](./Screenshoots/2.png)
 
-<img src="./Screenshoots/3.png" alt="New session" style="zoom:50%;" />
+![New session](./Screenshoots/3.png)
 
-<img src="./Screenshoots/4.png" alt="Session" style="zoom:50%;" />
+![Session](./Screenshoots/4.png)
 
-<img src="./Screenshoots/5.png" alt="Session" style="zoom:50%;" />
+![Session](./Screenshoots/5.png)
 
-<img src="./Screenshoots/6.png" alt="Session" style="zoom:50%;" />
+![Session](./Screenshoots/6.png)
